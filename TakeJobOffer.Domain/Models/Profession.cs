@@ -10,6 +10,14 @@
             Name = name;
             Description = description;
         }
+        private Profession(Guid id, string name, string description, List<Skill> skills)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Skills = skills;
+        }
+
         public Guid Id { get; }
         public string Name { get; } = string.Empty;
         public string Description { get; } = string.Empty;
@@ -28,6 +36,22 @@
                 error = $"Description can not be more then {MAX_DESCRIPTION_LENGTH} symbols";
 
             var profession = new Profession(id, name, description);
+
+            return (profession, error);
+        }
+
+        public static (Profession Profession, string Error) Create(Guid id, string name, string description, List<Skill> skills)
+        {
+            var error = string.Empty;
+
+            if (id == Guid.Empty)
+                error = "Profession need to have not empty Id";
+            if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
+                error = $"Name can not be empty or more then {MAX_NAME_LENGTH} symbols";
+            if (description.Length > MAX_DESCRIPTION_LENGTH)
+                error = $"Description can not be more then {MAX_DESCRIPTION_LENGTH} symbols";
+
+            var profession = new Profession(id, name, description, skills);
 
             return (profession, error);
         }

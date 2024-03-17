@@ -4,10 +4,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TakeJobOffer.API", "TakeJobOffer.API\TakeJobOffer.API.csproj", "{A8997DFF-974F-4B41-9EBD-3364747A56B0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B91E71BE-3A28-4B85-9C8F-95B80A937651} = {B91E71BE-3A28-4B85-9C8F-95B80A937651}
+		{E32029E5-717C-44F8-A670-A0B50286B332} = {E32029E5-717C-44F8-A670-A0B50286B332}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TakeJobOffer.Domain", "TakeJobOffer.Domain\TakeJobOffer.Domain.csproj", "{B91E71BE-3A28-4B85-9C8F-95B80A937651}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeJobOffer.DAL", "TakeJobOffer.DAL\TakeJobOffer.DAL.csproj", "{E32029E5-717C-44F8-A670-A0B50286B332}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B91E71BE-3A28-4B85-9C8F-95B80A937651} = {B91E71BE-3A28-4B85-9C8F-95B80A937651}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
