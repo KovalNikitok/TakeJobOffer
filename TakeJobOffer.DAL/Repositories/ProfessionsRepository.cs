@@ -13,7 +13,6 @@ namespace TakeJobOffer.DAL.Repositories
             _context = context;
         }
 
-        // *Profession data model from Domain
         public async Task<List<Profession>> GetProfessions()
         {
             var professionEntites = await _context.Professions
@@ -28,7 +27,6 @@ namespace TakeJobOffer.DAL.Repositories
             return professions;
         }
 
-        // *Profession data model from Domain
         public async Task<Guid> CreateProfession(Profession profession)
         {
             var professionEntity = new ProfessionEntity
@@ -45,7 +43,6 @@ namespace TakeJobOffer.DAL.Repositories
             return professionEntity.Id;
         }
 
-        // *Profession data model from Domain
         public async Task<Guid> UpdateProfession(Guid id, string name, string description)
         {
             await _context.Professions
