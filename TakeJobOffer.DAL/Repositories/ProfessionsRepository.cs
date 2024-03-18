@@ -2,6 +2,7 @@
 using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
 using TakeJobOffer.DAL.Entities;
+using FluentResults;
 
 namespace TakeJobOffer.DAL.Repositories
 {
@@ -13,15 +14,20 @@ namespace TakeJobOffer.DAL.Repositories
             _context = context;
         }
 
-        public async Task<List<Profession>> GetProfessions()
+        public async Task<List<Profession?>> GetProfessions()
         {
             var professionEntites = await _context.Professions
                 .AsNoTracking()
                 .ToListAsync();
 
-            // *ProfessionFactory from Domain
             var professions = professionEntites
-                .Select(p => Profession.Create(p.Id, p.Name, p.Description).Profession)
+                .Select((p) =>
+                    {
+                        var prof = Profession.Create(p.Id, p.Name, p.Description);
+                        if (!prof.HasError<Error>())
+                            return prof.Value;
+                        return null;
+                    })
                 .ToList();
 
             return professions;

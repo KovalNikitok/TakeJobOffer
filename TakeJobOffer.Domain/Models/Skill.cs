@@ -1,4 +1,4 @@
-﻿using System.Xml.Linq;
+﻿using FluentResults;
 
 namespace TakeJobOffer.Domain.Models
 {
@@ -14,18 +14,17 @@ namespace TakeJobOffer.Domain.Models
             Name = name;
         }
 
-        public static (Skill Skill, string Error) Create(Guid id, string name)
+        public static Result<Skill> Create(Guid id, string name)
         {
-            var error = string.Empty;
-
+            var result = new Result<Skill>();
             if (id == Guid.Empty)
-                error = "Skill need to have not empty Id";
+                result.WithError(new Error("Skill need to have not empty Id"));
             if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
-                error = $"Name can not be empty or more then {MAX_NAME_LENGTH} symbols";
+                result.WithError(new Error($"Name can not be empty or more then {MAX_NAME_LENGTH} symbols"));
 
-            var skill = new Skill(id, name);
+            result.WithValue(new Skill(id, name));
 
-            return (skill, error);
+            return result;
         }
     }
 }

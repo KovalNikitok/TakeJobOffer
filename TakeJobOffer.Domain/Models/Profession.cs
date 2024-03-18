@@ -1,4 +1,6 @@
-﻿namespace TakeJobOffer.Domain.Models
+﻿using FluentResults;
+
+namespace TakeJobOffer.Domain.Models
 {
     public class Profession
     {
@@ -24,36 +26,36 @@
 
         public List<Skill> Skills { get; } = new();
 
-        public static (Profession Profession, string Error) Create(Guid id, string name, string description)
+        public static Result<Profession> Create(Guid id, string name, string description)
         {
-            var error = string.Empty;
+            var result = new Result<Profession>();
 
             if (id == Guid.Empty)
-                error = "Profession need to have not empty Id";
+                result.WithError("Profession need to have not empty Id");
             if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
-                error = $"Name can not be empty or more then {MAX_NAME_LENGTH} symbols";
+                result.WithError($"Name can not be empty or more then {MAX_NAME_LENGTH} symbols");
             if(description.Length > MAX_DESCRIPTION_LENGTH)
-                error = $"Description can not be more then {MAX_DESCRIPTION_LENGTH} symbols";
+                result.WithError($"Description can not be more then {MAX_DESCRIPTION_LENGTH} symbols");
 
-            var profession = new Profession(id, name, description);
+            result.WithValue(new Profession(id, name, description));
 
-            return (profession, error);
+            return result;
         }
 
-        public static (Profession Profession, string Error) Create(Guid id, string name, string description, List<Skill> skills)
+        public static Result<Profession> Create(Guid id, string name, string description, List<Skill> skills)
         {
-            var error = string.Empty;
+            var result = new Result<Profession>();
 
             if (id == Guid.Empty)
-                error = "Profession need to have not empty Id";
+                result.WithError("Profession need to have not empty Id");
             if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
-                error = $"Name can not be empty or more then {MAX_NAME_LENGTH} symbols";
+                result.WithError($"Name can not be empty or more then {MAX_NAME_LENGTH} symbols");
             if (description.Length > MAX_DESCRIPTION_LENGTH)
-                error = $"Description can not be more then {MAX_DESCRIPTION_LENGTH} symbols";
+                result.WithError($"Description can not be more then {MAX_DESCRIPTION_LENGTH} symbols");
 
-            var profession = new Profession(id, name, description, skills);
+            result.WithValue(new Profession(id, name, description, skills));
 
-            return (profession, error);
+            return result;
         }
     }
 }
