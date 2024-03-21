@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TakeJobOffer.DAL", "TakeJob
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B4066E1A-2589-441D-BFA3-D71EDF37E765}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeJobOffer.Application", "TakeJobOffer.Application\TakeJobOffer.Application.csproj", "{866960DF-B651-4AFC-924B-EE0C0E262832}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{B4066E1A-2589-441D-BFA3-D71EDF37E765}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4066E1A-2589-441D-BFA3-D71EDF37E765}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4066E1A-2589-441D-BFA3-D71EDF37E765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{866960DF-B651-4AFC-924B-EE0C0E262832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{866960DF-B651-4AFC-924B-EE0C0E262832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{866960DF-B651-4AFC-924B-EE0C0E262832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{866960DF-B651-4AFC-924B-EE0C0E262832}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
