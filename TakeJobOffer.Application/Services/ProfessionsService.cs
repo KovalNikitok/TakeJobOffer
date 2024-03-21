@@ -21,7 +21,7 @@ namespace TakeJobOffer.Application.Services
             return await _professionsRepository.CreateProfession(profession);
         }
 
-        public async Task<Guid> UpdateProfession(Guid guid, string name, string description)
+        public async Task<Guid> UpdateProfession(Guid guid, string name, string? description)
         {
             return await _professionsRepository.UpdateProfession(guid, name, description);
         }

@@ -11,6 +11,7 @@ namespace TakeJobOffer.DAL.Configurations
             builder.HasKey(i => i.Id);
 
             builder.Property(i => i.Name).HasMaxLength(255).IsRequired();
+            builder.Property(i => i.Description).HasMaxLength(255);
         }
     }
 }

@@ -7,6 +7,6 @@ namespace TakeJobOffer.Domain.Abstractions
         Task<Guid> CreateProfession(Profession profession);
         Task<Guid> DeleteProfession(Guid guid);
         Task<List<Profession?>> GetAllProfessions();
-        Task<Guid> UpdateProfession(Guid guid, string name, string description);
+        Task<Guid> UpdateProfession(Guid guid, string name, string? description);
     }
 }

@@ -6,13 +6,13 @@ namespace TakeJobOffer.Domain.Models
     {
         const int MAX_NAME_LENGTH = 255; 
         const int MAX_DESCRIPTION_LENGTH = 255;
-        private Profession(Guid id, string name, string description)
+        private Profession(Guid id, string name, string? description)
         {
             Id = id;
             Name = name;
             Description = description;
         }
-        private Profession(Guid id, string name, string description, List<Skill> skills)
+        private Profession(Guid id, string name, string? description, List<Skill> skills)
         {
             Id = id;
             Name = name;
@@ -22,11 +22,11 @@ namespace TakeJobOffer.Domain.Models
 
         public Guid Id { get; }
         public string Name { get; } = string.Empty;
-        public string Description { get; } = string.Empty;
+        public string? Description { get; } = string.Empty;
 
         public List<Skill> Skills { get; } = new();
 
-        public static Result<Profession> Create(Guid id, string name, string description)
+        public static Result<Profession> Create(Guid id, string name, string? description)
         {
             var result = new Result<Profession>();
 
@@ -34,15 +34,16 @@ namespace TakeJobOffer.Domain.Models
                 result.WithError("Profession need to have not empty Id");
             if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
                 result.WithError($"Name can not be empty or more then {MAX_NAME_LENGTH} symbols");
-            if(description.Length > MAX_DESCRIPTION_LENGTH)
+            if(description?.Length > MAX_DESCRIPTION_LENGTH)
                 result.WithError($"Description can not be more then {MAX_DESCRIPTION_LENGTH} symbols");
 
-            result.WithValue(new Profession(id, name, description));
+            if(result.IsSuccess)
+                result.WithValue(new Profession(id, name, description));
 
             return result;
         }
 
-        public static Result<Profession> Create(Guid id, string name, string description, List<Skill> skills)
+        public static Result<Profession> Create(Guid id, string name, string? description, List<Skill> skills)
         {
             var result = new Result<Profession>();
 
@@ -50,10 +51,11 @@ namespace TakeJobOffer.Domain.Models
                 result.WithError("Profession need to have not empty Id");
             if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
                 result.WithError($"Name can not be empty or more then {MAX_NAME_LENGTH} symbols");
-            if (description.Length > MAX_DESCRIPTION_LENGTH)
+            if (description?.Length > MAX_DESCRIPTION_LENGTH)
                 result.WithError($"Description can not be more then {MAX_DESCRIPTION_LENGTH} symbols");
 
-            result.WithValue(new Profession(id, name, description, skills));
+            if (result.IsSuccess)
+                result.WithValue(new Profession(id, name, description, skills));
 
             return result;
         }

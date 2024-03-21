@@ -49,7 +49,7 @@ namespace TakeJobOffer.DAL.Repositories
             return professionEntity.Id;
         }
 
-        public async Task<Guid> UpdateProfession(Guid id, string name, string description)
+        public async Task<Guid> UpdateProfession(Guid id, string name, string? description)
         {
             await _context.Professions
                 .Where(p => p.Id == id)
