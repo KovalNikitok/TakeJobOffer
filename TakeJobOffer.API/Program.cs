@@ -2,7 +2,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using TakeJobOffer.Application.Services;
 using TakeJobOffer.DAL;
+using TakeJobOffer.DAL.Repositories;
+using TakeJobOffer.Domain.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,9 @@ builder.Services.AddDbContext<TakeJobOfferDbContext>(
     {
         options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(TakeJobOfferDbContext)));
     });
+builder.Services.AddScoped<IProfessionsRepository, ProfessionsRepository>();
+builder.Services.AddScoped<IProfessionsService, ProfessionsService>();
+
 
 var app = builder.Build();
 
@@ -28,7 +34,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
