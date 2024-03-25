@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TakeJobOffer.Application\TakeJobOffer.Application.csproj" />
     <ProjectReference Include="..\TakeJobOffer.DAL\TakeJobOffer.DAL.csproj" />
+    <ProjectReference Include="..\TakeJobOffer.Domain\TakeJobOffer.Domain.csproj" />
   </ItemGroup>
 
 </Project>

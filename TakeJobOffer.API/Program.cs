@@ -14,6 +14,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(opt =>
+    {
+        if(builder.Environment.IsDevelopment())
+            opt.WithOrigins("http://localhost:3000", "null");
+        else
+            opt.WithOrigins("www.takejoboffer.ru");
+        opt.WithMethods("GET", "POST", "PUT", "DELETE");
+        opt.AllowAnyHeader();
+        opt.AllowCredentials();
+    }));
+
 builder.Services.AddEndpointsApiExplorer();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
@@ -34,10 +46,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+
 
 app.Run();
