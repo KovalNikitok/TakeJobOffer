@@ -372,3 +372,4 @@ FodyWeavers.xsd
 /TakeJobOffer.DAL/Entities/SkillEntity.cs
 /TakeJobOffer.DAL/TakeJobOfferDbContext.cs
 /TakeJobOffer.Domain/Abstractions/Error.cs
+/Frontend/takejobofferfrontend

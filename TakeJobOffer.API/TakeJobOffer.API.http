@@ -1,6 +1,0 @@
-@TakeJobOffer.API_HostAddress = http://localhost:5113
-
-GET {{TakeJobOffer.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

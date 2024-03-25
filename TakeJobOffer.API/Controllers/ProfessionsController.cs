@@ -7,7 +7,7 @@ using TakeJobOffer.Domain.Models;
 namespace TakeJobOffer.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("professions")]
     public class ProfessionsController : ControllerBase
     {
         private readonly IProfessionsService _professionsService;
