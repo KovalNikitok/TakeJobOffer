@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TakeJobOffer.DAL.Entities;
+using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.DAL.Configurations
 {
@@ -10,7 +11,7 @@ namespace TakeJobOffer.DAL.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Name).HasMaxLength(128).IsRequired();
+            builder.Property(x => x.Name).HasMaxLength(Skill.MAX_NAME_LENGTH).IsRequired();
         }
     }
 }

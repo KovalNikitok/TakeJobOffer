@@ -4,7 +4,7 @@ namespace TakeJobOffer.Domain.Models
 {
     public class Skill
     {
-        const int MAX_NAME_LENGTH = 128;
+        public const int MAX_NAME_LENGTH = 128;
         public Guid Id { get; }
         public string Name { get; } = string.Empty;
 
@@ -22,7 +22,8 @@ namespace TakeJobOffer.Domain.Models
             if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
                 result.WithError(new Error($"Name can not be empty or more then {MAX_NAME_LENGTH} symbols"));
 
-            result.WithValue(new Skill(id, name));
+            if(result.IsSuccess)
+                result.WithValue(new Skill(id, name));
 
             return result;
         }

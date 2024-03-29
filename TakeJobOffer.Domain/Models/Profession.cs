@@ -4,8 +4,8 @@ namespace TakeJobOffer.Domain.Models
 {
     public class Profession
     {
-        const int MAX_NAME_LENGTH = 255; 
-        const int MAX_DESCRIPTION_LENGTH = 255;
+        public const int MAX_NAME_LENGTH = 255; 
+        public const int MAX_DESCRIPTION_LENGTH = 255;
         private Profession(Guid id, string name, string? description)
         {
             Id = id;
