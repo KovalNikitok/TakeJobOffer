@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TakeJobOffer.DAL.Entities;
+using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.DAL.Repositories
 {
-    public class SkillsRepository
+    public class SkillsRepository : ISkillsRepository
     {
         private readonly TakeJobOfferDbContext _dbContext;
         public SkillsRepository(TakeJobOfferDbContext dbContext)
@@ -30,7 +31,24 @@ namespace TakeJobOffer.DAL.Repositories
             return skills;
         }
 
-        public async Task<Guid> CreateSkills(Guid id, string name)
+        public async Task<Skill?> GetSkillById(Guid id)
+        {
+            var skillEntity = await _dbContext.Skills
+                .AsNoTracking()
+                .Where(i => i.Id == id)
+                .SingleOrDefaultAsync();
+
+            var skill = Skill.Create(
+                id: skillEntity?.Id ?? Guid.Empty,
+                name: skillEntity?.Name ?? string.Empty);
+
+            if(skill.IsSuccess) 
+                return skill.Value; 
+            
+            return null;
+        }
+
+        public async Task<Guid> CreateSkill(Guid id, string name)
         {
             var skill = new SkillEntity
             {
@@ -44,7 +62,7 @@ namespace TakeJobOffer.DAL.Repositories
             return skill.Id;
         }
 
-        public async Task<Guid> UpdateSkills(Guid id, string name)
+        public async Task<Guid> UpdateSkill(Guid id, string name)
         {
             var skill = await _dbContext.Skills
                 .Where(i => i.Id == id)
@@ -54,7 +72,7 @@ namespace TakeJobOffer.DAL.Repositories
             return id;
         }
 
-        public async Task<Guid> DeleteSkills(Guid id)
+        public async Task<Guid> DeleteSkill(Guid id)
         {
             await _dbContext.Skills
                 .Where(i => i.Id == id)

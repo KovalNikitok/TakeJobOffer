@@ -2,12 +2,12 @@
 
 namespace TakeJobOffer.Domain.Abstractions
 {
-    public interface ISkillsRepository
+    public interface ISkillsService
     {
-        Task<List<Skill?>> GetSkills();
+        Task<List<Skill?>> GetAllSkills();
         Task<Skill?> GetSkillById(Guid id);
 
-        Task<Guid> CreateSkill(Guid id, string name);
+        Task<Guid> CreateSkill(string name);
         Task<Guid> UpdateSkill(Guid id, string name);
         Task<Guid> DeleteSkill(Guid id);
     }
