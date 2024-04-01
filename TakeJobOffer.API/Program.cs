@@ -29,13 +29,17 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<TakeJobOfferDbContext>(
     options =>
     {
         options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(TakeJobOfferDbContext)));
     });
+
 builder.Services.AddScoped<IProfessionsRepository, ProfessionsRepository>();
 builder.Services.AddScoped<IProfessionsService, ProfessionsService>();
+builder.Services.AddScoped<ISkillsRepository, SkillsRepository>();
+builder.Services.AddScoped<ISkillsService, SkillsService>();
 
 
 var app = builder.Build();

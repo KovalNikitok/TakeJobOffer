@@ -7,6 +7,6 @@
         public ProfessionEntity Profession { get; set; } = null!;
         public SkillEntity Skill { get; set; } = null!;
 
-        public int SkillMentionCount { get; set; }
+        public int SkillMentionCount { get; set; } = 0;
     }
 }

@@ -3,11 +3,7 @@ import { ProfessionRequest } from "../services/professions";
 import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import Modal from "antd/es/modal/Modal";
-
-export enum Mode {
-  Create,
-  Edit,
-}
+import { Mode } from "./Mode"
 
 interface Props {
   mode: Mode;
