@@ -6,6 +6,7 @@ import Link from "antd/es/typography/Link";
 const items = [
   { key: "home", label: <Link href={"/"}>Home</Link> },
   { key: "professions", label: <Link href={"/professions"}>Professions</Link> },
+  { key: "skills", label: <Link href={"/skills"}>Skills</Link> },
 ];
 
 export default function RootLayout({

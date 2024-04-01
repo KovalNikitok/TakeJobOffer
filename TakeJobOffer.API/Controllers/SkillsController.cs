@@ -44,14 +44,6 @@ namespace TakeJobOffer.API.Controllers
             return Ok(skillResponse);
         }
 
-        [HttpPut("{id:guid}")]
-        public async Task<ActionResult<Guid>> UpdateSkill(Guid id, [FromBody] SkillRequest skillRequest)
-        {
-            var skillId = await _skillsService.UpdateSkill(id, skillRequest.Name);
-
-            return Ok(skillId);
-        }
-
         [HttpPost]
         public async Task<ActionResult<Guid>> CreateSkill([FromBody] SkillRequest skillRequest)
         {
@@ -63,6 +55,14 @@ namespace TakeJobOffer.API.Controllers
                 return BadRequest(skill.Errors);
 
             var skillId = await _skillsService.CreateSkill(skill.Value);
+
+            return Ok(skillId);
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult<Guid>> UpdateSkill(Guid id, [FromBody] SkillRequest skillRequest)
+        {
+            var skillId = await _skillsService.UpdateSkill(id, skillRequest.Name);
 
             return Ok(skillId);
         }

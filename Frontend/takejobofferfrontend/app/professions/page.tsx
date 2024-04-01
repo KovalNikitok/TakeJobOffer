@@ -12,7 +12,7 @@ import {
 } from "../services/professions";
 import { useEffect, useState } from "react";
 import { CreateUpdateProfession } from "../components/CreateUpdateProfession";
-import { Mode } from "../components/CreateUpdateProfession";
+import { Mode } from "../components/Mode";
 
 export default function ProfessionsPage() {
   const [professions, setProfessions] = useState<Profession[]>([]);
@@ -32,10 +32,7 @@ export default function ProfessionsPage() {
 
   useEffect(() => {
     const getProfessions = async () => {
-      const professions = await getAllProfessions()
-        .then((result) => {
-            return result;
-        });
+      const professions = await getAllProfessions();
       setLoading(false);
       setProfessions(professions);
     };
