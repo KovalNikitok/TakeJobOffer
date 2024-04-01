@@ -48,18 +48,18 @@ namespace TakeJobOffer.DAL.Repositories
             return null;
         }
 
-        public async Task<Guid> CreateSkill(Guid id, string name)
+        public async Task<Guid> CreateSkill(Skill skill)
         {
-            var skill = new SkillEntity
+            var skillEntity = new SkillEntity
             {
-                Id = id,
-                Name = name
+                Id = skill.Id,
+                Name = skill.Name
             };
 
-            await _dbContext.AddAsync(skill);
+            await _dbContext.AddAsync(skillEntity);
             await _dbContext.SaveChangesAsync();
 
-            return skill.Id;
+            return skillEntity.Id;
         }
 
         public async Task<Guid> UpdateSkill(Guid id, string name)

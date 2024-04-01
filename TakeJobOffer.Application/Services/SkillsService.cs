@@ -20,11 +20,9 @@ namespace TakeJobOffer.Application.Services
             return await _skillsRepository.GetSkillById(id);
         }
 
-        public async Task<Guid> CreateSkill(string name)
+        public async Task<Guid> CreateSkill(Skill skill)
         {
-            return await _skillsRepository.CreateSkill(
-                id: Guid.NewGuid(),
-                name: name);
+            return await _skillsRepository.CreateSkill(skill);
         }
 
         public async Task<Guid> UpdateSkill(Guid id, string name)

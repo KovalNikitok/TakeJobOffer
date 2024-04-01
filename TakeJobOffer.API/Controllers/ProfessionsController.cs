@@ -6,9 +6,7 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
 {
-    [ApiController]
-    [Route("professions")]
-    public class ProfessionsController : ControllerBase
+    public class ProfessionsController : ApiController
     {
         private readonly IProfessionsService _professionsService;
         public ProfessionsController(IProfessionsService professionsService)
@@ -17,9 +15,15 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProfessionResponse>>> GetProfessions() 
+        public async Task<ActionResult<List<ProfessionResponse>>> GetProfessions()
         {
             var professions = await _professionsService.GetAllProfessions();
+
+            if (professions == null || professions.Count == 0)
+            {
+                return NotFound();
+            }
+
             var professionsResponse = professions.Select(p => new ProfessionResponse(p.Id, p.Name, p.Description));
 
             return Ok(professionsResponse);

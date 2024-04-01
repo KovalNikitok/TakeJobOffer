@@ -7,7 +7,7 @@ namespace TakeJobOffer.Domain.Abstractions
         Task<List<Skill?>> GetSkills();
         Task<Skill?> GetSkillById(Guid id);
 
-        Task<Guid> CreateSkill(Guid id, string name);
+        Task<Guid> CreateSkill(Skill skill);
         Task<Guid> UpdateSkill(Guid id, string name);
         Task<Guid> DeleteSkill(Guid id);
     }
