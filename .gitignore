@@ -362,3 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /TakeJobOffer.DAL/Migrations
+/TakeJobOffer.DAL/Repositories/ProfessionsSkillsRepository.cs
+/TakeJobOffer.Domain/Abstractions/IProfessionsSkillsRepository.cs
+/TakeJobOffer.Domain/Models/ProfessionSkills.cs
