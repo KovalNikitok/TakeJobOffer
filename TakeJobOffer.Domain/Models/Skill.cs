@@ -16,7 +16,7 @@ namespace TakeJobOffer.Domain.Models
 
         public static Result<Skill> Create(Guid id, string name)
         {
-            var result = new Result<Skill>();
+            Result<Skill> result = new();
             if (id == Guid.Empty)
                 result.WithError(new Error("Skill need to have not empty Id"));
             if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)

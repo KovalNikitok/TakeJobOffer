@@ -1,9 +1,10 @@
 ﻿namespace TakeJobOffer.DAL.Entities
 {
-    public class ProfessionsSkillsEntity
+    public class ProfessionSkillEntity
     {
-        public Guid ProfessionId { get; set; }
-        public Guid SkillId { get; set; }
+        public Guid ProfessionForeignKey { get; set; }
+        public Guid SkillForeignKey { get; set; }
+
         public ProfessionEntity Profession { get; set; } = null!;
         public SkillEntity Skill { get; set; } = null!;
 

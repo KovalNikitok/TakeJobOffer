@@ -24,14 +24,14 @@ namespace TakeJobOffer.Domain.Models
         public string Name { get; } = string.Empty;
         public string? Description { get; } = string.Empty;
 
-        public List<Skill> Skills { get; } = new();
+        public List<Skill> Skills { get; } = [];
 
         public static Result<Profession> Create(Guid id, string name, string? description)
         {
-            var result = new Result<Profession>();
+            Result<Profession> result = new();
 
             if (id == Guid.Empty)
-                result.WithError("Profession need to have not empty Id");
+                result.WithError($"{nameof(Profession)} need to have not empty Id");
             if (string.IsNullOrWhiteSpace(name) || name.Length > MAX_NAME_LENGTH)
                 result.WithError($"Name can not be empty or more then {MAX_NAME_LENGTH} symbols");
             if(description?.Length > MAX_DESCRIPTION_LENGTH)

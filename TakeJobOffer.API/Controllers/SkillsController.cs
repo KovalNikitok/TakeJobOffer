@@ -6,13 +6,9 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
 {
-    public class SkillsController : ApiController
+    public class SkillsController(ISkillsService skillsService) : ApiController
     {
-        private readonly ISkillsService _skillsService;
-        public SkillsController(ISkillsService skillsService)
-        {
-            _skillsService = skillsService;
-        }
+        private readonly ISkillsService _skillsService = skillsService;
 
         [HttpGet]
         public async Task<ActionResult<List<SkillResponse>>> GetSkills()

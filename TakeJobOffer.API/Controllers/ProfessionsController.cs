@@ -6,16 +6,12 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
 {
-    public class ProfessionsController : ApiController
+    public class ProfessionsController(IProfessionsService professionsService) : ApiController
     {
-        private readonly IProfessionsService _professionsService;
-        public ProfessionsController(IProfessionsService professionsService)
-        {
-            _professionsService = professionsService;
-        }
+        private readonly IProfessionsService _professionsService = professionsService;
 
         [HttpGet]
-        public async Task<ActionResult<List<ProfessionResponse>>> GetProfessions()
+        public async Task<ActionResult<List<ProfessionResponse>?>> GetProfessions()
         {
             var professions = await _professionsService.GetAllProfessions();
 
@@ -24,7 +20,7 @@ namespace TakeJobOffer.API.Controllers
                 return NotFound();
             }
 
-            var professionsResponse = professions.Select(p => new ProfessionResponse(p.Id, p.Name, p.Description));
+            var professionsResponse = professions.Select(p => new ProfessionResponse(p!.Id, p!.Name, p.Description));
 
             return Ok(professionsResponse);
         }

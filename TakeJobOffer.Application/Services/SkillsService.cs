@@ -3,13 +3,10 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.Application.Services
 {
-    public class SkillsService : ISkillsService
+    public class SkillsService(ISkillsRepository skillsRepository) : ISkillsService
     {
-        private readonly ISkillsRepository _skillsRepository;
-        public SkillsService(ISkillsRepository skillsRepository)
-        {
-            _skillsRepository = skillsRepository;
-        }
+        private readonly ISkillsRepository _skillsRepository = skillsRepository;
+
         public async Task<List<Skill?>> GetAllSkills()
         {
             return await _skillsRepository.GetSkills();

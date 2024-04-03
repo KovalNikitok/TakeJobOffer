@@ -3,17 +3,18 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.Application.Services
 {
-    public class ProfessionsService : IProfessionsService
+    public class ProfessionsService(IProfessionsRepository professionsRepository) : IProfessionsService
     {
-        private readonly IProfessionsRepository _professionsRepository;
-        public ProfessionsService(IProfessionsRepository professionsRepository)
-        {
-            _professionsRepository = professionsRepository;
-        }
+        private readonly IProfessionsRepository _professionsRepository = professionsRepository;
 
         public async Task<List<Profession?>> GetAllProfessions()
         {
             return await _professionsRepository.GetProfessions();
+        }
+
+        public async Task<Profession?> GetProfessionById(Guid id)
+        {
+            return await _professionsRepository.GetProfessionById(id);
         }
 
         public async Task<Guid> CreateProfession(Profession profession)

@@ -37,9 +37,12 @@ builder.Services.AddDbContext<TakeJobOfferDbContext>(
     });
 
 builder.Services.AddScoped<IProfessionsRepository, ProfessionsRepository>();
-builder.Services.AddScoped<IProfessionsService, ProfessionsService>();
 builder.Services.AddScoped<ISkillsRepository, SkillsRepository>();
+builder.Services.AddScoped<IProfessionsSkillsRepository, ProfessionsSkillsRepository>();
+
+builder.Services.AddScoped<IProfessionsService, ProfessionsService>();
 builder.Services.AddScoped<ISkillsService, SkillsService>();
+builder.Services.AddScoped<IProfessionsSkillsService, ProfessionsSkillsService>();
 
 
 var app = builder.Build();

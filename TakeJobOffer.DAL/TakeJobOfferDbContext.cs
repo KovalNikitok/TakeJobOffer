@@ -1,24 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TakeJobOffer.DAL.Configurations;
 using TakeJobOffer.DAL.Entities;
 
 namespace TakeJobOffer.DAL
 {
-    public class TakeJobOfferDbContext : DbContext
+    public class TakeJobOfferDbContext(DbContextOptions<TakeJobOfferDbContext> options) : DbContext(options)
     {
         public DbSet<ProfessionEntity> Professions { get; set; }
         public DbSet<SkillEntity> Skills { get; set; }
-        public TakeJobOfferDbContext(DbContextOptions<TakeJobOfferDbContext> options)
-            : base(options)
-        {
-
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ProfessionEntity>()
-                .HasMany(e => e.Skills)
-                .WithMany()
-                .UsingEntity<ProfessionsSkillsEntity>();
+            var professionConfiguration = new ProfessionConfiguration();
+            var skillConfiguration = new SkillConfiguration();
+            var professionsSkillsConfiguration = new ProfessionsSkillsConfiguration();
+
+            modelBuilder.ApplyConfiguration(skillConfiguration);
+            modelBuilder.ApplyConfiguration(professionConfiguration);
+            modelBuilder.ApplyConfiguration(professionsSkillsConfiguration);
         }
     }
 }

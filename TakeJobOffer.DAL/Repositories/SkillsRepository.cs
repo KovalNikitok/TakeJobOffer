@@ -5,13 +5,9 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.DAL.Repositories
 {
-    public class SkillsRepository : ISkillsRepository
+    public class SkillsRepository (TakeJobOfferDbContext dbContext) : ISkillsRepository
     {
-        private readonly TakeJobOfferDbContext _dbContext;
-        public SkillsRepository(TakeJobOfferDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        private readonly TakeJobOfferDbContext _dbContext = dbContext;
 
         public async Task<List<Skill?>> GetSkills()
         {
@@ -38,6 +34,9 @@ namespace TakeJobOffer.DAL.Repositories
                 .Where(i => i.Id == id)
                 .SingleOrDefaultAsync();
 
+            if (skillEntity == null)
+                return null;
+
             var skill = Skill.Create(
                 id: skillEntity?.Id ?? Guid.Empty,
                 name: skillEntity?.Name ?? string.Empty);
@@ -56,7 +55,7 @@ namespace TakeJobOffer.DAL.Repositories
                 Name = skill.Name
             };
 
-            await _dbContext.AddAsync(skillEntity);
+            await _dbContext.Skills.AddAsync(skillEntity);
             await _dbContext.SaveChangesAsync();
 
             return skillEntity.Id;
