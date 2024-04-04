@@ -8,6 +8,7 @@ namespace TakeJobOffer.DAL
     {
         public DbSet<ProfessionEntity> Professions { get; set; }
         public DbSet<SkillEntity> Skills { get; set; }
+        public DbSet<ProfessionSkillEntity> ProfessionsSkills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

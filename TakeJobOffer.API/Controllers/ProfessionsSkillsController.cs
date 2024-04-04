@@ -61,12 +61,15 @@ namespace TakeJobOffer.API.Controllers
 
             var professionSkill = professionSkillResult.Value;
 
-            var professionsId = await _professionsService.UpdateSkillMentionCountForProfessionById(
+            Guid? updatedProfessionsId = await _professionsService.UpdateSkillMentionCountForProfessionById(
                 professionSkill.ProfessionId,
                 professionSkill.SkillId,
                 professionSkill.SkillMentionCount);
 
-            return Ok(professionsId);
+            if (updatedProfessionsId == null)
+                return NotFound();
+
+            return Ok(updatedProfessionsId);
         }
 
         [HttpDelete("{professionId:guid}")]

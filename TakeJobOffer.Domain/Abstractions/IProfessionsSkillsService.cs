@@ -6,7 +6,7 @@ namespace TakeJobOffer.Domain.Abstractions
     {
         Task<List<ProfessionSkill?>?> GetSkillsByProfessionId(Guid professionId);
         Task<Guid?> CreateSkillForProfessionById(ProfessionSkill professionSkill);
-        Task<Guid> UpdateSkillMentionCountForProfessionById(Guid professionId, Guid skillId, int skillMentionCount);
+        Task<Guid?> UpdateSkillMentionCountForProfessionById(Guid professionId, Guid skillId, int skillMentionCount);
         Task<Guid> DeleteSkillForProfessionById(Guid professionId, Guid skillId);
         
         

@@ -2,6 +2,8 @@
 using TakeJobOffer.DAL.Entities;
 using TakeJobOffer.Domain.Models;
 using TakeJobOffer.Domain.Abstractions;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Linq;
 
 namespace TakeJobOffer.DAL.Repositories
 {
@@ -11,16 +13,16 @@ namespace TakeJobOffer.DAL.Repositories
 
         public async Task<List<ProfessionSkill?>?> GetSkillsById(Guid professionId)
         {
-            var professionSkillsEntity = await _dbContext.Professions
+            var professionSkillsEntities = await _dbContext.Professions
                 .AsNoTracking()
                 .Where(p => p.Id == professionId)
                 .Select(p => p.ProfessionSkills)
                 .SingleOrDefaultAsync();
 
-            if (professionSkillsEntity == null)
+            if (professionSkillsEntities == null || professionSkillsEntities.Count == 0)
                 return null;
 
-            var professionSkills = professionSkillsEntity
+            var professionSkills = professionSkillsEntities
                 .Select(ps =>
                 {
                     var professionSkillEntity = ProfessionSkill.CreateProfessionSkill(
@@ -40,51 +42,75 @@ namespace TakeJobOffer.DAL.Repositories
 
         public async Task<Guid?> CreateSkillById(ProfessionSkill professionSkill)
         {
-            var professionEntity = await _dbContext.Professions
+            var professionSkillCheck = await _dbContext.ProfessionsSkills
+                    .Where(ps => ps.ProfessionForeignKey == professionSkill.ProfessionId
+                        && ps.SkillForeignKey == professionSkill.SkillId)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync();
+
+            if (professionSkillCheck is not null)
+                return null;
+
+            await using IDbContextTransaction transaction =
+                await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.Snapshot);
+
+            try
+            {
+                var professionEntityId = await _dbContext.Professions
                 .AsNoTracking()
                 .Where(p => p.Id == professionSkill.ProfessionId)
+                .Select(p => p.Id)
                 .SingleOrDefaultAsync();
 
-            if (professionEntity == null)
-                return null;
+                if (professionEntityId == Guid.Empty)
+                    return null;
 
-            var skillEntity = _dbContext.Skills
-                .AsNoTracking()
-                .Where(s => s.Id == professionSkill.SkillId)
-                .SingleOrDefaultAsync();
+                var skillEntityId = await _dbContext.Skills
+                    .AsNoTracking()
+                    .Where(s => s.Id == professionSkill.SkillId)
+                    .Select(s => s.Id)
+                    .SingleOrDefaultAsync();
 
-            if(skillEntity == null) 
-                return null;
+                if (skillEntityId == Guid.Empty)
+                    return null;
 
-            var professionSkillEntity = new ProfessionSkillEntity
+                var professionSkillEntity = new ProfessionSkillEntity
+                {
+                    ProfessionForeignKey = professionEntityId,
+                    SkillForeignKey = skillEntityId,
+                    SkillMentionCount = professionSkill.SkillMentionCount
+                };
+
+                await _dbContext.ProfessionsSkills.AddAsync(professionSkillEntity);
+                await _dbContext.SaveChangesAsync();
+
+                await transaction.CommitAsync().ConfigureAwait(false);
+
+                return professionEntityId;
+            }
+            catch (Exception)
             {
-                ProfessionForeignKey = professionSkill.ProfessionId,
-                SkillForeignKey = professionSkill.SkillId,
-                SkillMentionCount = professionSkill.SkillMentionCount
-            };
-
-            professionEntity.ProfessionSkills.Add(professionSkillEntity);
-            await _dbContext.SaveChangesAsync();
-
-            return professionEntity.Id;
+                await transaction.RollbackAsync().ConfigureAwait(false);
+                throw;
+            }
         }
 
-        public async Task<Guid> UpdateSkillMentionById(Guid professionId, Guid skillId, int skillMentionCount)
+        public async Task<Guid?> UpdateSkillMentionById(Guid professionId, Guid skillId, int skillMentionCount)
         {
-            var updated = await _dbContext.Professions
-                .Where(p => p.Id == professionId)
-                .Select(p => p.ProfessionSkills.SingleOrDefault(ps => ps.SkillForeignKey == skillId))
+            var updated = await _dbContext.ProfessionsSkills
+                .Where(ps => ps.ProfessionForeignKey == professionId && ps.SkillForeignKey == skillId)
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(ps => ps.SkillMentionCount, skillMentionCount));
+                    .SetProperty(
+                        ps => ps.SkillMentionCount,
+                        ps => skillMentionCount));
 
             return professionId;
         }
 
         public async Task<Guid> DeleteSkillById(Guid professionId, Guid skillId)
         {
-            var professionSkillEntity = await _dbContext.Professions
-                .Where(p => p.Id == professionId)
-                .Select(p => p.Skills.SingleOrDefault(s => s.Id == skillId))
+            var deleted = await _dbContext.ProfessionsSkills
+                .Where(ps => ps.ProfessionForeignKey == professionId && ps.SkillForeignKey == skillId)
                 .ExecuteDeleteAsync();
 
             return professionId;

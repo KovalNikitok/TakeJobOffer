@@ -17,7 +17,7 @@ namespace TakeJobOffer.Application.Services
             return await _professionsSkillsRepository.CreateSkillById(professionSkill);
         }
 
-        public async Task<Guid> UpdateSkillMentionCountForProfessionById(Guid professionId, Guid skillId, int skillMentionCount)
+        public async Task<Guid?> UpdateSkillMentionCountForProfessionById(Guid professionId, Guid skillId, int skillMentionCount)
         {
             return await _professionsSkillsRepository.UpdateSkillMentionById(professionId, skillId, skillMentionCount);
         }
