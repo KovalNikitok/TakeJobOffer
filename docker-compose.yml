@@ -1,5 +1,13 @@
 version: '3.4'
 
+networks:
+    frontend_network:
+        name: frontend_network
+        driver: bridge
+    backend_network:
+        name: backend_network
+        driver: bridge
+
 services:
   postgres:
     container_name: postgres
@@ -12,5 +20,32 @@ services:
         - postgres-data:/var/lib/postgresql/data
     ports:
         - "5432:5432"
+    networks:
+        - backend_network
+  backend:
+    container_name: backend_takejoboffer
+    build:
+        context: .
+        dockerfile: /TakeJobOffer.API/API.Dockerfile
+    ports:
+        - "8080:7168"
+        - "8081:5113"
+    depends_on: 
+        - postgres
+    networks:
+        - frontend_network
+        - backend_network
+  frontend:
+    container_name: frontend_takejoboffer
+    build:
+        context: ./Frontend/takejobofferfrontend
+        dockerfile: Frontend.Dockerfile
+    restart: always
+    ports:
+        - "3000:3000"
+    depends_on: 
+        - backend
+    networks:
+        - frontend_network
 volumes:
     postgres-data:

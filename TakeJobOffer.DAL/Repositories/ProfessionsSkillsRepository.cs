@@ -3,7 +3,6 @@ using TakeJobOffer.DAL.Entities;
 using TakeJobOffer.Domain.Models;
 using TakeJobOffer.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Linq;
 
 namespace TakeJobOffer.DAL.Repositories
 {
