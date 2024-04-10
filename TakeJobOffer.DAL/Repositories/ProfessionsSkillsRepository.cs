@@ -12,16 +12,17 @@ namespace TakeJobOffer.DAL.Repositories
 
         public async Task<List<ProfessionSkill?>?> GetSkillsById(Guid professionId)
         {
-            var professionSkillsEntities = await _dbContext.Professions
+            var professionsSkillsEntities = await _dbContext.Professions
                 .AsNoTracking()
                 .Where(p => p.Id == professionId)
+                .Include(p => p.ProfessionSkills)
                 .Select(p => p.ProfessionSkills)
                 .SingleOrDefaultAsync();
 
-            if (professionSkillsEntities == null || professionSkillsEntities.Count == 0)
+            if (professionsSkillsEntities == null || professionsSkillsEntities.Count == 0)
                 return null;
 
-            var professionSkills = professionSkillsEntities
+            var professionSkills = professionsSkillsEntities
                 .Select(ps =>
                 {
                     var professionSkillEntity = ProfessionSkill.CreateProfessionSkill(
@@ -42,10 +43,10 @@ namespace TakeJobOffer.DAL.Repositories
         public async Task<Guid?> CreateSkillById(ProfessionSkill professionSkill)
         {
             var professionSkillCheck = await _dbContext.ProfessionsSkills
-                    .Where(ps => ps.ProfessionForeignKey == professionSkill.ProfessionId
-                        && ps.SkillForeignKey == professionSkill.SkillId)
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync();
+                        .AsNoTracking()
+                        .Where(ps => ps.ProfessionForeignKey == professionSkill.ProfessionId
+                            && ps.SkillForeignKey == professionSkill.SkillId)
+                        .SingleOrDefaultAsync();
 
             if (professionSkillCheck is not null)
                 return null;
@@ -56,19 +57,19 @@ namespace TakeJobOffer.DAL.Repositories
             try
             {
                 var professionEntityId = await _dbContext.Professions
-                .AsNoTracking()
-                .Where(p => p.Id == professionSkill.ProfessionId)
-                .Select(p => p.Id)
-                .SingleOrDefaultAsync();
-
-                if (professionEntityId == Guid.Empty)
-                    return null;
+                    .AsNoTracking()
+                    .Where(p => p.Id == professionSkill.ProfessionId)
+                    .Select(p => p.Id)
+                    .SingleOrDefaultAsync();
 
                 var skillEntityId = await _dbContext.Skills
                     .AsNoTracking()
                     .Where(s => s.Id == professionSkill.SkillId)
                     .Select(s => s.Id)
                     .SingleOrDefaultAsync();
+
+                if (professionEntityId == Guid.Empty)
+                    return null;
 
                 if (skillEntityId == Guid.Empty)
                     return null;
