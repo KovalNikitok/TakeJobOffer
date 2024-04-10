@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /TakeJobOffer.DAL/Repositories/ProfessionsSkillsRepository.cs
 /TakeJobOffer.Domain/Abstractions/IProfessionsSkillsRepository.cs
 /TakeJobOffer.Domain/Models/ProfessionSkills.cs
+/Frontend/frontend projects and logo
