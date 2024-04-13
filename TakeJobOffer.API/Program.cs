@@ -5,6 +5,7 @@ using Microsoft.Identity.Web;
 using TakeJobOffer.Application.Services;
 using TakeJobOffer.DAL;
 using TakeJobOffer.DAL.Repositories;
+using TakeJobOffer.DAL.Migrations;
 using TakeJobOffer.Domain.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,9 +19,9 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(opt =>
     {
         if(builder.Environment.IsDevelopment())
-            opt.WithOrigins("http://localhost:3000", "null");
+            opt.WithOrigins("http://localhost:3000", "http://0.0.0.0:5432", "http://0.0.0.0:3000", "null");
         else
-            opt.WithOrigins("www.takejoboffer.ru");
+            opt.WithOrigins("www.takejoboffer.ru", "http://localhost:3000", "http://0.0.0.0:3000", "https://0.0.0.0:3000");
         opt.WithMethods("GET", "POST", "PUT", "DELETE");
         opt.AllowAnyHeader();
         opt.AllowCredentials();
@@ -36,6 +37,7 @@ builder.Services.AddDbContext<TakeJobOfferDbContext>(
         options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(TakeJobOfferDbContext)));
     });
 
+
 builder.Services.AddScoped<IProfessionsRepository, ProfessionsRepository>();
 builder.Services.AddScoped<ISkillsRepository, SkillsRepository>();
 builder.Services.AddScoped<IProfessionsSkillsRepository, ProfessionsSkillsRepository>();
@@ -46,6 +48,8 @@ builder.Services.AddScoped<IProfessionsSkillsService, ProfessionsSkillsService>(
 
 
 var app = builder.Build();
+
+app.MigrateDatabase<TakeJobOfferDbContext, Program>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
