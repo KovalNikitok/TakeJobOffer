@@ -16,7 +16,7 @@ services:
         resources:
             limits:
                 cpus: '0.25'
-                memory: 512M
+                memory: 64M
     environment:
         POSTGRES_DB: "takejobofferdb"
         POSTGRES_USER: "postgres"
@@ -37,11 +37,19 @@ services:
         resources:
             limits:
                 cpus: '0.25'
-                memory: 512M
+                memory: 256M
     restart: always
     ports:
         - "8080:8080"
         - "8081:8081"
+    environment:
+        ASPNETCORE_ENVIRONMENT: "Development"
+        ASPNETCORE_HTTPS_PORTS: 8081
+        ASPNETCORE_HTTP_PORTS: 8080
+        ASPNETCORE_Kestrel__Certificates__Default__Password: 123
+        ASPNETCORE_Kestrel__Certificates__Default__Path: /home/app/.aspnet/https/TakeJobOffer.API.pfx
+    volumes:
+        - ~/.aspnet/https:/home/app/.aspnet/https:ro
     depends_on: 
         - postgres
     networks:
@@ -57,7 +65,7 @@ services:
         resources:
             limits:
                 cpus: '0.25'
-                memory: 1024M
+                memory: 128M
     ports:
         - "3000:3000"
     depends_on: 
