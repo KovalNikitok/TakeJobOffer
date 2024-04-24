@@ -366,3 +366,5 @@ FodyWeavers.xsd
 /TakeJobOffer.Domain/Abstractions/IProfessionsSkillsRepository.cs
 /TakeJobOffer.Domain/Models/ProfessionSkills.cs
 /Frontend/frontend projects and logo
+/Frontend/takejobofferfrontend/app/frog-pages
+/Frontend/takejobofferfrontend/app/components/frog-components
