@@ -7,7 +7,7 @@ const items = [
   { key: "home", label: <Link href={"/"}>Home</Link> },
   { key: "professions", label: <Link href={"/professions"}>Professions</Link> },
   { key: "skills", label: <Link href={"/skills"}>Skills</Link> },
-  { key: "professionSkills", label: <Link href={"/profession-skills"}>Required Skills for Professions</Link> },
+  { key: "professionsSkills", label: <Link href={"/professions-skills"}>Required Skills for Professions</Link> },
 ];
 
 export default function RootLayout({

@@ -3,7 +3,7 @@ export interface SkillRequest {
 }
 
 export const getAllSkills = async () => {
-  return await fetch("https://localhost:7168/api/skills", {
+  return await fetch("https://localhost:8081/api/skills", {
     method: "GET",
     headers: {
       "accept": "application/json",
@@ -18,7 +18,7 @@ export const getAllSkills = async () => {
 };
 
 export const getSkillById = async (id:string) => {
-  return await fetch(`https://localhost:7168/api/skills/${id}`, {
+  return await fetch(`https://localhost:8081/api/skills/${id}`, {
     method: "GET",
     headers: {
         "accept": "application/json",
@@ -33,7 +33,7 @@ export const getSkillById = async (id:string) => {
 };
 
 export const createSkill = async (skillRequest: SkillRequest) => {
-    await fetch("https://localhost:7168/api/skills", {
+    await fetch("https://localhost:8081/api/skills", {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -47,7 +47,7 @@ export const createSkill = async (skillRequest: SkillRequest) => {
 };
 
 export const updateSkill = async (id: string, skillRequest: SkillRequest) => {
-    await fetch(`https://localhost:7168/api/skills/${id}`, {
+    await fetch(`https://localhost:8081/api/skills/${id}`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
@@ -62,7 +62,7 @@ export const updateSkill = async (id: string, skillRequest: SkillRequest) => {
 };
 
 export const deleteSkill = async (id: string) => {
-    await fetch(`https://localhost:7168/api/skills/${id}`, {
+    await fetch(`https://localhost:8081/api/skills/${id}`, {
         method: "DELETE",
     })
         .then(response => {

@@ -4,7 +4,7 @@ export interface ProfessionRequest {
 }
 
 export const getAllProfessions = async () => {
-    return await fetch("https://localhost:7168/api/professions", {
+    return await fetch("https://localhost:8081/api/professions", {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -19,7 +19,7 @@ export const getAllProfessions = async () => {
 };
 
 export const createProfession = async (professionRequest: ProfessionRequest) => {
-    await fetch("https://localhost:7168/api/professions", {
+    await fetch("https://localhost:8081/api/professions", {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -34,7 +34,7 @@ export const createProfession = async (professionRequest: ProfessionRequest) => 
 };
 
 export const updateProfession = async (id: string, professionRequest: ProfessionRequest) => {
-    await fetch(`https://localhost:7168/api/professions/${id}`, {
+    await fetch(`https://localhost:8081/api/professions/${id}`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
@@ -49,7 +49,7 @@ export const updateProfession = async (id: string, professionRequest: Profession
 };
 
 export const deleteProfession = async (id: string) => {
-    await fetch(`https://localhost:7168/api/professions/${id}`, {
+    await fetch(`https://localhost:8081/api/professions/${id}`, {
             method: "DELETE",
     })
         .then(response => {
