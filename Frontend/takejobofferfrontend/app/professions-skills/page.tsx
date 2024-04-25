@@ -1,8 +1,7 @@
 "use client";
 
 import Title from "antd/es/typography/Title";
-import Link from "antd/es/typography/Link";
-import { Professions } from "../components/ProfessionsSkills";
+import { ProfessionsSkills } from "../components/ProfessionsSkills";
 import {
   getAllProfessions,
 } from "../services/professions";
@@ -24,27 +23,22 @@ export default function ProfessionsPage() {
 
   useEffect(() => {
     const getProfessions = async () => {
-      const professions = await getAllProfessions();
-      // if(professions.length === 0)
-      //   professions.push({name: "C#", description: "C# developer", id: "0b31ce20-4b95-4411-ba37-617cce14fb84"} as Profession)
-      setLoading(false);
-      setProfessions(professions);
+        const professions = await getAllProfessions();
+
+        setLoading(false);
+        setProfessions(professions);
       };
 
     getProfessions();
   }, []);
-
-  const openDetailed = async (profession: Profession) => {
-  };
 
   return (
     <div>
       {loading ? (
         <Title>Loading...</Title>
       ) : (
-        <Professions
+        <ProfessionsSkills
           professions={professions}
-          handleDetailed={openDetailed}
         />
       )}
     </div>
