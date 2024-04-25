@@ -12,6 +12,11 @@ namespace TakeJobOffer.Application.Services
             return await _skillsRepository.GetSkills();
         }
 
+        public async Task<List<Skill?>?> GetSkillsByIds(IEnumerable<Guid> skillsIds)
+        {
+            return await _skillsRepository.GetSkillsByIds(skillsIds);
+        }
+
         public async Task<Skill?> GetSkillById(Guid id)
         {
             return await _skillsRepository.GetSkillById(id);

@@ -9,12 +9,12 @@ namespace TakeJobOffer.Application.Services
 
         public async Task<List<ProfessionSkill?>?> GetSkillsByProfessionId(Guid professionId)
         {
-            return await _professionsSkillsRepository.GetSkillsById(professionId);
+            return await _professionsSkillsRepository.GetProfessionSkillsById(professionId);
         }
 
         public async Task<Guid?> CreateSkillForProfessionById(ProfessionSkill professionSkill)
         {
-            return await _professionsSkillsRepository.CreateSkillById(professionSkill);
+            return await _professionsSkillsRepository.CreateProfessionSkillById(professionSkill);
         }
 
         public async Task<Guid?> UpdateSkillMentionCountForProfessionById(Guid professionId, Guid skillId, int skillMentionCount)
@@ -24,7 +24,7 @@ namespace TakeJobOffer.Application.Services
 
         public async Task<Guid> DeleteSkillForProfessionById(Guid professionId, Guid skillId)
         {
-            return await _professionsSkillsRepository.DeleteSkillById(professionId, skillId);
+            return await _professionsSkillsRepository.DeleteProfessionSkillById(professionId, skillId);
         }
     }
 }

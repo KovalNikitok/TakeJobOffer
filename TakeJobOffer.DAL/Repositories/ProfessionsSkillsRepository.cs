@@ -10,7 +10,7 @@ namespace TakeJobOffer.DAL.Repositories
     {
         private readonly TakeJobOfferDbContext _dbContext = dbContext;
 
-        public async Task<List<ProfessionSkill?>?> GetSkillsById(Guid professionId)
+        public async Task<List<ProfessionSkill?>?> GetProfessionSkillsById(Guid professionId)
         {
             var professionsSkillsEntities = await _dbContext.Professions
                 .AsNoTracking()
@@ -40,7 +40,7 @@ namespace TakeJobOffer.DAL.Repositories
             return professionSkills;
         }
 
-        public async Task<Guid?> CreateSkillById(ProfessionSkill professionSkill)
+        public async Task<Guid?> CreateProfessionSkillById(ProfessionSkill professionSkill)
         {
             var professionSkillCheck = await _dbContext.ProfessionsSkills
                         .AsNoTracking()
@@ -107,7 +107,7 @@ namespace TakeJobOffer.DAL.Repositories
             return professionId;
         }
 
-        public async Task<Guid> DeleteSkillById(Guid professionId, Guid skillId)
+        public async Task<Guid> DeleteProfessionSkillById(Guid professionId, Guid skillId)
         {
             var deleted = await _dbContext.ProfessionsSkills
                 .Where(ps => ps.ProfessionForeignKey == professionId && ps.SkillForeignKey == skillId)

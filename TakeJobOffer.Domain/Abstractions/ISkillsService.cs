@@ -5,6 +5,7 @@ namespace TakeJobOffer.Domain.Abstractions
     public interface ISkillsService
     {
         Task<List<Skill?>> GetAllSkills();
+        Task<List<Skill?>?> GetSkillsByIds(IEnumerable<Guid> skillsIds);
         Task<Skill?> GetSkillById(Guid id);
 
         Task<Guid> CreateSkill(Skill skill);

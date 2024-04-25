@@ -47,6 +47,32 @@ namespace TakeJobOffer.DAL.Repositories
             return null;
         }
 
+        public async Task<List<Skill?>?> GetSkillsByIds(IEnumerable<Guid> skillsIds)
+        {          
+
+            var skillsEntitiesList = await (from skillsEntities in _dbContext.Skills
+                                     join skillId in skillsIds
+                                     on skillsEntities.Id equals skillId
+                                     select skillsEntities)
+                                .ToListAsync();
+
+            if (skillsEntitiesList == null || skillsEntitiesList.Count == 0)
+                return null;
+
+            var skillsList = skillsEntitiesList.Select(s => 
+            {
+                var skillResult = Skill.Create(
+                id: s.Id,
+                name: s.Name);
+                if (skillResult.IsSuccess)
+                    return skillResult.Value;
+
+                return null;
+            }).ToList();
+
+            return skillsList;
+        }
+
         public async Task<Guid> CreateSkill(Skill skill)
         {
             var skillEntity = new SkillEntity

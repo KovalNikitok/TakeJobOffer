@@ -7,14 +7,15 @@ using TakeJobOffer.Domain.Models;
 namespace TakeJobOffer.API.Controllers
 {
     [Route("~/api/professions-skills")]
-    public class ProfessionsSkillsController(IProfessionsSkillsService professionsSkillsService) : ApiController
+    public class ProfessionsSkillsController(IProfessionsSkillsService professionsSkillsService, ISkillsService skillsService) : ApiController
     {
-        private readonly IProfessionsSkillsService _professionsService = professionsSkillsService;
+        private readonly IProfessionsSkillsService _professionSkillsService = professionsSkillsService;
+        private readonly ISkillsService _skillsService = skillsService;
 
         [HttpGet("{professionId:guid}")]
         public async Task<ActionResult<List<ProfessionSkillResponse>?>> GetProfessionSkillsById(Guid professionId)
         {
-            var professionsList = await _professionsService.GetSkillsByProfessionId(professionId);
+            var professionsList = await _professionSkillsService.GetSkillsByProfessionId(professionId);
 
             if (professionsList == null || professionsList.Count == 0)
             {
@@ -26,6 +27,38 @@ namespace TakeJobOffer.API.Controllers
                 .ToList();
 
             return Ok(professionSkillsResponse);
+        }
+
+        [HttpGet("{professionId:guid}/with-name")]
+        public async Task<ActionResult<List<ProfessionSkillWithNameResponse?>?>> GetProfessionSkillsWithNameById(Guid professionId)
+        {
+            var professionSkillsList = await _professionSkillsService.GetSkillsByProfessionId(professionId);
+
+            if (professionSkillsList == null || professionSkillsList.Count == 0)
+            {
+                return NotFound();
+            }
+
+            IEnumerable<Guid> skillsIds = professionSkillsList.Select(ps => ps!.SkillId);
+
+            var skills = await _skillsService.GetSkillsByIds(skillsIds);
+
+            if(skills == null || skills.Count == 0) 
+            {  
+                return NotFound(); 
+            }
+
+            var professionsSkillsResponse = professionSkillsList.Select(p =>
+            {
+                var skill = skills.Where(s =>
+                    s!.Id == p!.SkillId).FirstOrDefault();
+                if (skill == null)
+                    return null;
+
+                return new ProfessionSkillWithNameResponse(p!.SkillId, skill.Name, p.SkillMentionCount);
+            }).ToList();
+
+            return Ok(professionsSkillsResponse);
         }
 
         [HttpPost("{professionId:guid}")]
@@ -41,7 +74,7 @@ namespace TakeJobOffer.API.Controllers
             if (professionSkillResult.IsFailed)
                 return BadRequest(professionSkillResult.Errors);
 
-            var professionsId = await _professionsService.CreateSkillForProfessionById(professionSkillResult.Value);
+            var professionsId = await _professionSkillsService.CreateSkillForProfessionById(professionSkillResult.Value);
 
             return Ok(professionsId);
         }
@@ -61,7 +94,7 @@ namespace TakeJobOffer.API.Controllers
 
             var professionSkill = professionSkillResult.Value;
 
-            Guid? updatedProfessionsId = await _professionsService.UpdateSkillMentionCountForProfessionById(
+            Guid? updatedProfessionsId = await _professionSkillsService.UpdateSkillMentionCountForProfessionById(
                 professionSkill.ProfessionId,
                 professionSkill.SkillId,
                 professionSkill.SkillMentionCount);
@@ -76,7 +109,7 @@ namespace TakeJobOffer.API.Controllers
         public async Task<ActionResult<Guid>> DeleteProfessionSkill(Guid professionId, 
             [FromBody] ProfessionSkillRequest professionSkillResult)
         {
-            var profId = await _professionsService.DeleteSkillForProfessionById(professionId, professionSkillResult.SkillId);
+            var profId = await _professionSkillsService.DeleteSkillForProfessionById(professionId, professionSkillResult.SkillId);
 
             return Ok(profId);
         }
