@@ -17,12 +17,27 @@ namespace TakeJobOffer.API.Controllers
 
             if (professions == null || professions.Count == 0)
             {
-                return NotFound();
+                return NotFound("Professions not found!");
             }
 
             var professionsResponse = professions.Select(p => new ProfessionResponse(p!.Id, p!.Name, p.Description));
 
             return Ok(professionsResponse);
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<ProfessionResponse>?> GetProfessionById(Guid id)
+        {
+            var profession = await _professionsService.GetProfessionById(id);
+
+            if (profession == null)
+            {
+                return NotFound("Profession by that Id not found!");
+            }
+
+            var professionResponse = new ProfessionResponse(profession!.Id, profession!.Name, profession.Description);
+
+            return Ok(professionResponse);
         }
 
         [HttpPost]

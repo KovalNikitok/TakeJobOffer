@@ -16,7 +16,7 @@ services:
         resources:
             limits:
                 cpus: '0.25'
-                memory: 512M
+                memory: 256M
     environment:
         POSTGRES_DB: "takejobofferdb"
         POSTGRES_USER: "postgres"
@@ -27,7 +27,13 @@ services:
     ports:
         - "5432:5432"
     networks:
-        - backend_network
+        - backend_network  
+    healthcheck:
+        test: pg_isready -U $$POSTGRES_USER
+        interval: 10s
+        timeout: 3s
+        retries: 5
+        start_period: 3s
   backend:
     container_name: backend_takejoboffer
     build:
@@ -42,11 +48,18 @@ services:
     ports:
         - "8080:8080"
         - "8081:8081"
-    depends_on: 
-        - postgres
     networks:
         - frontend_network
         - backend_network
+    depends_on: 
+        postgres:
+            condition: service_healthy
+    healthcheck:
+        test: "curl --fail http://localhost:8080/health || exit 1"
+        interval: 15s
+        timeout: 5s
+        retries: 5
+        start_period: 5s
   frontend:
     container_name: frontend_takejoboffer
     build:
@@ -57,12 +70,15 @@ services:
         resources:
             limits:
                 cpus: '0.25'
-                memory: 1024M
+                memory: 512M
     ports:
         - "3000:3000"
-    depends_on: 
-        - backend
     networks:
         - frontend_network
+    depends_on:
+        backend:
+            condition: service_healthy
+
+    
 volumes:
     postgres-data:

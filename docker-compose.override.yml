@@ -51,7 +51,8 @@ services:
     volumes:
         - ~/.aspnet/https:/home/app/.aspnet/https:ro
     depends_on: 
-        - postgres
+        postgres:
+            condition: service_completed_successfully
     networks:
         - frontend_network
         - backend_network
@@ -69,7 +70,8 @@ services:
     ports:
         - "3000:3000"
     depends_on: 
-        - backend
+        backend:
+            condition: service_completed_successfully
     networks:
         - frontend_network
 volumes:

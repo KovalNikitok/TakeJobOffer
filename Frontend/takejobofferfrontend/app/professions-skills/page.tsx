@@ -11,16 +11,6 @@ export default function ProfessionsPage() {
   const [professions, setProfessions] = useState<Profession[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [values, setValues] = useState<Profession>({
-    name: "",
-    description: "",
-  } as Profession);
-
-  const defaultValues = {
-    name: "",
-    description: "",
-  } as Profession;
-
   useEffect(() => {
     const getProfessions = async () => {
         const professions = await getAllProfessions();

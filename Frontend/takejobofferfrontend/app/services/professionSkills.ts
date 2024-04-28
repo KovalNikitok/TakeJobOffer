@@ -12,9 +12,10 @@ export const getProfessionSkills = async (professionId: string) => {
             },
         }).then(response => {
             if(!response.ok) {
-                throw new Error(response.statusText);
+                console.log(new Error(response.statusText));
+                return ([]); 
             }
-            return response.json() as Promise<ProfessionSkill[]>
+            return response.json() as Promise<ProfessionSkill[]>;
         });
 };
 
@@ -27,9 +28,10 @@ export const getProfessionSkillsWithNames = async (professionId: string) => {
             },
         }).then(response => {
             if(!response.ok) {
-                throw new Error(response.statusText);
+                console.log(new Error(response.statusText));
+                return ([]); 
             }
-            return response.json() as Promise<ProfessionSkillWithName[]>
+            return response.json() as Promise<ProfessionSkillWithName[]>;
         });
 };
 
@@ -43,8 +45,9 @@ export const getProfessionSkill = async (professionId: string, skillId: string) 
             body: JSON.stringify(skillId),
         }).then(response => {
             if(!response.ok) {
-                throw new Error(response.statusText);
+                console.log(new Error(response.statusText));
+                return { }; 
             }
-            return response.json() as Promise<ProfessionSkill[]>
+            return response.json() as Promise<ProfessionSkill>
         });
 };
