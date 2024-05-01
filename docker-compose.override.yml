@@ -1,5 +1,3 @@
-version: '3.9'
-
 networks:
     frontend_network:
         name: frontend_network
@@ -24,6 +22,12 @@ services:
     volumes:
         - postgres-data:/var/lib/postgresql/data
     restart: always
+    healthcheck:
+        test: pg_isready -U $$POSTGRES_USER
+        interval: 9s
+        timeout: 3s
+        retries: 5
+        start_period: 3s
     ports:
         - "5432:5432"
     networks:
@@ -50,9 +54,16 @@ services:
         ASPNETCORE_Kestrel__Certificates__Default__Path: /home/app/.aspnet/https/TakeJobOffer.API.pfx
     volumes:
         - ~/.aspnet/https:/home/app/.aspnet/https:ro
-    depends_on: 
+    depends_on:
         postgres:
-            condition: service_completed_successfully
+            condition: service_healthy
+            restart: true
+    healthcheck:
+        test: curl --fail http://localhost:8080/health || exit 1
+        interval: 9s
+        timeout: 3s
+        retries: 5
+        start_period: 3s
     networks:
         - frontend_network
         - backend_network
@@ -71,7 +82,8 @@ services:
         - "3000:3000"
     depends_on: 
         backend:
-            condition: service_completed_successfully
+            condition: service_healthy
+            restart: true
     networks:
         - frontend_network
 volumes:

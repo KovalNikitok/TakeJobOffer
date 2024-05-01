@@ -359,6 +359,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+#Docker compose files
+*.env*
+
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /TakeJobOffer.DAL/Migrations
