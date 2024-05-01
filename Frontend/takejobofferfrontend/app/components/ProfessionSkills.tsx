@@ -29,8 +29,8 @@ export const ProfessionSkills = ({professionSkills}: Props) => {
         </table>
     */
         <div className="cards">
-            
-            {professionSkills.map((professionSkill: ProfessionSkillWithName) => (
+            { 
+                professionSkills.map((professionSkill: ProfessionSkillWithName) => (
                 
                 <Card key={professionSkill.skillId} title={
                         <CardTitle name={professionSkill.name} description=""/>
@@ -41,5 +41,5 @@ export const ProfessionSkills = ({professionSkills}: Props) => {
                 </Card>
             ))}
         </div>
-    )
+    );
 };

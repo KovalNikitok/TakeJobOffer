@@ -35,6 +35,23 @@ export const getProfessionSkillsWithNames = async (professionId: string) => {
         });
 };
 
+export const getProfessionSkillsWithNamesISR = async (professionId: string, isrDuration: number) => {
+    return await fetch(
+        `https://localhost:8081/api/professions-skills/${professionId}/with-name`, {
+            method: "GET",
+            headers: {
+                "accept": "application/json"
+            },
+            next: { revalidate: isrDuration },
+        }).then(response => {
+            if(!response.ok) {
+                console.log(new Error(response.statusText));
+                return ([]); 
+            }
+            return response.json() as Promise<ProfessionSkillWithName[]>;
+        });
+};
+
 export const getProfessionSkill = async (professionId: string, skillId: string) => {
     return await fetch(
         `https://localhost:8081/api/professions-skills/${professionId}`, {
@@ -46,7 +63,7 @@ export const getProfessionSkill = async (professionId: string, skillId: string) 
         }).then(response => {
             if(!response.ok) {
                 console.log(new Error(response.statusText));
-                return { }; 
+                return ({ }); 
             }
             return response.json() as Promise<ProfessionSkill>
         });

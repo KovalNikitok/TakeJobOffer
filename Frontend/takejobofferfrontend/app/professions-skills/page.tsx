@@ -27,10 +27,10 @@ export default function ProfessionsPage() {
       {loading ? (
         <Title>Loading...</Title>
       ) : (
-        <ProfessionsSkills
-          professions={professions}
-        />
+        <ProfessionsSkills professions={professions} />
       )}
     </div>
   );
 }
+
+

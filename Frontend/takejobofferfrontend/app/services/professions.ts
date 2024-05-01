@@ -35,13 +35,13 @@ export const getProfessionById = async (id: string) => {
         });
 };
 
-export const getAllProfessionsISR60 = async () => {
+export const getAllProfessionsISR = async (isrDuration: number) => {
     const response = await fetch("https://localhost:8081/api/professions", {
         method: "GET",
         headers: {
             "accept": "application/json"
         },
-        next: { revalidate: 60 }
+        next: { revalidate: isrDuration }
     });
     if(!response.ok) {
         console.log(response.statusText);
@@ -50,24 +50,6 @@ export const getAllProfessionsISR60 = async () => {
 
     const data: Profession[] = await response.json();
     
-    return data;
-};
-
-export const getProfessionByIdISR60 = async (id: string) => {
-    const response = await fetch(`https://localhost:8081/api/professions/${id}`, {
-        method: "GET",
-        headers: {
-            "accept": "application/json"
-        },
-        next: { revalidate: 60 }
-    });
-    if(!response.ok) {
-        // throw new Error(response.statusText);
-        console.log(response.statusText);
-        return;   
-    }
-    const data: Profession = await response.json();
-
     return data;
 };
 
