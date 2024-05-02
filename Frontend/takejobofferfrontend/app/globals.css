@@ -42,3 +42,32 @@
   max-width: 80%;
   white-space: normal;
 }
+
+.table-operations {
+  margin-bottom: 16px;
+}
+
+.table-operations > button {
+  margin-right: 8px;
+}
+
+.ps__table {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+  gap: 30px 20px;
+}
+
+.ps__table thead.ant-table-thead th.ant-table-cell {
+  background: #cb8282;
+  background-color: #cb8282;
+  text-shadow: 1px;
+}
+
+.ps__table div.ant-spin-container {
+  background-color: #ffffff;
+}
+
+.ps__table li {
+  margin-bottom: 16px;
+}

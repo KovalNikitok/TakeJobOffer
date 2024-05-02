@@ -1,5 +1,6 @@
-import Card from "antd/es/card/Card"
-import { CardTitle } from "./Cardtitle"
+//import Card from "antd/es/card/Card"
+//import { CardTitle } from "./Cardtitle"
+import {ProfessionSkillsTable} from "./ProfessionSkillsTable";
 
 interface Props {
     professionSkills: ProfessionSkillWithName[];
@@ -28,18 +29,23 @@ export const ProfessionSkills = ({professionSkills}: Props) => {
             </tbody>
         </table>
     */
-        <div className="cards">
+        <div className="ps__table">
             { 
-                professionSkills.map((professionSkill: ProfessionSkillWithName) => (
-                
-                <Card key={professionSkill.skillId} title={
-                        <CardTitle name={professionSkill.name} description=""/>
-                    }
-                    bordered={false}
+                <ProfessionSkillsTable
+                    values={professionSkills}
                 >
-                    Skill mention count: {professionSkill.mentionCount}
-                </Card>
-            ))}
+                </ProfessionSkillsTable>
+                
+                //</div>professionSkills.map((professionSkill: ProfessionSkillWithName) => (                 
+                // <Card key={professionSkill.skillId} title={
+                //         <CardTitle name={professionSkill.name} description=""/>
+                //     }
+                //     bordered={false}
+                // >
+                //     Skill mention count: {professionSkill.mentionCount}
+                // </Card>
+                //))
+            }
         </div>
     );
 };
