@@ -18,7 +18,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TakeJobOffer.DAL", "TakeJob
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B4066E1A-2589-441D-BFA3-D71EDF37E765}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeJobOffer.Application", "TakeJobOffer.Application\TakeJobOffer.Application.csproj", "{866960DF-B651-4AFC-924B-EE0C0E262832}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TakeJobOffer.Application", "TakeJobOffer.Application\TakeJobOffer.Application.csproj", "{866960DF-B651-4AFC-924B-EE0C0E262832}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{781F597E-F1DC-4A2D-A5EC-EC368A940FB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TakeJobOffer.Tests", "..\TakeJobOffer.Tests\TakeJobOffer.Tests.csproj", "{D7369771-3070-4AEB-8313-4E57B1D0713F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{866960DF-B651-4AFC-924B-EE0C0E262832} = {866960DF-B651-4AFC-924B-EE0C0E262832}
+		{E32029E5-717C-44F8-A670-A0B50286B332} = {E32029E5-717C-44F8-A670-A0B50286B332}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,16 +47,22 @@ Global
 		{E32029E5-717C-44F8-A670-A0B50286B332}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E32029E5-717C-44F8-A670-A0B50286B332}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4066E1A-2589-441D-BFA3-D71EDF37E765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4066E1A-2589-441D-BFA3-D71EDF37E765}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4066E1A-2589-441D-BFA3-D71EDF37E765}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4066E1A-2589-441D-BFA3-D71EDF37E765}.Release|Any CPU.Build.0 = Release|Any CPU
 		{866960DF-B651-4AFC-924B-EE0C0E262832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{866960DF-B651-4AFC-924B-EE0C0E262832}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{866960DF-B651-4AFC-924B-EE0C0E262832}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{866960DF-B651-4AFC-924B-EE0C0E262832}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7369771-3070-4AEB-8313-4E57B1D0713F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7369771-3070-4AEB-8313-4E57B1D0713F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7369771-3070-4AEB-8313-4E57B1D0713F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7369771-3070-4AEB-8313-4E57B1D0713F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D7369771-3070-4AEB-8313-4E57B1D0713F} = {781F597E-F1DC-4A2D-A5EC-EC368A940FB4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25F000F1-717E-439F-AF8B-EE7DACFA092B}
