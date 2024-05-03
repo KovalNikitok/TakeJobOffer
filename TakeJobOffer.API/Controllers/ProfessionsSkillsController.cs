@@ -30,7 +30,8 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpGet("{professionId:guid}/with-name")]
-        public async Task<ActionResult<List<ProfessionSkillWithNameResponse?>?>> GetProfessionSkillsWithNameById(Guid professionId)
+        public async Task<ActionResult<List<ProfessionSkillWithNameResponse?>?>> GetProfessionSkillsWithNameById(Guid professionId,
+            [FromQuery] bool isOrdered)
         {
             var professionSkillsList = await _professionSkillsService.GetSkillsByProfessionId(professionId);
 
@@ -56,9 +57,12 @@ namespace TakeJobOffer.API.Controllers
                     return null;
 
                 return new ProfessionSkillWithNameResponse(p!.SkillId, skill.Name, p.SkillMentionCount);
-            }).ToList();
+            });
 
-            return Ok(professionsSkillsResponse);
+            if (isOrdered)
+                return Ok(professionsSkillsResponse.OrderByDescending(p => p?.MentionCount).ToList());
+
+            return Ok(professionsSkillsResponse.ToList());
         }
 
         [HttpPost("{professionId:guid}")]
