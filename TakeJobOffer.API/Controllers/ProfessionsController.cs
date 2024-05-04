@@ -40,6 +40,21 @@ namespace TakeJobOffer.API.Controllers
             return Ok(professionResponse);
         }
 
+        [HttpGet("{slug:string}")]
+        public async Task<ActionResult<ProfessionResponse>?> GetProfessionBySlug(string slug)
+        {
+            var profession = await _professionsService.GetProfessionBySlug(slug);
+
+            if (profession == null)
+            {
+                return NotFound("Profession by that slug string was not found!");
+            }
+
+            var professionResponse = new ProfessionResponse(profession!.Id, profession!.Name, profession.Description);
+
+            return Ok(professionResponse);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Guid>> PostProfession([FromBody] ProfessionRequest professionRequest)
         {

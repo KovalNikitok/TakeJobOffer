@@ -45,6 +45,23 @@ namespace TakeJobOffer.DAL.Repositories
             return profession.Value;
         }
 
+        public async Task<Profession?> GetProfessionBySlug(string slug)
+        {
+            var professionEntity = await _dbContext.ProfessionsSlug
+                .Where(ps => ps.Slug == slug)
+                .Select(ps => ps.Profession)
+                .SingleOrDefaultAsync();
+
+            if (professionEntity == null)
+                return null;
+
+            var profession = Profession.Create(professionEntity.Id, professionEntity.Name, professionEntity.Description);
+            if (profession.IsFailed)
+                return null;
+
+            return profession.Value;
+        }
+
         public async Task<Guid> CreateProfession(Profession profession)
         {
             var professionEntity = new ProfessionEntity

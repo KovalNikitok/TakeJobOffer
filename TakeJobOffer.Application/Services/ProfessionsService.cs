@@ -16,6 +16,10 @@ namespace TakeJobOffer.Application.Services
         {
             return await _professionsRepository.GetProfessionById(id);
         }
+        public async Task<Profession?> GetProfessionBySlug(string slug)
+        {
+            return await _professionsRepository.GetProfessionBySlug(slug);
+        }
 
         public async Task<Guid> CreateProfession(Profession profession)
         {

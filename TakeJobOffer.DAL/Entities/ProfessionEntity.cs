@@ -8,5 +8,6 @@
 
         public List<SkillEntity> Skills { get; set; } = [];
         public List<ProfessionSkillEntity> ProfessionSkills { get; set; } = [];
+        public ProfessionSlugEntity? ProfessionSlug { get; set; }
     }
 }
