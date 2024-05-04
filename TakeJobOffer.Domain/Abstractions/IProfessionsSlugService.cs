@@ -4,6 +4,7 @@ namespace TakeJobOffer.Domain.Abstractions
 {
     public interface IProfessionsSlugService
     {
+        Task<List<ProfessionSlug?>?> GetProfessionSlugs();
         Task<ProfessionSlug?> GetProfessionSlugById(Guid id);
         Task<ProfessionSlug?> GetProfessionSlugByProfessionId(Guid professionId);
         Task<Guid> CreateProfessionSlug(ProfessionSlug professionSlug);

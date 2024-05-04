@@ -9,6 +9,33 @@ namespace TakeJobOffer.DAL.Repositories
     {
         private readonly TakeJobOfferDbContext _dbContext = dbContext;
 
+        public async Task<List<ProfessionSlug?>?> GetProfessionSlugs()
+        {
+            var professionSlugEntities = await _dbContext.ProfessionsSlug
+                .AsNoTracking()
+                .ToListAsync();
+
+            if (professionSlugEntities == null || professionSlugEntities.Count == 0)
+                return null;
+
+            var professionsSlugResult = professionSlugEntities.Select(ps =>
+            {
+                var psResult = ProfessionSlug.CreateProfessionSlug(
+                    ps.Id,
+                    ps.ProfessionForeignKey,
+                    ps.Slug);
+                if (psResult.IsFailed)
+                    return null;
+
+                return psResult.Value;
+            }).ToList();
+
+            if(professionsSlugResult.Count == 0) 
+                return null;
+
+            return professionsSlugResult;
+        }
+
         public async Task<ProfessionSlug?> GetProfessionSlugById(Guid id)
         {
             var professionSlugEntity = await _dbContext.ProfessionsSlug
@@ -51,7 +78,7 @@ namespace TakeJobOffer.DAL.Repositories
 
         public async Task<Guid> CreateProfessionSlug(ProfessionSlug professionSlug)
         {
-            var professionSlugEntity = new ProfessionSlugEntity
+            ProfessionSlugEntity professionSlugEntity = new()
             {
                 Id = professionSlug.Id,
                 ProfessionForeignKey = professionSlug.ProfessionId,

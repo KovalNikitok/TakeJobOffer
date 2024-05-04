@@ -5,9 +5,32 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
 {
+    [Route("~/api/professions-slug")]
     public class ProfessionsSlugController(IProfessionsSlugService professionsSlugService) : ApiController
     {
         private readonly IProfessionsSlugService _professionsSlugService = professionsSlugService;
+
+        [HttpGet()]
+        public async Task<ActionResult<List<ProfessionSlugResponse>?>> GetProfessionsSlug()
+        {
+            var professionSlug = await _professionsSlugService.GetProfessionSlugs();
+
+            if (professionSlug == null || professionSlug.Count == 0)
+                return NotFound("Professions slug was not found");
+
+            var response = professionSlug.Select(ps =>
+            {
+                if (ps is null)
+                    return null;
+
+                return new ProfessionSlugResponse(
+                    ps.Id,
+                    ps.ProfessionId,
+                    ps.Slug);
+            }).ToList();
+
+            return Ok(response);
+        }
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<ProfessionSlugResponse>> GetProfessionSlugById(Guid id)

@@ -40,7 +40,7 @@ namespace TakeJobOffer.API.Controllers
             return Ok(professionResponse);
         }
 
-        [HttpGet("{slug:string}")]
+        [HttpGet("{slug}")]
         public async Task<ActionResult<ProfessionResponse>?> GetProfessionBySlug(string slug)
         {
             var profession = await _professionsService.GetProfessionBySlug(slug);

@@ -7,6 +7,11 @@ namespace TakeJobOffer.Application.Services
     {
         private readonly IProfessionsSlugRepository _professionsSlugRepository = professionsSlugRepository;
 
+        public async Task<List<ProfessionSlug?>?> GetProfessionSlugs()
+        {
+            return await _professionsSlugRepository.GetProfessionSlugs();
+        }
+
         public async Task<ProfessionSlug?> GetProfessionSlugById(Guid id)
         {
             return await _professionsSlugRepository.GetProfessionSlugById(id);
