@@ -152,6 +152,9 @@ namespace TakeJobOffer.API.Controllers
 
             var professionId = await _professionsService.CreateProfessionWithSlug(profession, professionSlug);
 
+            if(professionId == Guid.Empty)
+                return BadRequest("Profession already exist");
+
             return Ok(professionId);
         }
 

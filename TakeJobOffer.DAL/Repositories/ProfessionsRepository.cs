@@ -81,11 +81,27 @@ namespace TakeJobOffer.DAL.Repositories
 
         public async Task<Guid> CreateProfessionWithSlug(Profession profession, ProfessionSlug professionSlug)
         {
-            var professionExisted = await _dbContext.Professions.Where(p => p.Id == profession.Id)
-                .FirstOrDefaultAsync();
 
-            if (professionExisted is not null)
-                return Guid.Empty;
+            await using IDbContextTransaction transactionCheck =
+                await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.Snapshot);
+            try
+            {
+                var professionExisted = await _dbContext.Professions.Where(p => p.Name == profession.Name)
+                    .FirstOrDefaultAsync();
+
+                var professionSlugExisted = await _dbContext.ProfessionsSlug.Where(p => p.Slug == professionSlug.Slug)
+                    .FirstOrDefaultAsync();
+
+                if (professionExisted is not null || professionSlugExisted is not null)
+                    return Guid.Empty;
+
+                await transactionCheck.CommitAsync().ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                await transactionCheck.RollbackAsync().ConfigureAwait(false);
+                throw;
+            }
 
             ProfessionSlugEntity professionSlugEntity = new()
             {
