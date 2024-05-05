@@ -30,7 +30,7 @@ namespace TakeJobOffer.DAL.Repositories
                 return psResult.Value;
             }).ToList();
 
-            if(professionsSlugResult.Count == 0) 
+            if (professionsSlugResult.Count == 0)
                 return null;
 
             return professionsSlugResult;

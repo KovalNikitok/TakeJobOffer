@@ -4,12 +4,13 @@ namespace TakeJobOffer.Domain.Abstractions
 {
     public interface IProfessionsRepository
     {
-        Task<List<Profession?>> GetProfessions();
+        Task<Guid> CreateProfession(Profession profession);
+        Task<Guid> CreateProfessionWithSlug(Profession profession, ProfessionSlug professionSlug);
+        Task<Guid> DeleteProfession(Guid id);
         Task<Profession?> GetProfessionById(Guid id);
         Task<Profession?> GetProfessionBySlug(string slug);
-        Task<Guid> CreateProfession(Profession profession);
+        Task<List<Profession?>> GetProfessions();
         Task<Guid> UpdateProfession(Guid id, string name, string? description);
-        Task<Guid> DeleteProfession(Guid id);
-        
+
     }
 }

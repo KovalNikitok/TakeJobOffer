@@ -36,11 +36,11 @@ namespace TakeJobOffer.DAL.Repositories
                 .Where(p => p.Id == id)
                 .SingleOrDefaultAsync();
 
-            if(professionEntity == null)
+            if (professionEntity == null)
                 return null;
 
             var profession = Profession.Create(professionEntity.Id, professionEntity.Name, professionEntity.Description);
-            if(profession.IsFailed)
+            if (profession.IsFailed)
                 return null;
 
             return profession.Value;
