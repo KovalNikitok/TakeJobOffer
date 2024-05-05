@@ -3,6 +3,7 @@ using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
 using TakeJobOffer.DAL.Entities;
 using FluentResults;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace TakeJobOffer.DAL.Repositories
 {
@@ -35,11 +36,11 @@ namespace TakeJobOffer.DAL.Repositories
                 .Where(p => p.Id == id)
                 .SingleOrDefaultAsync();
 
-            if(professionEntity == null)
+            if (professionEntity == null)
                 return null;
 
             var profession = Profession.Create(professionEntity.Id, professionEntity.Name, professionEntity.Description);
-            if(profession.IsFailed)
+            if (profession.IsFailed)
                 return null;
 
             return profession.Value;
@@ -76,6 +77,51 @@ namespace TakeJobOffer.DAL.Repositories
             await _dbContext.SaveChangesAsync();
 
             return professionEntity.Id;
+        }
+
+        public async Task<Guid> CreateProfessionWithSlug(Profession profession, ProfessionSlug professionSlug)
+        {
+            var professionExisted = await _dbContext.Professions.Where(p => p.Id == profession.Id)
+                .FirstOrDefaultAsync();
+
+            if (professionExisted is not null)
+                return Guid.Empty;
+
+            ProfessionSlugEntity professionSlugEntity = new()
+            {
+                Id = professionSlug.Id,
+                ProfessionForeignKey = profession.Id,
+                Slug = professionSlug.Slug,
+            };
+
+            ProfessionEntity professionEntity = new()
+            {
+                Id = profession.Id,
+                Name = profession.Name,
+                Description = profession.Description,
+                Skills = [],
+                ProfessionSlug = professionSlugEntity
+            };
+
+            professionSlugEntity.Profession = professionEntity;
+
+            await using IDbContextTransaction transaction =
+                await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.Snapshot);
+            try
+            {
+                await _dbContext.Professions.AddAsync(professionEntity);
+                await _dbContext.ProfessionsSlug.AddAsync(professionSlugEntity);
+                await _dbContext.SaveChangesAsync();
+
+                await transaction.CommitAsync().ConfigureAwait(false);
+
+                return professionEntity.Id;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync().ConfigureAwait(false);
+                throw;
+            }
         }
 
         public async Task<Guid> UpdateProfession(Guid id, string name, string? description)

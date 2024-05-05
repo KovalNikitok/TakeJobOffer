@@ -4,35 +4,38 @@ import Button from "antd/es/button/button";
 import Title from "antd/es/typography/Title";
 import { Professions } from "../components/Professions";
 import {
-  ProfessionRequest,
+  ProfessionWithSlugRequest,
   createProfession,
+  createProfessionWithSlug,
   deleteProfession,
-  getAllProfessions,
-  updateProfession,
+  getAllProfessionsWithSlug,
+  updateProfessionWithSlug,
 } from "../services/professions";
 import { useEffect, useState } from "react";
 import { CreateUpdateProfession } from "../components/CreateUpdateProfession";
 import { Mode } from "../components/Mode";
 
 export default function ProfessionsPage() {
-  const [professions, setProfessions] = useState<Profession[]>([]);
+  const [professions, setProfessions] = useState<ProfessionWithSlug[]>([]);
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<Mode>(Mode.Create);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [values, setValues] = useState<Profession>({
+  const [values, setValues] = useState<ProfessionWithSlug>({
     name: "",
     description: "",
-  } as Profession);
+    slug: "",
+  } as ProfessionWithSlug);
 
   const defaultValues = {
     name: "",
     description: "",
-  } as Profession;
+    slug: "",
+  } as ProfessionWithSlug;
 
   useEffect(() => {
     const getProfessions = async () => {
-      const professions = await getAllProfessions();
+      const professions = await getAllProfessionsWithSlug();
       setLoading(false);
       setProfessions(professions);
     };
@@ -40,30 +43,31 @@ export default function ProfessionsPage() {
     getProfessions();
   }, []);
 
-  const handleCreateProfession = async (request: ProfessionRequest) => {
-    await createProfession(request);
-    closeModal();
+  const handleCreateProfession = async (request: ProfessionWithSlugRequest) => {
+    await createProfessionWithSlug(request);
+    await closeModal();
 
-    const professions = await getAllProfessions();
+    const professions = await getAllProfessionsWithSlug();
     setProfessions(professions);
   };
 
   const handleUpdateProfession = async (
     id: string,
-    professionRequest: ProfessionRequest
+    professionRequest: ProfessionWithSlugRequest
   ) => {
-    await updateProfession(id, professionRequest);
-    closeModal();
 
-    const professions = await getAllProfessions();
+    await updateProfessionWithSlug(id, professionRequest);
+    await closeModal();
+
+    const professions = await getAllProfessionsWithSlug();
     setProfessions(professions);
   };
 
   const handleDeleteProfession = async (id: string) => {
     await deleteProfession(id);
-    closeModal();
+    await closeModal();
 
-    const professions = await getAllProfessions();
+    const professions = await getAllProfessionsWithSlug();
     setProfessions(professions);
   };
 
@@ -77,7 +81,7 @@ export default function ProfessionsPage() {
     setIsModalOpen(false);
   };
 
-  const openEditModal = async (profession: Profession) => {
+  const openEditModal = async (profession: ProfessionWithSlug) => {
     setMode(Mode.Edit);
     setValues(profession);
     setIsModalOpen(true);
