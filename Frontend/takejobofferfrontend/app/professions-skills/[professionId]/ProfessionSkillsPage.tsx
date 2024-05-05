@@ -4,24 +4,28 @@ import Title from "antd/es/typography/Title";
 import { useEffect, useState } from "react";
 import { getProfessionSkillsWithNamesISR } from "../../services/professionSkills";
 import { ProfessionSkills } from "../../components/ProfessionSkills";
+import { getProfessionBySlug } from "@/app/services/professions";
 
 interface ProfessionSkillsProps {
-    professionId:  string;
+    professionSlug:  string;
   }
 
-export default function ProfessionSkillsClient({ professionId }: ProfessionSkillsProps) {
+export default function ProfessionSkillsClient({ professionSlug }: ProfessionSkillsProps) {
     const [professionSkills, setProfessionSkills] = useState<ProfessionSkillWithName[]>([]);
+    const [profession, setProfession] = useState<Profession>();
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      const getSkillsByProfessionId = async () => {
-          const professionSkills = await getProfessionSkillsWithNamesISR(professionId, 600);
-  
+      const getSkillsByProfessionSlug = async () => {
+          const profession = await getProfessionBySlug(professionSlug);
+          const professionSkills = await getProfessionSkillsWithNamesISR(profession.id, 600);
+          
           setLoading(false);
+          setProfession(profession);
           setProfessionSkills(professionSkills);
       }
       
-      getSkillsByProfessionId();
+      getSkillsByProfessionSlug();
     }, []);
   
     return (

@@ -3,17 +3,17 @@
 import Title from "antd/es/typography/Title";
 import { ProfessionsSkills } from "../components/ProfessionsSkills";
 import {
-  getAllProfessions,
+  getAllProfessionsWithSlug,
 } from "../services/professions";
 import { useEffect, useState } from "react";
 
 export default function ProfessionsPage() {
-  const [professions, setProfessions] = useState<Profession[]>([]);
+  const [professions, setProfessions] = useState<ProfessionWithSlug[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProfessions = async () => {
-        const professions = await getAllProfessions();
+        const professions = await getAllProfessionsWithSlug();
 
         setLoading(false);
         setProfessions(professions);

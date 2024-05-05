@@ -3,17 +3,17 @@ import { CardTitle } from "./Cardtitle"
 import Button from "antd/es/button/button"
 
 interface Props {
-    professions: Profession[];
-    handleOpen: (profession: Profession) => void;
+    professions: ProfessionWithSlug[];
+    handleOpen: (profession: ProfessionWithSlug) => void;
     handleDelete: (id: string) => void;
 }
 
 export const Professions = ({professions, handleOpen, handleDelete}: Props) => {
     return (
         <div className="cards">
-            {professions.map((profession: Profession) => (
+            {professions.map((profession: ProfessionWithSlug) => (
                 <Card key={profession.id} title={
-                        <CardTitle name={profession.name} description={profession.description}/>
+                        <CardTitle name={profession.name} description={profession?.slug}/>
                     }
                     bordered={false}
                 >

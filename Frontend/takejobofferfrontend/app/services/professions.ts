@@ -1,8 +1,12 @@
-import { Professions } from "../components/Professions";
-
 export interface ProfessionRequest {
     name: string;
     description: string;
+}
+
+export interface ProfessionWithSlugRequest {
+    name: string;
+    description: string;
+    slug: string;
 }
 
 export const getAllProfessions = async () => {
@@ -20,6 +24,21 @@ export const getAllProfessions = async () => {
         });
 };
 
+export const getAllProfessionsWithSlug = async () => {
+    return await fetch("https://localhost:8081/api/professions/with-slug", {
+        method: "GET",
+        headers: {
+            "accept": "application/json"
+        },
+    })
+        .then(response => {
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json() as Promise<ProfessionWithSlug[]>
+        });
+};
+
 export const getProfessionById = async (id: string) => {
     return await fetch(`https://localhost:8081/api/professions/${id}`, {
         method: "GET",
@@ -32,6 +51,21 @@ export const getProfessionById = async (id: string) => {
                 throw new Error(response.statusText);
             }
             return response.json() as Promise<Profession>
+        });
+};
+
+export const getProfessionByIdWithSlug = async (id: string) => {
+    return await fetch(`https://localhost:8081/api/professions/${id}/with-slug`, {
+        method: "GET",
+        headers: {
+            "accept": "application/json"
+        },
+    })
+        .then(response => {
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json() as Promise<ProfessionWithSlug>
         });
 };
 
@@ -53,6 +87,38 @@ export const getAllProfessionsISR = async (isrDuration: number) => {
     return data;
 };
 
+export const getAllProfessionsWithSlugISR = async (isrDuration: number) => {
+    const response = await fetch("https://localhost:8081/api/professions/with-slug", {
+        method: "GET",
+        headers: {
+            "accept": "application/json"
+        },
+        next: { revalidate: isrDuration }
+    });
+    if(!response.ok) {
+        console.log(response.statusText);
+        return ([]);    
+    }
+
+    const data: ProfessionWithSlug[] = await response.json();
+    
+    return data;
+};
+
+export const getProfessionBySlug = async (slug: string) => {
+    return await fetch(`https://localhost:8081/api/professions/${slug}`, {
+        method: "GET",
+        headers: {
+            "accept": "application/json"
+        },
+    })
+        .then(response => {
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json() as Promise<Profession>
+        });
+};
 export const createProfession = async (professionRequest: ProfessionRequest) => {
     await fetch("https://localhost:8081/api/professions", {
         method: "POST",
@@ -68,8 +134,38 @@ export const createProfession = async (professionRequest: ProfessionRequest) => 
         });
 };
 
+export const createProfessionWithSlug = async (professionRequest: ProfessionWithSlugRequest) => {
+    await fetch("https://localhost:8081/api/professions/with-slug", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(professionRequest),
+    })
+        .then(response => {
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+        });
+};
+
 export const updateProfession = async (id: string, professionRequest: ProfessionRequest) => {
     await fetch(`https://localhost:8081/api/professions/${id}`, {
+        method: "PUT",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify(professionRequest),
+    })
+        .then(response => {
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+        });
+};
+
+export const updateProfessionWithSlug = async (id: string, professionRequest: ProfessionWithSlugRequest) => {
+    await fetch(`https://localhost:8081/api/professions/${id}/with-slug`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
