@@ -1,5 +1,5 @@
 import { Input } from "antd";
-import { ProfessionRequest } from "../services/professions";
+import { ProfessionWithSlugRequest } from "../services/professions";
 import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import Modal from "antd/es/modal/Modal";
@@ -7,11 +7,11 @@ import { Mode } from "./Mode"
 
 interface Props {
   mode: Mode;
-  values: Profession;
+  values: ProfessionWithSlug;
   isModalOpen: boolean;
   handleCancel: () => void;
-  handleCreate: (request: ProfessionRequest) => void;
-  handleUpdate: (id: string, request: ProfessionRequest) => void;
+  handleCreate: (request: ProfessionWithSlugRequest) => void;
+  handleUpdate: (id: string, request: ProfessionWithSlugRequest) => void;
 }
 
 export const CreateUpdateProfession = ({
@@ -24,17 +24,20 @@ export const CreateUpdateProfession = ({
 }: Props) => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [slug, setSlug] = useState<string>("");
 
   useEffect(() => {
-    setName(values.name), setDescription(values.description);
+    setName(values.name);
+    setDescription(values.description);
+    setSlug(values.slug);
   }, [values]);
 
   const handleOnOk = async () => {
-    const professionRequest = { name, description };
+    const professionWithSlugRequest = { name, description, slug };
 
     mode == Mode.Create
-      ? handleCreate(professionRequest)
-      : handleUpdate(values.id, professionRequest);
+      ? handleCreate(professionWithSlugRequest)
+      : handleUpdate(values.id, professionWithSlugRequest);
   };
 
   return (
@@ -58,6 +61,11 @@ export const CreateUpdateProfession = ({
           onChange={(e) => setDescription(e.target.value)}
           autoSize={{ minRows: 3, maxRows: 3 }}
           placeholder="Описание"
+        />
+        <Input
+          value={slug}
+          onChange={(e) => setSlug(e.target.value)}
+          placeholder="Url для доступа  (* не обязательное поле)"
         />
       </div>
     </Modal>

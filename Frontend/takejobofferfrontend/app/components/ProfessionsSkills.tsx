@@ -2,15 +2,18 @@ import Card from "antd/es/card/Card"
 import { CardTitle } from "./Cardtitle"
 import Button from "antd/es/button/button"
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface Props {
-    professions: Profession[];
+    professions: ProfessionWithSlug[];
 }
 
 export const ProfessionsSkills = ({professions}: Props) => {
+
+
     return (
         <div className="cards">
-            {professions.map((profession: Profession) => (
+            {professions.map((profession: ProfessionWithSlug) => (
                 <Card key={profession.id} title={
                         <CardTitle name={profession.name} description={profession.description}/>
                     }
@@ -18,7 +21,7 @@ export const ProfessionsSkills = ({professions}: Props) => {
                 >
                     <p>{profession.description}</p>
                     <div className="card__buttons"> 
-                        <Link key={profession.id} href={`/professions-skills/${profession.id}`}>
+                        <Link key={profession.id} href={`/professions-skills/${profession.slug}`}>
                             <Button style={{flex: 1}}>
                                 Detailed  
                             </Button>
@@ -27,5 +30,5 @@ export const ProfessionsSkills = ({professions}: Props) => {
                 </Card>
             ))}
         </div>
-    )
+    );
 };
