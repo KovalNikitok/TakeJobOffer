@@ -68,15 +68,15 @@ namespace TakeJobOffer.API.Controllers
         public async Task<ActionResult<Guid>> CreateProfessionSlug(Guid professionId,
             [FromBody] ProfessionSlugRequest professionSlugRequest)
         {
-            var professionSlugResult = ProfessionSlug.CreateProfessionSlug(
+            var professionResult = ProfessionSlug.CreateProfessionSlug(
                 Guid.NewGuid(),
                 professionId,
                 professionSlugRequest.Slug);
 
-            if (professionSlugResult.IsFailed)
-                return BadRequest(professionSlugResult.Errors);
+            if (professionResult.IsFailed)
+                return BadRequest(professionResult.Errors);
 
-            var id = await _professionsSlugService.CreateProfessionSlug(professionSlugResult.Value);
+            var id = await _professionsSlugService.CreateProfessionSlug(professionResult.Value);
 
             return Ok(id);
         }

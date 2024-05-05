@@ -12,11 +12,6 @@ namespace TakeJobOffer.Application.Services
             return await _professionsSlugRepository.GetProfessionSlugs();
         }
 
-        public async Task<List<ProfessionSlug?>?> GetProfessionSlugsByProfessionsIds(IEnumerable<Guid> professionsIds)
-        {
-            return await _professionsSlugRepository.GetProfessionSlugsByProfessionsIds(professionsIds);
-        }
-
         public async Task<ProfessionSlug?> GetProfessionSlugById(Guid id)
         {
             return await _professionsSlugRepository.GetProfessionSlugById(id);

@@ -15,4 +15,4 @@ export const CardTitle =({name, description}: Props) =>{
             <p className="card__description">{description}</p>
         </div>
     )
-};
+}

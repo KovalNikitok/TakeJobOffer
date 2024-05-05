@@ -41,7 +41,7 @@ export default function SkillsPage() {
 
   const handleCreateSkill = async (request: SkillRequest) => {
     await createSkill(request);
-    await closeModal();
+    closeModal();
 
     const curSkills = await getAllSkills();
     setSkills(curSkills);
@@ -49,7 +49,7 @@ export default function SkillsPage() {
 
   const handleUpdateSkill = async (id: string, skillRequest: SkillRequest) => {
     await updateSkill(id, skillRequest);
-    await closeModal();
+    closeModal();
 
     const curSkills = await getAllSkills();
     setSkills(curSkills);
@@ -57,7 +57,7 @@ export default function SkillsPage() {
 
   const handleDeleteSkill = async (id: string) => {
     await deleteSkill(id);
-    await closeModal();
+    closeModal();
 
     const curSkills = await getAllSkills();
     setSkills(curSkills);
