@@ -19,9 +19,9 @@ export const getProfessionSkills = async (professionId: string) => {
         });
 };
 
-export const getProfessionSkillsWithNames = async (professionId: string) => {
+export const getProfessionSkillsWithNames = async (professionId: string, isOrdered: boolean = false) => {
     return await fetch(
-        `https://localhost:8081/api/professions-skills/${professionId}/with-name`, {
+        `https://localhost:8081/api/professions-skills/${professionId}/with-name?isOrdered=${isOrdered}`, {
             method: "GET",
             headers: {
                 "accept": "application/json"

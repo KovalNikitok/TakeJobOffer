@@ -8,20 +8,22 @@ export async function generateStaticParams () {
   let professionsWithslug: ProfessionWithSlug[];
   try {
     professionsWithslug = await getAllProfessionsWithSlugISR(revalidate);
+    console.log(professionsWithslug);
+    
     return professionsWithslug.map(profession => ({
-      params: { professionSlug: profession.slug },
+      params: { slug: profession.slug },
     }));
   }
   catch (error) {
     console.log("Profession not found" + `\n ${error}`);
-    return [{ params: { professionSlug: "" }}];
+    return [{ params: { slug: "" }}];
   }
 }
 
-export default async function ProfessionSkillsPage({ params }: { params: { professionSlug: string } }) {
-  const { professionSlug } = params;
+export default async function ProfessionSkillsPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
 
   return (
-    <ProfessionSkillsClient professionSlug={professionSlug} />
+    <ProfessionSkillsClient slug={slug} />
   );
 }
