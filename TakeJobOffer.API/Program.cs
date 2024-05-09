@@ -10,7 +10,6 @@ using TakeJobOffer.Domain.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 builder.Services.AddHealthChecks();
@@ -28,7 +27,6 @@ builder.Services.AddCors(options =>
     }));
 
 builder.Services.AddEndpointsApiExplorer();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TakeJobOfferDbContext>(
@@ -36,6 +34,12 @@ builder.Services.AddDbContext<TakeJobOfferDbContext>(
     {
         options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(TakeJobOfferDbContext)));
     });
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("TakeJobOfferRedis");
+    options.InstanceName = "backend";
+});
 
 
 builder.Services.AddScoped<IProfessionsRepository, ProfessionsRepository>();
@@ -54,7 +58,6 @@ var app = builder.Build();
 
 app.MigrateDatabase<TakeJobOfferDbContext, Program>();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

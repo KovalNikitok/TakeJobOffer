@@ -1,5 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 using System.Linq;
 using TakeJobOffer.API.Contracts;
 using TakeJobOffer.Application.Services;
@@ -8,14 +10,29 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
 {
-    public class ProfessionsController(IProfessionsService professionsService, IProfessionsSlugService professionsSlugService) : ApiController
+    public class ProfessionsController(
+        IProfessionsService professionsService,
+        IProfessionsSlugService professionsSlugService,
+        IDistributedCache cache)
+            : ApiController
     {
         private readonly IProfessionsService _professionsService = professionsService;
         private readonly IProfessionsSlugService _professionsSlugService = professionsSlugService;
+        private readonly IDistributedCache _cache = cache;
 
         [HttpGet]
         public async Task<ActionResult<List<ProfessionResponse>?>> GetProfessions()
         {
+            List<ProfessionResponse>? professionsResponse;
+            string cacheKey = "professions";
+
+            string? professionsString = await _cache.GetStringAsync(cacheKey);
+            if (professionsString is not null)
+            {
+                professionsResponse = JsonSerializer.Deserialize<List<ProfessionResponse>>(professionsString);
+                return Ok(professionsResponse);
+            }
+
             var professions = await _professionsService.GetAllProfessions();
 
             if (professions == null || professions.Count == 0)
@@ -23,7 +40,12 @@ namespace TakeJobOffer.API.Controllers
                 return NotFound("Professions not found");
             }
 
-            var professionsResponse = professions.Select(p => new ProfessionResponse(p!.Id, p!.Name, p.Description));
+            professionsResponse = professions.Select(p => new ProfessionResponse(p!.Id, p!.Name, p.Description)).ToList();
+            professionsString = JsonSerializer.Serialize(professionsResponse);
+            await _cache.SetStringAsync(cacheKey, professionsString, new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(5)
+            });
 
             return Ok(professionsResponse);
         }
@@ -31,6 +53,17 @@ namespace TakeJobOffer.API.Controllers
         [HttpGet("with-slug")]
         public async Task<ActionResult<List<ProfessionWithSlugResponse>?>> GetProfessionsWithSlug()
         {
+            List<ProfessionWithSlugResponse>? professionResponse;
+
+            string cacheKey = "professions/with-slug";
+            string? professionsString = await _cache.GetStringAsync(cacheKey);
+
+            if(professionsString is not null)
+            {
+                professionResponse = JsonSerializer.Deserialize<List<ProfessionWithSlugResponse>>(professionsString);
+                return Ok(professionResponse);
+            }
+
             var professions = await _professionsService.GetAllProfessions();
 
             if (professions == null || professions.Count == 0)
@@ -41,19 +74,25 @@ namespace TakeJobOffer.API.Controllers
             IEnumerable<Guid> ids = professions.Select(p => p!.Id);
             var professionSlugs = await _professionsSlugService.GetProfessionSlugsByProfessionsIds(ids);
 
-            if(professionSlugs is null || professionSlugs.Count == 0)
+            if (professionSlugs is null || professionSlugs.Count == 0)
                 return NotFound("Slugs for professions was not found");
 
-            var professionsWithSlugList = 
+            var professionsWithSlugList =
                 (from profession in professions
-                join professionSlug in professionSlugs
-                on profession.Id equals professionSlug.ProfessionId
-                select new ProfessionWithSlugResponse(
-                    profession.Id,
-                    profession.Name,
-                    profession.Description,
-                    professionSlug.Slug))
+                 join professionSlug in professionSlugs
+                 on profession.Id equals professionSlug.ProfessionId
+                 select new ProfessionWithSlugResponse(
+                     profession.Id,
+                     profession.Name,
+                     profession.Description,
+                     professionSlug.Slug))
                 .ToList();
+
+            professionsString = JsonSerializer.Serialize(professionsWithSlugList);
+            await _cache.SetStringAsync(cacheKey, professionsString, new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(5)
+            });
 
             return Ok(professionsWithSlugList);
         }
@@ -98,6 +137,17 @@ namespace TakeJobOffer.API.Controllers
         [HttpGet("{slug}")]
         public async Task<ActionResult<ProfessionResponse>?> GetProfessionBySlug(string slug)
         {
+            ProfessionResponse? professionResponse;
+
+            string cacheKey = $"professions/{slug}";
+            string? professionString = await _cache.GetStringAsync(cacheKey);
+
+            if(professionString is not null)
+            {
+                professionResponse = JsonSerializer.Deserialize<ProfessionResponse?>(professionString);
+                return Ok(professionResponse);
+            }
+
             var profession = await _professionsService.GetProfessionBySlug(slug);
 
             if (profession == null)
@@ -105,7 +155,13 @@ namespace TakeJobOffer.API.Controllers
                 return NotFound("Profession by that slug string was not found");
             }
 
-            var professionResponse = new ProfessionResponse(profession!.Id, profession!.Name, profession.Description);
+            professionResponse = new ProfessionResponse(profession!.Id, profession!.Name, profession.Description);
+
+            professionString = JsonSerializer.Serialize(professionResponse);
+            await _cache.SetStringAsync(cacheKey, professionString, new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(5)
+            });
 
             return Ok(professionResponse);
         }
@@ -147,12 +203,12 @@ namespace TakeJobOffer.API.Controllers
 
             if (professionSlugResult.IsFailed)
                 return BadRequest(professionSlugResult.Errors);
-            
+
             var professionSlug = professionSlugResult.Value;
 
             var professionId = await _professionsService.CreateProfessionWithSlug(profession, professionSlug);
 
-            if(professionId == Guid.Empty)
+            if (professionId == Guid.Empty)
                 return BadRequest("Profession already exist");
 
             return Ok(professionId);

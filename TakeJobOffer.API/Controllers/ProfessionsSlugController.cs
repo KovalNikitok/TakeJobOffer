@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 using TakeJobOffer.API.Contracts;
 using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
@@ -6,19 +8,30 @@ using TakeJobOffer.Domain.Models;
 namespace TakeJobOffer.API.Controllers
 {
     [Route("~/api/professions-slug")]
-    public class ProfessionsSlugController(IProfessionsSlugService professionsSlugService) : ApiController
+    public class ProfessionsSlugController(IProfessionsSlugService professionsSlugService, IDistributedCache cache) : ApiController
     {
         private readonly IProfessionsSlugService _professionsSlugService = professionsSlugService;
+        private readonly IDistributedCache _cache = cache;
 
         [HttpGet()]
-        public async Task<ActionResult<List<ProfessionSlugResponse>?>> GetProfessionsSlug()
+        public async Task<ActionResult<List<ProfessionSlugResponse?>?>> GetProfessionsSlug()
         {
+            List<ProfessionSlugResponse?>? response;
+
+            string cacheKey = "professions-slug";
+            string? professionSlugsString = await _cache.GetStringAsync(cacheKey);
+            if (professionSlugsString is not null)
+            {
+                response = JsonSerializer.Deserialize<List<ProfessionSlugResponse?>?>(cacheKey);
+                return Ok(response);
+            }
+
             var professionSlug = await _professionsSlugService.GetProfessionSlugs();
 
             if (professionSlug == null || professionSlug.Count == 0)
                 return NotFound("Professions slug was not found");
 
-            var response = professionSlug.Select(ps =>
+            response = professionSlug.Select(ps =>
             {
                 if (ps is null)
                     return null;
@@ -28,6 +41,12 @@ namespace TakeJobOffer.API.Controllers
                     ps.ProfessionId,
                     ps.Slug);
             }).ToList();
+
+            professionSlugsString = JsonSerializer.Serialize(response);
+            await _cache.SetStringAsync(cacheKey, professionSlugsString, new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(5)
+            });
 
             return Ok(response);
         }

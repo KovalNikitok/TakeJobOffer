@@ -1,18 +1,32 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 using TakeJobOffer.API.Contracts;
 using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
 {
-    public class SkillsController(ISkillsService skillsService) : ApiController
+    public class SkillsController(ISkillsService skillsService, IDistributedCache cache) : ApiController
     {
         private readonly ISkillsService _skillsService = skillsService;
+        private readonly IDistributedCache _cache = cache;
 
         [HttpGet]
-        public async Task<ActionResult<List<SkillResponse>>> GetSkills()
+        public async Task<ActionResult<List<SkillResponse>?>> GetSkills()
         {
+            List<SkillResponse>? skillsResponse;
+
+            string cacheKey = "skills";
+            string? skillsString = await _cache.GetStringAsync(cacheKey);
+
+            if(skillsString is not null)
+            {
+                skillsResponse = JsonSerializer.Deserialize<List<SkillResponse>>(skillsString);
+                return Ok(skillsResponse);
+            }
+
             var skills = await _skillsService.GetAllSkills();
 
             if(skills == null || skills.Count == 0)
@@ -20,7 +34,13 @@ namespace TakeJobOffer.API.Controllers
                 return NotFound();
             }
 
-            var skillsResponse = skills.Select(i => new SkillResponse(i!.Id, i!.Name));
+            skillsResponse = skills.Select(i => new SkillResponse(i!.Id, i!.Name)).ToList();
+
+            skillsString = JsonSerializer.Serialize(skillsResponse);
+            await _cache.SetStringAsync(cacheKey, skillsString, new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(5)
+            });
 
             return Ok(skillsResponse);
         }

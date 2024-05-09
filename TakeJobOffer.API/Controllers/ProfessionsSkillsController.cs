@@ -1,5 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 using TakeJobOffer.API.Contracts;
 using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
@@ -7,14 +9,29 @@ using TakeJobOffer.Domain.Models;
 namespace TakeJobOffer.API.Controllers
 {
     [Route("~/api/professions-skills")]
-    public class ProfessionsSkillsController(IProfessionsSkillsService professionsSkillsService, ISkillsService skillsService) : ApiController
+    public class ProfessionsSkillsController(
+        IProfessionsSkillsService professionsSkillsService,
+        ISkillsService skillsService,
+        IDistributedCache cache) : ApiController
     {
         private readonly IProfessionsSkillsService _professionSkillsService = professionsSkillsService;
         private readonly ISkillsService _skillsService = skillsService;
+        private readonly IDistributedCache _cache = cache;
 
         [HttpGet("{professionId:guid}")]
         public async Task<ActionResult<List<ProfessionSkillResponse>?>> GetProfessionSkillsById(Guid professionId)
         {
+            List<ProfessionSkillResponse>? professionSkillsResponse;
+
+            string cacheKey = $"professions-skills/{professionId}";
+            string? professionsSkillsString = await _cache.GetStringAsync(cacheKey);
+
+            if(professionsSkillsString is not null)
+            {
+                professionSkillsResponse = JsonSerializer.Deserialize<List<ProfessionSkillResponse>?>(professionsSkillsString);
+                return Ok(professionSkillsResponse);
+            }
+
             var professionsList = await _professionSkillsService.GetSkillsByProfessionId(professionId);
 
             if (professionsList == null || professionsList.Count == 0)
@@ -22,9 +39,15 @@ namespace TakeJobOffer.API.Controllers
                 return NotFound();
             }
 
-            var professionSkillsResponse = professionsList.Select(p => 
+            professionSkillsResponse = professionsList.Select(p => 
                 new ProfessionSkillResponse(p!.SkillId, p.SkillMentionCount))
                 .ToList();
+
+            professionsSkillsString = JsonSerializer.Serialize(professionSkillsResponse);
+            await _cache.SetStringAsync(cacheKey, professionsSkillsString, new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(5)
+            });
 
             return Ok(professionSkillsResponse);
         }
@@ -33,36 +56,54 @@ namespace TakeJobOffer.API.Controllers
         public async Task<ActionResult<List<ProfessionSkillWithNameResponse?>?>> GetProfessionSkillsWithNameById(Guid professionId,
             [FromQuery] bool isOrdered)
         {
-            var professionSkillsList = await _professionSkillsService.GetSkillsByProfessionId(professionId);
+            List<ProfessionSkillWithNameResponse?>? professionsSkillsResponse;
 
-            if (professionSkillsList == null || professionSkillsList.Count == 0)
+            string cacheKey = $"professions-skills/{professionId}/with-name";
+            string? professionsSkillsString = await _cache.GetStringAsync(cacheKey);
+
+            if (professionsSkillsString is not null)
             {
-                return NotFound();
+                professionsSkillsResponse = JsonSerializer.Deserialize<List<ProfessionSkillWithNameResponse?>?>(professionsSkillsString);
             }
-
-            IEnumerable<Guid> skillsIds = professionSkillsList.Select(ps => ps!.SkillId);
-
-            var skills = await _skillsService.GetSkillsByIds(skillsIds);
-
-            if(skills == null || skills.Count == 0) 
-            {  
-                return NotFound(); 
-            }
-
-            var professionsSkillsResponse = professionSkillsList.Select(p =>
+            else
             {
-                var skill = skills.Where(s =>
-                    s!.Id == p!.SkillId).FirstOrDefault();
-                if (skill == null)
-                    return null;
+                var professionSkillsList = await _professionSkillsService.GetSkillsByProfessionId(professionId);
 
-                return new ProfessionSkillWithNameResponse(p!.SkillId, skill.Name, p.SkillMentionCount);
-            });
+                if (professionSkillsList == null || professionSkillsList.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                IEnumerable<Guid> skillsIds = professionSkillsList.Select(ps => ps!.SkillId);
+
+                var skills = await _skillsService.GetSkillsByIds(skillsIds);
+
+                if (skills == null || skills.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                professionsSkillsResponse = professionSkillsList.Select(p =>
+                {
+                    var skill = skills.Where(s =>
+                        s!.Id == p!.SkillId).FirstOrDefault();
+                    if (skill == null)
+                        return null;
+
+                    return new ProfessionSkillWithNameResponse(p!.SkillId, skill.Name, p.SkillMentionCount);
+                }).ToList();
+
+                professionsSkillsString = JsonSerializer.Serialize(professionsSkillsResponse);
+                await _cache.SetStringAsync(cacheKey, professionsSkillsString, new DistributedCacheEntryOptions
+                {
+                    SlidingExpiration = TimeSpan.FromMinutes(5)
+                });
+            }
 
             if (isOrdered)
-                return Ok(professionsSkillsResponse.OrderByDescending(p => p?.MentionCount).ToList());
+                return Ok(professionsSkillsResponse?.OrderByDescending(p => p?.MentionCount));
 
-            return Ok(professionsSkillsResponse.ToList());
+            return Ok(professionsSkillsResponse);
         }
 
         [HttpPost("{professionId:guid}")]
