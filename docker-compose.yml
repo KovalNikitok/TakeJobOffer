@@ -31,6 +31,25 @@ services:
         interval: 10s
         timeout: 3s
         retries: 5
+  redis_cache:
+    container_name: redis_cache
+    image: redis:7.2.4-alpine
+    deploy:
+        resources:
+            limits:
+                cpus: '0.125'
+                memory: 96M
+    restart: always
+    environment:
+        REDIS_PORT: ${REDIS_CACHE_PORT}
+        REDIS_DATABASES: ${REDIS_CACHE_DATABASES}
+    command: redis-server --save 60 10
+    ports:
+        - '${REDIS_CACHE_PORT}'
+    volumes: 
+        - redis_cache:/var/lib/data
+    networks:
+        - backend_network
   backend:
     container_name: backend_takejoboffer
     build:
@@ -60,6 +79,9 @@ services:
         postgres:
             condition: service_healthy
             restart: true
+        redis_cache:
+            condition: service_started
+            restart: true
     healthcheck:
         test: curl --fail http://localhost:${ASPNETCORE_HTTP_PORTS}/health || exit 1
         interval: 10s
@@ -88,3 +110,4 @@ services:
 
 volumes:
     postgres-data:
+    redis_cache:

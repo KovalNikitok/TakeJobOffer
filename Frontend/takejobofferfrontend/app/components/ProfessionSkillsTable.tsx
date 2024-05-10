@@ -19,7 +19,7 @@ export const ProfessionSkillsTable = ({ values }: Props) => {
       let columns: ProfessionSkillColumnProps[] = [];
       professionSkills.map((professionSkill) => {
 
-        let col: ProfessionSkillColumnProps = {name: professionSkill.name, mentionCount: professionSkill.mentionCount} ;
+        let col: ProfessionSkillColumnProps = {name: professionSkill.name, mentionCount: professionSkill.mentionCount};
         columns.push(col);
       });
 
