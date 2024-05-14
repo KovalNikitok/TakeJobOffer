@@ -7,6 +7,7 @@ using TakeJobOffer.API.Contracts;
 using TakeJobOffer.Application.Services;
 using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
+using TakeJobOffer.API.Configurations;
 
 namespace TakeJobOffer.API.Controllers
 {
@@ -27,7 +28,7 @@ namespace TakeJobOffer.API.Controllers
             string cacheKey = "professions";
 
             string? professionsString = await _cache.GetStringAsync(cacheKey);
-            if (professionsString is not null)
+            if (!string.IsNullOrEmpty(professionsString))
             {
                 professionsResponse = JsonSerializer.Deserialize<List<ProfessionResponse>>(professionsString);
                 return Ok(professionsResponse);
@@ -41,11 +42,9 @@ namespace TakeJobOffer.API.Controllers
             }
 
             professionsResponse = professions.Select(p => new ProfessionResponse(p!.Id, p!.Name, p.Description)).ToList();
+
             professionsString = JsonSerializer.Serialize(professionsResponse);
-            await _cache.SetStringAsync(cacheKey, professionsString, new DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromMinutes(5)
-            });
+            await _cache.SetStringAsync(cacheKey, professionsString, CacheOptions.SlidingFiveMinuteOption);
 
             return Ok(professionsResponse);
         }
@@ -58,7 +57,7 @@ namespace TakeJobOffer.API.Controllers
             string cacheKey = "professions/with-slug";
             string? professionsString = await _cache.GetStringAsync(cacheKey);
 
-            if(professionsString is not null)
+            if(!string.IsNullOrEmpty(professionsString))
             {
                 professionResponse = JsonSerializer.Deserialize<List<ProfessionWithSlugResponse>>(professionsString);
                 return Ok(professionResponse);
@@ -89,10 +88,7 @@ namespace TakeJobOffer.API.Controllers
                 .ToList();
 
             professionsString = JsonSerializer.Serialize(professionsWithSlugList);
-            await _cache.SetStringAsync(cacheKey, professionsString, new DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromMinutes(5)
-            });
+            await _cache.SetStringAsync(cacheKey, professionsString, CacheOptions.SlidingFiveMinuteOption);
 
             return Ok(professionsWithSlugList);
         }
@@ -142,7 +138,7 @@ namespace TakeJobOffer.API.Controllers
             string cacheKey = $"professions/{slug}";
             string? professionString = await _cache.GetStringAsync(cacheKey);
 
-            if(professionString is not null)
+            if(!string.IsNullOrEmpty(professionString))
             {
                 professionResponse = JsonSerializer.Deserialize<ProfessionResponse?>(professionString);
                 return Ok(professionResponse);
@@ -158,10 +154,7 @@ namespace TakeJobOffer.API.Controllers
             professionResponse = new ProfessionResponse(profession!.Id, profession!.Name, profession.Description);
 
             professionString = JsonSerializer.Serialize(professionResponse);
-            await _cache.SetStringAsync(cacheKey, professionString, new DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromMinutes(5)
-            });
+            await _cache.SetStringAsync(cacheKey, professionString, CacheOptions.SlidingFiveMinuteOption);
 
             return Ok(professionResponse);
         }

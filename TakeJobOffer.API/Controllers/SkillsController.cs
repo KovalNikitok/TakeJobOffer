@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
+using TakeJobOffer.API.Configurations;
 using TakeJobOffer.API.Contracts;
 using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
@@ -21,7 +22,7 @@ namespace TakeJobOffer.API.Controllers
             string cacheKey = "skills";
             string? skillsString = await _cache.GetStringAsync(cacheKey);
 
-            if(skillsString is not null)
+            if(!string.IsNullOrEmpty(skillsString))
             {
                 skillsResponse = JsonSerializer.Deserialize<List<SkillResponse>>(skillsString);
                 return Ok(skillsResponse);
@@ -37,10 +38,7 @@ namespace TakeJobOffer.API.Controllers
             skillsResponse = skills.Select(i => new SkillResponse(i!.Id, i!.Name)).ToList();
 
             skillsString = JsonSerializer.Serialize(skillsResponse);
-            await _cache.SetStringAsync(cacheKey, skillsString, new DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromMinutes(5)
-            });
+            await _cache.SetStringAsync(cacheKey, skillsString, CacheOptions.SlidingFiveMinuteOption);
 
             return Ok(skillsResponse);
         }

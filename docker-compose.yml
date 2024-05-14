@@ -9,11 +9,11 @@ networks:
 services:
   postgres:
     container_name: postgres
-    image: postgres:latest
+    image: postgres:16.3-alpine3.19
     deploy:
         resources:
             limits:
-                cpus: '0.25'
+                cpus: '0.15'
                 memory: 64M
     volumes:
         - postgres-data:/var/lib/postgresql/data
@@ -22,13 +22,11 @@ services:
         POSTGRES_DB: ${POSTGRES_DB}
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-        - '5432:${POSTGRES_PORT}'
     networks:
-        - backend_network  
+        - backend_network
     healthcheck:
         test: 'pg_isready -U ${POSTGRES_USER}'
-        interval: 10s
+        interval: 5s
         timeout: 3s
         retries: 5
   redis_cache:
@@ -37,17 +35,13 @@ services:
     deploy:
         resources:
             limits:
-                cpus: '0.125'
+                cpus: '0.1'
                 memory: 96M
     restart: always
     environment:
         REDIS_PORT: ${REDIS_CACHE_PORT}
         REDIS_DATABASES: ${REDIS_CACHE_DATABASES}
     command: redis-server --save 60 10
-    ports:
-        - '${REDIS_CACHE_PORT}'
-    volumes: 
-        - redis_cache:/var/lib/data
     networks:
         - backend_network
   backend:
@@ -67,9 +61,6 @@ services:
         ASPNETCORE_HTTP_PORTS: ${ASPNETCORE_HTTP_PORTS}
         ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
         ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
-    ports:
-        - '8080:${ASPNETCORE_HTTP_PORTS}'
-        - '8081:${ASPNETCORE_HTTPS_PORTS}'
     networks:
         - frontend_network
         - backend_network
@@ -84,7 +75,7 @@ services:
             restart: true
     healthcheck:
         test: curl --fail http://localhost:${ASPNETCORE_HTTP_PORTS}/health || exit 1
-        interval: 10s
+        interval: 6s
         timeout: 3s
         retries: 5
         start_period: 3s
@@ -97,17 +88,55 @@ services:
     deploy:
         resources:
             limits:
-                cpus: '0.25'
+                cpus: '0.2'
                 memory: 128M
-    ports:
-        - '3000:${FRONTEND_PORT}'
     networks:
         - frontend_network
     depends_on:
         backend:
             condition: service_healthy
             restart: true
-
+  nginx:
+    image: nginx:1.25.5-alpine
+    container_name: nginx
+    restart: always
+    deploy:
+        resources:
+            limits:
+                cpus: '0.1'
+                memory: 32M
+    ports:
+        - "80:80"
+        - "443:443"
+    volumes:
+        - ./ReverseProxy/static:/static
+        - ./ReverseProxy/nginx:/etc/nginx/conf.d/
+        - www-html:/var/www/html/:ro
+        - ssl-crt:/etc/nginx/ssl/:ro
+    depends_on:
+        backend:
+            condition: service_healthy
+            restart: true
+        frontend:
+            condition: service_started
+            restart: true
+    networks:
+        - frontend_network
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    deploy:
+        resources:
+            limits:
+                cpus: '0.05'
+                memory: 16M
+    depends_on:
+        - nginx
+    volumes:
+        - www-html:/var/www/html/:rw
+        - ssl-crt:/etc/sslcert/:rw
+    command: certonly --webroot --webroot-path=/var/www/html --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email --staging -d takejoboffer.ru
 volumes:
     postgres-data:
-    redis_cache:
+    ssl-crt:
+    www-html:

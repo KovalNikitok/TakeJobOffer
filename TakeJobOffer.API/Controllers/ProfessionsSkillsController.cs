@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
+using TakeJobOffer.API.Configurations;
 using TakeJobOffer.API.Contracts;
 using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
@@ -26,7 +27,7 @@ namespace TakeJobOffer.API.Controllers
             string cacheKey = $"professions-skills/{professionId}";
             string? professionsSkillsString = await _cache.GetStringAsync(cacheKey);
 
-            if(professionsSkillsString is not null)
+            if(!string.IsNullOrEmpty(professionsSkillsString))
             {
                 professionSkillsResponse = JsonSerializer.Deserialize<List<ProfessionSkillResponse>?>(professionsSkillsString);
                 return Ok(professionSkillsResponse);
@@ -44,10 +45,7 @@ namespace TakeJobOffer.API.Controllers
                 .ToList();
 
             professionsSkillsString = JsonSerializer.Serialize(professionSkillsResponse);
-            await _cache.SetStringAsync(cacheKey, professionsSkillsString, new DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromMinutes(5)
-            });
+            await _cache.SetStringAsync(cacheKey, professionsSkillsString, CacheOptions.SlidingFiveMinuteOption);
 
             return Ok(professionSkillsResponse);
         }
@@ -61,7 +59,7 @@ namespace TakeJobOffer.API.Controllers
             string cacheKey = $"professions-skills/{professionId}/with-name";
             string? professionsSkillsString = await _cache.GetStringAsync(cacheKey);
 
-            if (professionsSkillsString is not null)
+            if (!string.IsNullOrEmpty(professionsSkillsString))
             {
                 professionsSkillsResponse = JsonSerializer.Deserialize<List<ProfessionSkillWithNameResponse?>?>(professionsSkillsString);
             }
@@ -94,10 +92,7 @@ namespace TakeJobOffer.API.Controllers
                 }).ToList();
 
                 professionsSkillsString = JsonSerializer.Serialize(professionsSkillsResponse);
-                await _cache.SetStringAsync(cacheKey, professionsSkillsString, new DistributedCacheEntryOptions
-                {
-                    SlidingExpiration = TimeSpan.FromMinutes(5)
-                });
+                await _cache.SetStringAsync(cacheKey, professionsSkillsString, CacheOptions.SlidingFiveMinuteOption);
             }
 
             if (isOrdered)

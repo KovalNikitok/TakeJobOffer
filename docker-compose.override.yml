@@ -9,27 +9,46 @@ networks:
 services:
   postgres:
     container_name: postgres
-    image: postgres:latest
+    image: postgres:16.3-alpine3.19
     deploy:
         resources:
             limits:
-                cpus: '0.25'
+                cpus: '0.15'
                 memory: 64M
+    volumes:
+        - postgres-data:/var/lib/postgresql/data
+    restart: always
     environment:
         POSTGRES_DB: "takejobofferdb"
         POSTGRES_USER: "postgres"
         POSTGRES_PASSWORD: "123"
-    volumes:
-        - postgres-data:/var/lib/postgresql/data
-    restart: always
+    ports:
+        - "5432:5432"
+    networks:
+        - backend_network
     healthcheck:
         test: pg_isready -U $$POSTGRES_USER
-        interval: 9s
+        interval: 5s
         timeout: 3s
         retries: 5
         start_period: 3s
+  redis_cache:
+    container_name: redis_cache
+    image: redis:7.2.4-alpine
+    deploy:
+        resources:
+            limits:
+                cpus: '0.1'
+                memory: 96M
+    restart: always
+    environment:
+        REDIS_PORT: 6379
+        REDIS_DATABASES: 1
+    command: redis-server --save 60 10
     ports:
-        - "5432:5432"
+        - "6379:6379"
+    volumes: 
+        - redis_cache:/var/lib/data
     networks:
         - backend_network
   backend:
@@ -58,9 +77,12 @@ services:
         postgres:
             condition: service_healthy
             restart: true
+        redis_cache:
+            condition: service_started
+            restart: true
     healthcheck:
         test: curl --fail http://localhost:8080/health || exit 1
-        interval: 9s
+        interval: 6s
         timeout: 3s
         retries: 5
         start_period: 3s
@@ -76,7 +98,7 @@ services:
     deploy:
         resources:
             limits:
-                cpus: '0.25'
+                cpus: '0.2'
                 memory: 128M
     ports:
         - "3000:3000"
@@ -86,5 +108,35 @@ services:
             restart: true
     networks:
         - frontend_network
+  nginx:
+    image: nginx:1.25.5-alpine
+    container_name: nginx
+    restart: always
+    deploy:
+        resources:
+            limits:
+                cpus: '0.1'
+                memory: 32M
+    ports:
+        - "80:80"
+        - "443:443"
+    volumes:
+        - ./ReverseProxy/static:/static
+        - ./ReverseProxy/nginx:/etc/nginx/conf.d/
+        - www-html:/var/www/html/:ro
+        - ssl-crt:/etc/nginx/ssl/:ro
+    depends_on:
+        backend:
+            condition: service_healthy
+            restart: true
+        frontend:
+            condition: service_started
+            restart: true
+    networks:
+        - frontend_network
+
 volumes:
     postgres-data:
+    redis_cache:
+    www-html:
+    ssl-crt:

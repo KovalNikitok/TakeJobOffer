@@ -18,9 +18,9 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(opt =>
     {
         if(builder.Environment.IsDevelopment())
-            opt.WithOrigins("http://localhost:3000", "http://0.0.0.0:5432", "http://0.0.0.0:3000", "null");
+            opt.WithOrigins("nginx", "http://localhost:3000", "http://localhost:443", "null");
         else
-            opt.WithOrigins("www.takejoboffer.ru", "http://localhost:3000", "http://0.0.0.0:3000", "https://0.0.0.0:3000");
+            opt.WithOrigins("nginx", "www.takejoboffer.ru", "frontend:3000");
         opt.WithMethods("GET", "POST", "PUT", "DELETE");
         opt.AllowAnyHeader();
         opt.AllowCredentials();
@@ -66,7 +66,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapHealthChecks("/health");
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseCors();
 
