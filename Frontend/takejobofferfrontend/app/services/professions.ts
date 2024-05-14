@@ -1,3 +1,5 @@
+import { host } from "./host";
+
 export interface ProfessionRequest {
     name: string;
     description: string;
@@ -9,8 +11,10 @@ export interface ProfessionWithSlugRequest {
     slug: string;
 }
 
+
+
 export const getAllProfessions = async () => {
-    return await fetch("https://localhost:8081/api/professions", {
+    return await fetch(`${host}/api/professions`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -25,7 +29,7 @@ export const getAllProfessions = async () => {
 };
 
 export const getAllProfessionsWithSlug = async () => {
-    return await fetch("https://localhost:8081/api/professions/with-slug", {
+    return await fetch(`${host}/api/professions/with-slug`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -40,7 +44,7 @@ export const getAllProfessionsWithSlug = async () => {
 };
 
 export const getProfessionById = async (id: string) => {
-    return await fetch(`https://localhost:8081/api/professions/${id}`, {
+    return await fetch(`${host}/api/professions/${id}`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -55,7 +59,7 @@ export const getProfessionById = async (id: string) => {
 };
 
 export const getProfessionByIdWithSlug = async (id: string) => {
-    return await fetch(`https://localhost:8081/api/professions/${id}/with-slug`, {
+    return await fetch(`${host}/api/professions/${id}/with-slug`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -70,7 +74,7 @@ export const getProfessionByIdWithSlug = async (id: string) => {
 };
 
 export const getAllProfessionsISR = async (isrDuration: number) => {
-    const response = await fetch("https://localhost:8081/api/professions", {
+    const response = await fetch(`${host}/api/professions`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -88,7 +92,7 @@ export const getAllProfessionsISR = async (isrDuration: number) => {
 };
 
 export const getAllProfessionsWithSlugISR = async (isrDuration: number) => {
-    const response = await fetch("https://localhost:8081/api/professions/with-slug", {
+    const response = await fetch(`${host}/api/professions/with-slug`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -106,7 +110,7 @@ export const getAllProfessionsWithSlugISR = async (isrDuration: number) => {
 };
 
 export const getProfessionBySlug = async (slug: string) => {
-    return await fetch(`https://localhost:8081/api/professions/${slug}`, {
+    return await fetch(`${host}/api/professions/${slug}`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -120,7 +124,7 @@ export const getProfessionBySlug = async (slug: string) => {
         });
 };
 export const createProfession = async (professionRequest: ProfessionRequest) => {
-    await fetch("https://localhost:8081/api/professions", {
+    await fetch(`${host}/api/professions`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -135,7 +139,7 @@ export const createProfession = async (professionRequest: ProfessionRequest) => 
 };
 
 export const createProfessionWithSlug = async (professionRequest: ProfessionWithSlugRequest) => {
-    await fetch("https://localhost:8081/api/professions/with-slug", {
+    await fetch(`${host}/api/professions/with-slug`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -150,7 +154,7 @@ export const createProfessionWithSlug = async (professionRequest: ProfessionWith
 };
 
 export const updateProfession = async (id: string, professionRequest: ProfessionRequest) => {
-    await fetch(`https://localhost:8081/api/professions/${id}`, {
+    await fetch(`${host}/api/professions/${id}`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
@@ -165,7 +169,7 @@ export const updateProfession = async (id: string, professionRequest: Profession
 };
 
 export const updateProfessionWithSlug = async (id: string, professionRequest: ProfessionWithSlugRequest) => {
-    await fetch(`https://localhost:8081/api/professions/${id}/with-slug`, {
+    await fetch(`${host}/api/professions/${id}/with-slug`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
@@ -180,7 +184,7 @@ export const updateProfessionWithSlug = async (id: string, professionRequest: Pr
 };
 
 export const deleteProfession = async (id: string) => {
-    await fetch(`https://localhost:8081/api/professions/${id}`, {
+    await fetch(`${host}/api/professions/${id}`, {
             method: "DELETE",
     })
         .then(response => {

@@ -12,19 +12,22 @@ interface ProfessionSkillColumnProps {
 }
 
 export const ProfessionSkillsTable = ({ values }: Props) => {
-    const [professionSkills, setProfessionSkills] = useState<ProfessionSkillWithName[]>([]);
+    const [professionSkills, setProfessionSkills] = useState(values);
     const [columnsData, setColunmsData] = useState<ProfessionSkillColumnProps[]>([]);
-    useEffect(() => {
-      setProfessionSkills(values);
-      let columns: ProfessionSkillColumnProps[] = [];
-      professionSkills.map((professionSkill) => {
 
+    useEffect(() => {
+      SetColumnsProps();
+    }, []);
+
+    const SetColumnsProps = () => {
+      const columnsProps: ProfessionSkillColumnProps[] = [];
+      professionSkills.map((professionSkill) => {
         let col: ProfessionSkillColumnProps = {name: professionSkill.name, mentionCount: professionSkill.mentionCount};
-        columns.push(col);
+        columnsProps.push(col);
       });
 
-      setColunmsData(columns);
-    }, [values]);
+      setColunmsData(columnsProps);
+    };
 
     const columns = [
       {

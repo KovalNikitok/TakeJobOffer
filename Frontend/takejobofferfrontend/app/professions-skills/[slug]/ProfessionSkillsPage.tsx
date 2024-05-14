@@ -17,13 +17,12 @@ export default function ProfessionSkillsClient({ slug }: ProfessionSkillsProps) 
   
     useEffect(() => {
       const getSkillsByProfessionSlug = async () => {
-          const profession = await getProfessionBySlug(slug);
-          setProfession(profession);
-
-          const professionSkills = await getProfessionSkillsWithNames(profession.id, true);
+          const professionWithSlug = await getProfessionBySlug(slug);
+          const professionSkills = await getProfessionSkillsWithNames(professionWithSlug.id, true);
           
-          setLoading(false);
+          setProfession(professionWithSlug);
           setProfessionSkills(professionSkills);
+          setLoading(false);
       }
       
       getSkillsByProfessionSlug();
@@ -35,7 +34,7 @@ export default function ProfessionSkillsClient({ slug }: ProfessionSkillsProps) 
           loading ? (
             <Title>Loading...</Title>
           ) : (
-            <ProfessionSkills professionSkills={professionSkills} />
+            <ProfessionSkills values={professionSkills} />
           )
         }
       </div>

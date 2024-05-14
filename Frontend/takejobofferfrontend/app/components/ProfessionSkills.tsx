@@ -1,12 +1,11 @@
 import {ProfessionSkillsTable} from "./ProfessionSkillsTable";
 
 interface Props {
-    professionSkills: ProfessionSkillWithName[];
+    values: ProfessionSkillWithName[];
 }
 
-export const ProfessionSkills = ({professionSkills}: Props) => {
+export const ProfessionSkills = ({values}: Props) => {
     //let num:number = 1;
-    return (
     /*
         <table class="table table-sm table-bordered table-hover ">
             <thead>
@@ -27,10 +26,11 @@ export const ProfessionSkills = ({professionSkills}: Props) => {
             </tbody>
         </table>
     */
+    return (
         <div className="ps__table">
             { 
                 <ProfessionSkillsTable
-                    values={professionSkills}
+                    values={values}
                 >
                 </ProfessionSkillsTable>
             }
