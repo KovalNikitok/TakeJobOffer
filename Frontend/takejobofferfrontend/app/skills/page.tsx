@@ -2,6 +2,8 @@
 
 import Button from "antd/es/button/button";
 import Title from "antd/es/typography/Title";
+import { Loading } from "../components/Loading";
+
 import { Skills } from "../components/Skills"
 import {
   SkillRequest,
@@ -14,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { CreateUpdateSkill } from "../components/CreateUpdateSkill";
 import { Mode } from "../components/Mode";
+
 
 export default function SkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -89,8 +92,9 @@ export default function SkillsPage() {
       >
         Добавить навык
       </Button>
-      {loading ? (
-        <Title>Loading...</Title>
+      {
+      loading ? (
+        <Loading></Loading>
       ) : (
         <Skills
           skills={skills}

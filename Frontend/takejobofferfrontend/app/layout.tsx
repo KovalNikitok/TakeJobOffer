@@ -1,6 +1,13 @@
-import { Layout, Menu } from "antd";
 import "./globals.css";
-import { Content, Footer, Header } from "antd/es/layout/layout";
+import { Source_Sans_3 } from 'next/font/google'
+
+import { Layout } from "antd";
+
+import { Content } from "antd/es/layout/layout";
+import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { HeaderLayout } from "./components/HeaderLayout";
+import { FooterLayout } from "./components/FooterLayout";
+
 import Link from "antd/es/typography/Link";
 
 const items = [
@@ -10,28 +17,28 @@ const items = [
   { key: "professionsSkills", label: <Link href={"/professions-skills"}>Требования по навыкам</Link> },
 ];
 
+const ss3 = Source_Sans_3({ 
+  weight: '400',
+  subsets: ['greek']
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <Layout style={{ minHeight: "100vh" }}>
-          <Header>
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              items={items}
-              style={{ flex: 1, minHeight: 0 }}
-            />
-          </Header>
-          <Content style={{ padding: "0 48px" }}>{children}</Content>
-          <Footer style={{ textAlign: "center" }}>
-            TakeJobOffer 2024 Created by Nikita Koval
-          </Footer>
-        </Layout>
+    <html lang="ru">
+      <body className={ss3.className}>
+        <AntdRegistry>
+          <Layout className="layout">
+            <HeaderLayout items={items}></HeaderLayout>
+            <Content className="content">
+              {children}
+            </Content>
+            <FooterLayout></FooterLayout>
+          </Layout>
+        </AntdRegistry>
       </body>
     </html>
   );

@@ -1,11 +1,9 @@
 "use client";
 
 import Button from "antd/es/button/button";
-import Title from "antd/es/typography/Title";
 import { Professions } from "../components/Professions";
 import {
   ProfessionWithSlugRequest,
-  createProfession,
   createProfessionWithSlug,
   deleteProfession,
   getAllProfessionsWithSlug,
@@ -14,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { CreateUpdateProfession } from "../components/CreateUpdateProfession";
 import { Mode } from "../components/Mode";
+import { Loading } from "../components/Loading";
 
 export default function ProfessionsPage() {
   const [professions, setProfessions] = useState<ProfessionWithSlug[]>([]);
@@ -98,7 +97,7 @@ export default function ProfessionsPage() {
         Добавить профессию
       </Button>
       {loading ? (
-        <Title>Loading...</Title>
+        <Loading></Loading>
       ) : (
         <Professions
           professions={professions}

@@ -1,10 +1,10 @@
 "use client"
 
-import Title from "antd/es/typography/Title";
 import { useEffect, useState } from "react";
 import { getProfessionSkillsWithNames } from "../../services/professionSkills";
 import { ProfessionSkills } from "../../components/ProfessionSkills";
 import { getProfessionBySlug } from "@/app/services/professions";
+import { Loading } from "@/app/components/Loading";
 
 interface ProfessionSkillsProps {
   slug:  string;
@@ -32,7 +32,7 @@ export default function ProfessionSkillsClient({ slug }: ProfessionSkillsProps) 
       <div>
         {
           loading ? (
-            <Title>Loading...</Title>
+            <Loading></Loading>
           ) : (
             <ProfessionSkills values={professionSkills} />
           )

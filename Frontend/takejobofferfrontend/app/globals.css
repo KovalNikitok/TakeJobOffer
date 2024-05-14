@@ -4,6 +4,11 @@
     margin: 0;  
 }
 
+.layout, .ant-layout-content { 
+  min-height: 100vh !important;
+  display: flex;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -70,4 +75,76 @@
 
 .ps__table li {
   margin-bottom: 16px;
+}
+
+.content, .ant-layout-content {
+  position: relative;
+  background-color: #e9ebee;
+  padding: 0 48px;
+}
+
+.ant-spin-nested-loading {
+  position: static !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader__spin {
+  position: absolute !important;
+  top: 0 !important;
+  inset-inline-start: 0 !important;
+  z-index: 4 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 90% !important;
+}
+
+.loader__spin .ant-spin-text {
+  padding-left: 0.2rem;
+}
+
+.ant-layout-header {
+  display: flex;
+  position: relative;
+  height: 3rem !important;
+  line-height: 3rem !important;
+}
+
+.header__layout {
+  display: flex;
+
+  background-color: #343a40 !important;
+
+  border-bottom: 3px solid;
+  border-color: #ff5c57 !important;
+}
+
+.header__layout > .menu__layout {
+  background-color: #343a40 !important;
+
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.header__layout > .menu__layout .ant-menu-overflow-item {
+  padding: .0rem 1rem;
+}
+
+.header__layout > .menu__layout  a, div.ant-menu-submenu a  {
+  color: #fff !important;
+  font-size: 1rem;
+}
+.ant-menu-dark.ant-menu-submenu-popup>.ant-menu {
+  background-color: #343a40 !important;
+}
+
+.footer__layout {
+  justify-content: center;
+  text-align: center;
+
+  flex-wrap: wrap;
+  background-color: #343a40 !important;
+  color: #999 !important;
 }

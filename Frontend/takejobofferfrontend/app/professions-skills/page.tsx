@@ -1,11 +1,11 @@
 "use client";
 
-import Title from "antd/es/typography/Title";
 import { ProfessionsSkills } from "../components/ProfessionsSkills";
 import {
   getAllProfessionsWithSlug,
 } from "../services/professions";
 import { useEffect, useState } from "react";
+import { Loading } from "../components/Loading";
 
 export default function ProfessionsPage() {
   const [professions, setProfessions] = useState<ProfessionWithSlug[]>([]);
@@ -25,7 +25,7 @@ export default function ProfessionsPage() {
   return (
     <div>
       {loading ? (
-        <Title>Loading...</Title>
+        <Loading></Loading>
       ) : (
         <ProfessionsSkills professions={professions} />
       )}
