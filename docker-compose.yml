@@ -110,7 +110,7 @@ services:
         - "443:443"
     volumes:
         - ./ReverseProxy/static:/static
-        - ./ReverseProxy/nginx:/etc/nginx/conf.d/
+        - ./ReverseProxy/nginx/Production:/etc/nginx/conf.d/
         - www-html:/var/www/html/:ro
         - ssl-crt:/etc/nginx/ssl/:ro
     depends_on:

@@ -10,11 +10,12 @@ import { FooterLayout } from "./components/FooterLayout";
 
 import Link from "antd/es/typography/Link";
 
+  
 const items = [
   { key: "home", label: <Link href={"/"}>TakeJobOffer</Link> },
-  { key: "professions", label: <Link href={"/professions"}>Профессии</Link> },
-  { key: "skills", label: <Link href={"/skills"}>Навыки</Link> },
-  { key: "professionsSkills", label: <Link href={"/professions-skills"}>Требования по навыкам</Link> },
+  { key: "professionsSkills", label: <Link href={"/professions"}>Требования по навыкам</Link> },
+  //{ key: "professions", label: <Link href={"/admin-professions"}>Профессии</Link> },
+  //{ key: "skills", label: <Link href={"/admin-skills"}>Навыки</Link> },
 ];
 
 const ss3 = Source_Sans_3({ 

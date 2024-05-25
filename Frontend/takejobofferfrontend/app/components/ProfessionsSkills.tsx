@@ -18,9 +18,9 @@ export const ProfessionsSkills = ({professions}: Props) => {
                 >
                     <p>{profession.description}</p>
                     <div className="card__buttons"> 
-                        <Link key={profession.slug} href={`/professions-skills/${profession.slug}`}>
+                        <Link key={profession.slug} href={`/professions/${profession.slug}`}>
                             <Button style={{flex: 1}}>
-                                Detailed
+                                Просмотреть навыки
                             </Button>
                         </Link>
                     </div>

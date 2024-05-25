@@ -47,10 +47,10 @@ services:
     command: redis-server --save 60 10
     ports:
         - "6379:6379"
-    volumes: 
-        - redis_cache:/var/lib/data
     networks:
         - backend_network
+    volumes: 
+        - redis-data:/var/lib/data
   backend:
     container_name: backend_takejoboffer
     build:
@@ -122,7 +122,7 @@ services:
         - "443:443"
     volumes:
         - ./ReverseProxy/static:/static
-        - ./ReverseProxy/nginx:/etc/nginx/conf.d/
+        - ./ReverseProxy/nginx/Development:/etc/nginx/conf.d/
         - www-html:/var/www/html/:ro
         - ssl-crt:/etc/nginx/ssl/:ro
     depends_on:
@@ -137,6 +137,6 @@ services:
 
 volumes:
     postgres-data:
-    redis_cache:
+    redis-data:
     www-html:
     ssl-crt:

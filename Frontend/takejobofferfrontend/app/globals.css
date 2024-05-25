@@ -4,14 +4,14 @@
     margin: 0;  
 }
 
-.layout, .ant-layout-content { 
+.layout { 
   min-height: 100vh !important;
   display: flex;
 }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   width: 100%;
   padding-top: 30px;
   gap: 30px 20px;
@@ -76,7 +76,9 @@
 .ps__table li {
   margin-bottom: 16px;
 }
-
+.ant-layout-content {
+  min-height: 100vh !important;
+}
 .content, .ant-layout-content {
   position: relative;
   background-color: #e9ebee;

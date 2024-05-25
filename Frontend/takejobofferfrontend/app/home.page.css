@@ -1,0 +1,22 @@
+.ant-layout-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.ant-typography-title {
+  margin-bottom: 16px;
+}
+
+.ant-typography-paragraph {
+  margin-bottom: 24px;
+}
+
+.home-col {
+  display: flex !important;
+  justify-content: center;
+  flex-direction: column;
+}
