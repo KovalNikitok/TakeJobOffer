@@ -6,18 +6,42 @@ interface Item {
     label: JSX.Element;
 }
 
+// interface Props {
+//     items: Item[];
+// }
+
+// export const HeaderLayout = ( { items } : Props) => {
+//     return (
+//         <Header className="header__layout">
+//             <Menu
+//               theme="dark"
+//               mode="horizontal"
+//               items={items}
+//               className="menu__layout"
+//             />
+//           </Header>
+//     );
+// }
+
 interface Props {
-    items: Item[];
+    itemsLeft: Item[];
+    itemsRight: Item[];
 }
 
-export const HeaderLayout = ( { items } : Props) => {
+export const HeaderLayout = ( { itemsLeft, itemsRight } : Props) => {
     return (
         <Header className="header__layout">
             <Menu
               theme="dark"
               mode="horizontal"
-              items={items}
+              items={itemsLeft}
               className="menu__layout"
+            />
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              items={itemsRight}
+              className="menu__layout menu_layout_right"
             />
           </Header>
     );

@@ -1,17 +1,15 @@
-import { Footer } from "antd/es/layout/layout";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTelegram, faVk, faGithub, faDiscord } from '@fortawesome/free-brands-svg-icons';
 import Link from "antd/es/typography/Link";
+import { Content } from 'antd/es/layout/layout';
 
-
-
-export const FooterLayout = () => {
-    const linksHeight = 30;
+export default function ProfessionsPage() {
+    const linksHeight = 100;
     return (
-        <Footer className="footer__layout">      
-            <div className="footer__div-refs">
+        <Content style={{ padding: '10px', textAlign: 'center', display: 'grid;'}}>
+            <div className="contacts__div">
                 <Link href="https://discord.com/users/303456093726572544">
-                    <FontAwesomeIcon icon={faDiscord} height={linksHeight}/>
+                        <FontAwesomeIcon icon={faDiscord} height={linksHeight}/>
                 </Link>
                 <Link href="https://vk.com/duosrx">
                     <FontAwesomeIcon icon={faVk} height={linksHeight}/>
@@ -23,9 +21,6 @@ export const FooterLayout = () => {
                     <FontAwesomeIcon icon={faGithub} height={linksHeight}/>
                 </Link>
             </div>
-            <h5 className="footer__h5"> 
-                © 2024 TakeJobOffer by Nikita Koval – All rights reserved
-            </h5>
-        </Footer>
+        </Content>
     );
 }

@@ -10,7 +10,7 @@ import Title from 'antd/es/typography/Title';
 
 export default function Home() {
   return (
-    <Content style={{ padding: '50px', textAlign: 'center' }}>
+    <Content style={{ padding: '10px', textAlign: 'center' }}>
         <Title level={1}>TakeJobOffer</Title>
         <Paragraph style={{ fontSize: '18px' }}>
           Найдите лучшую работу в IT сфере.
@@ -18,18 +18,24 @@ export default function Home() {
         <Paragraph style={{ fontSize: '16px', color: 'rgba(0, 0, 0, 0.65)' }}>
           Наш сайт поможет вам найти вакансии и узнать актуальные требования по навыкам для различных профессий в IT.
         </Paragraph>
-        <Button type="primary" size="large" style={{ margin: '20px 0' }}>
+        <Button 
+          type="primary" 
+          size="large" 
+          className="redirect-button"
+        >
           <Link href="/professions">Начни поиски работы с малого</Link>
         </Button>
         <Row gutter={16} style={{ marginTop: '40px' }}>
           <Col xs={24} sm={12}>
-            <Image 
-              src="https://img.freepik.com/premium-photo/group-people-collaborating-working-together-around-laptop-table_956369-4884.jpg"
-              alt="Профессии"
-              style={{ width: '100%', borderRadius: '8px' }}
-            >
-              <Link href="/professions"></Link>
-            </Image>
+            <Link href="/professions">
+              <Image 
+                src="https://img.freepik.com/premium-photo/group-people-collaborating-working-together-around-laptop-table_956369-4884.jpg"
+                alt="Профессии"
+                className="image-professions"
+                preview={false}
+              >
+              </Image>
+            </Link>
           </Col>
           <Col xs={24} sm={12}
             className='home-col'
