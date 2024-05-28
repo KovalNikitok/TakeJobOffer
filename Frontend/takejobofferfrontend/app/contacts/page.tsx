@@ -1,12 +1,14 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTelegram, faVk, faGithub, faDiscord } from '@fortawesome/free-brands-svg-icons';
+import "./contacts.page.css";
+
 import Link from "antd/es/typography/Link";
 import { Content } from 'antd/es/layout/layout';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTelegram, faVk, faGithub, faDiscord } from '@fortawesome/free-brands-svg-icons';
 
 export default function ProfessionsPage() {
     const linksHeight = 100;
     return (
-        <Content style={{ padding: '10px', textAlign: 'center', display: 'grid;'}}>
+        <Content className="contacts__content">
             <div className="contacts__div">
                 <Link href="https://discord.com/users/303456093726572544">
                         <FontAwesomeIcon icon={faDiscord} height={linksHeight}/>

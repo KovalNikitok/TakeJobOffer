@@ -1,0 +1,9 @@
+.ad-professions__button {
+    margin-top: 30px;
+}
+
+.profession__modal {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

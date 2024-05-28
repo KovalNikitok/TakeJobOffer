@@ -1,0 +1,12 @@
+.contacts__content {
+    display: grid;
+    padding: 10px;
+    text-align: center;
+}
+
+.contacts__div {
+    display: grid;
+    justify-content: center !important;
+    grid-template-columns: repeat(4, 0.1fr);
+    margin-top: 20%;
+  }

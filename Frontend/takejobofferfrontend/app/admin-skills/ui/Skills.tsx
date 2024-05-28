@@ -1,6 +1,7 @@
 import Card from "antd/es/card/Card"
-import { CardTitle } from "./Cardtitle"
 import Button from "antd/es/button/button"
+
+import { CardTitle } from "../../shared/ui/Cardtitle"
 
 interface Props {
     skills: Skill[];

@@ -1,18 +1,21 @@
 "use client";
+import "./admin-professions.page.css"
 
+import { useEffect, useState } from "react";
 import Button from "antd/es/button/button";
-import { Professions } from "../components/Professions";
+
 import {
   ProfessionWithSlugRequest,
   createProfessionWithSlug,
   deleteProfession,
   getAllProfessionsWithSlug,
   updateProfessionWithSlug,
-} from "../services/professions";
-import { useEffect, useState } from "react";
-import { CreateUpdateProfession } from "../components/CreateUpdateProfession";
-import { Mode } from "../components/Mode";
-import { Loading } from "../components/Loading";
+} from "../shared/api/professions";
+import { Mode } from "../shared/ui/Mode";
+import { Loading } from "../shared/ui/Loading";
+
+import { Professions } from "./ui/Professions";
+import { CreateUpdateProfession } from "./ui/CreateUpdateProfession";
 
 export default function ProfessionsPage() {
   const [professions, setProfessions] = useState<ProfessionWithSlug[]>([]);
@@ -90,7 +93,7 @@ export default function ProfessionsPage() {
     <div>
       <Button
         type="primary"
-        style={{ marginTop: "30px" }}
+        className="ad-professions__button"
         size="large"
         onClick={openModal}
       >

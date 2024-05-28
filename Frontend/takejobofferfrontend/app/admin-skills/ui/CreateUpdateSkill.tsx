@@ -1,8 +1,9 @@
-import { Input } from "antd";
-import { SkillRequest } from "../services/skills";
 import { useEffect, useState } from "react";
+import { Input } from "antd";
 import Modal from "antd/es/modal/Modal";
-import { Mode } from "./Mode"
+
+import { Mode } from "../../shared/ui/Mode"
+import { SkillRequest } from "../../shared/api/skills";
 
 interface Props {
   mode: Mode;

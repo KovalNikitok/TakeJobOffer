@@ -1,0 +1,28 @@
+.ps__table {
+  display: flex !important;
+  justify-content: center !important;
+  padding-top: 30px !important;
+  gap: 30px 20px !important;
+}
+  
+.ps__table thead.ant-table-thead th.ant-table-cell {
+  background: #cb8282 !important;
+  background-color: #cb8282 !important;
+  text-shadow: 1px !important;
+}
+  
+.ps__table div.ant-spin-container {
+  background-color: #ffffff !important;
+}
+  
+.ps__table li {
+  margin-bottom: 16px !important;
+}
+
+.table-operations {
+  margin-bottom: 16px !important;
+}
+  
+.table-operations > button {
+  margin-right: 8px !important;
+}
