@@ -1,11 +1,13 @@
 "use client";
+import "./professions.page.css";
 
-import { ProfessionsSkills } from "../components/ProfessionsSkills";
-import {
-  getAllProfessionsWithSlug,
-} from "../services/professions";
 import { useEffect, useState } from "react";
-import { Loading } from "../components/Loading";
+
+import { Loading } from "../shared/ui/Loading";
+import {  getAllProfessionsWithSlug } from "../shared/api/professions";
+
+import { ProfessionsSkillsCards } from "./ui/ProfessionsSkillsCards";
+import { Content } from "antd/es/layout/layout";
 
 export default function ProfessionsPage() {
   const [professions, setProfessions] = useState<ProfessionWithSlug[]>([]);
@@ -23,13 +25,13 @@ export default function ProfessionsPage() {
   }, []);
 
   return (
-    <div>
+    <Content>
       {loading ? (
         <Loading></Loading>
       ) : (
-        <ProfessionsSkills professions={professions} />
+        <ProfessionsSkillsCards professions={professions} />
       )}
-    </div>
+    </Content>
   );
 }
 

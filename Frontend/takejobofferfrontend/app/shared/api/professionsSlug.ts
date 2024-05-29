@@ -1,11 +1,11 @@
-import { host } from "./host";
+import { baseApiUrl } from "./baseApiUrl";
 
 export interface ProfessionSlugRequest {
     slug: string;
 }
 
 export const getAllProfessionsSlug = async () => {
-    const response = await fetch(`${host}/api/professions-slug`, {
+    const response = await fetch(`${baseApiUrl}/professions-slug`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -22,7 +22,7 @@ export const getAllProfessionsSlug = async () => {
 };
 
 export const getProfessionSlugById = async (id: string) => {
-    return await fetch(`${host}/api/professions/${id}`, {
+    return await fetch(`${baseApiUrl}/professions/${id}`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -37,7 +37,7 @@ export const getProfessionSlugById = async (id: string) => {
 };
 
 export const getAllProfessionsSlugISR = async (isrDuration: number) => {
-    const response = await fetch(`${host}/api/professions-slug`, {
+    const response = await fetch(`${baseApiUrl}/professions-slug`, {
         method: "GET",
         headers: {
             "accept": "application/json"
@@ -55,7 +55,7 @@ export const getAllProfessionsSlugISR = async (isrDuration: number) => {
 };
 
 export const getProfessionSlugByProfessionId = async (professionId: string) => {
-    return await fetch(`${host}/api/professions-slug/p/${professionId}`, {
+    return await fetch(`${baseApiUrl}/professions-slug/p/${professionId}`, {
         method: "GET",
         headers: {
             "accept": "application/json"

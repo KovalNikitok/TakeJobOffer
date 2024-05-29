@@ -1,13 +1,11 @@
 import "./globals.css";
+
 import { Source_Sans_3 } from 'next/font/google'
-
 import { Layout } from "antd";
-
 import { Content } from "antd/es/layout/layout";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { HeaderLayout } from "./components/HeaderLayout";
-import { FooterLayout } from "./components/FooterLayout";
-
+import { HeaderLayout } from "./shared/ui/HeaderLayout";
+import { FooterLayout } from "./shared/ui/FooterLayout";
 import Link from "antd/es/typography/Link";
 
 const itemsLeft = [

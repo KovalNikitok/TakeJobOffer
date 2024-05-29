@@ -1,0 +1,28 @@
+.cards__professions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    width: 100%;
+    padding-top: 30px;
+    gap: 30px 20px;
+  }
+
+.card__scaling {
+    border: 1px solid transparent;
+    transition: transform 0.6s ease !important;
+    transition : border 1s ease-out;
+}
+
+.card__scaling:hover {
+    transform: scale(1.03) !important;
+    border-color: #4096ff;
+}
+
+.card__notify {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  font-size: 16px;
+}
+

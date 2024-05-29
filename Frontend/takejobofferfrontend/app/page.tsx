@@ -6,16 +6,14 @@ import Link from "antd/es/typography/Link";
 import Paragraph from 'antd/es/typography/Paragraph';
 import Title from 'antd/es/typography/Title';
 
-
-
 export default function Home() {
   return (
-    <Content style={{ padding: '10px', textAlign: 'center' }}>
+    <Content className="content-center">
         <Title level={1}>TakeJobOffer</Title>
-        <Paragraph style={{ fontSize: '18px' }}>
+        <Paragraph className="content-main-paragraph">
           Найдите лучшую работу в IT сфере.
         </Paragraph>
-        <Paragraph style={{ fontSize: '16px', color: 'rgba(0, 0, 0, 0.65)' }}>
+        <Paragraph className="content-subparagraph">
           Наш сайт поможет вам найти вакансии и узнать актуальные требования по навыкам для различных профессий в IT.
         </Paragraph>
         <Button 
@@ -25,7 +23,7 @@ export default function Home() {
         >
           <Link href="/professions">Начни поиски работы с малого</Link>
         </Button>
-        <Row gutter={16} style={{ marginTop: '40px' }}>
+        <Row gutter={16} className="content-row">
           <Col xs={24} sm={12}>
             <Link href="/professions">
               <Image 
@@ -37,15 +35,9 @@ export default function Home() {
               </Image>
             </Link>
           </Col>
-          <Col xs={24} sm={12}
-            className='home-col'
-          >
+          <Col xs={24} sm={12} className='home-col'>
             <Title level={4}>Для чего можно использовать наш сайт?</Title>
-            <Paragraph style={
-              { 
-                fontSize: '16px', 
-                color: 'rgba(0, 0, 0, 0.65)'
-              }}>
+            <Paragraph className="content-subparagraph">
               - Помощь в поиске вакансий по навыкам
               <br />
               - Помощь в составлении релевантного резюме

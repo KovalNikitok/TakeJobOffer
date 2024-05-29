@@ -1,9 +1,10 @@
-import { Input } from "antd";
-import { ProfessionWithSlugRequest } from "../services/professions";
 import { useEffect, useState } from "react";
+import { Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import Modal from "antd/es/modal/Modal";
-import { Mode } from "./Mode"
+
+import { Mode } from "../../shared/ui/Mode"
+import { ProfessionWithSlugRequest } from "../../shared/api/professions";
 
 interface Props {
   mode: Mode;

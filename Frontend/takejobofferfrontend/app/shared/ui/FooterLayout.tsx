@@ -3,8 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTelegram, faVk, faGithub, faDiscord } from '@fortawesome/free-brands-svg-icons';
 import Link from "antd/es/typography/Link";
 
-
-
 export const FooterLayout = () => {
     const linksHeight = 30;
     return (
