@@ -43,6 +43,10 @@
   white-space: normal;
 }
 
+.ant__title {
+  user-select: none !important;
+}
+
 .ant-layout-content {
   min-height: 100vh !important;
 }

@@ -9,12 +9,12 @@ import Title from 'antd/es/typography/Title';
 export default function Home() {
   return (
     <Content className="content-center">
-        <Title level={1}>TakeJobOffer</Title>
+        <Title className="ant__title" level={1}>TakeJobOffer</Title>
         <Paragraph className="content-main-paragraph">
-          Найдите лучшую работу в IT сфере.
+          Найдите лучшую работу в IT сфере
         </Paragraph>
         <Paragraph className="content-subparagraph">
-          Наш сайт поможет вам найти вакансии и узнать актуальные требования по навыкам для различных профессий в IT.
+          Наш сайт поможет вам найти вакансии и узнать актуальные требования по навыкам для различных профессий в IT
         </Paragraph>
         <Button 
           type="primary" 
