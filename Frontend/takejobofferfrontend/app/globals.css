@@ -24,16 +24,11 @@
   margin-top: 20px;
 }
 
-.profession__modal {
+.card__style {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.skill__modal {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .card__name {
@@ -48,34 +43,6 @@
   white-space: normal;
 }
 
-.table-operations {
-  margin-bottom: 16px;
-}
-
-.table-operations > button {
-  margin-right: 8px;
-}
-
-.ps__table {
-  display: flex;
-  justify-content: center;
-  padding-top: 30px;
-  gap: 30px 20px;
-}
-
-.ps__table thead.ant-table-thead th.ant-table-cell {
-  background: #cb8282;
-  background-color: #cb8282;
-  text-shadow: 1px;
-}
-
-.ps__table div.ant-spin-container {
-  background-color: #ffffff;
-}
-
-.ps__table li {
-  margin-bottom: 16px;
-}
 .ant-layout-content {
   min-height: 100vh !important;
 }
@@ -115,16 +82,13 @@
 
 .header__layout {
   display: flex;
-
   background-color: #343a40 !important;
-
   border-bottom: 3px solid;
   border-color: #ff5c57 !important;
 }
 
 .header__layout > .menu__layout {
   background-color: #343a40 !important;
-
   display: flex;
   flex: 1;
   min-height: 0;
@@ -138,6 +102,13 @@
   color: #fff !important;
   font-size: 1rem;
 }
+
+.header__layout > .menu_layout_right {
+  display: block;
+  margin-left: auto !important;
+  text-align: right !important;
+}
+
 .ant-menu-dark.ant-menu-submenu-popup>.ant-menu {
   background-color: #343a40 !important;
 }
@@ -145,8 +116,19 @@
 .footer__layout {
   justify-content: center;
   text-align: center;
-
   flex-wrap: wrap;
   background-color: #343a40 !important;
   color: #999 !important;
+}
+
+div.footer__div-refs {
+  position: relative;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 0.06fr);
+}
+
+div h5.footer__h5 {
+  margin-top: 1%;
+  user-select: none;
 }

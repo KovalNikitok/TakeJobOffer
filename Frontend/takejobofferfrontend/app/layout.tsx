@@ -1,21 +1,21 @@
 import "./globals.css";
+
 import { Source_Sans_3 } from 'next/font/google'
-
 import { Layout } from "antd";
-
 import { Content } from "antd/es/layout/layout";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { HeaderLayout } from "./components/HeaderLayout";
-import { FooterLayout } from "./components/FooterLayout";
-
+import { HeaderLayout } from "./shared/ui/HeaderLayout";
+import { FooterLayout } from "./shared/ui/FooterLayout";
 import Link from "antd/es/typography/Link";
 
-  
-const items = [
+const itemsLeft = [
   { key: "home", label: <Link href={"/"}>TakeJobOffer</Link> },
   { key: "professionsSkills", label: <Link href={"/professions"}>Требования по навыкам</Link> },
-  //{ key: "professions", label: <Link href={"/admin-professions"}>Профессии</Link> },
-  //{ key: "skills", label: <Link href={"/admin-skills"}>Навыки</Link> },
+];
+
+const itemsRight= [
+  { key: "contacts", label: <Link href={"/contacts"}>Контакты</Link> },
+  //{ key: "about", label: <Link href={"/about"}>О нас</Link> },
 ];
 
 const ss3 = Source_Sans_3({ 
@@ -33,7 +33,7 @@ export default function RootLayout({
       <body className={ss3.className}>
         <AntdRegistry>
           <Layout className="layout">
-            <HeaderLayout items={items}></HeaderLayout>
+            <HeaderLayout itemsLeft={itemsLeft} itemsRight={itemsRight}></HeaderLayout>
             <Content className="content">
               {children}
             </Content>

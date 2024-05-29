@@ -20,3 +20,39 @@
   justify-content: center;
   flex-direction: column;
 }
+
+.content-center {
+  padding: 10px;
+  text-align: center;
+}
+
+.image-professions {
+  width: 100%;
+  border-radius: 8px;
+  transition: transform 0.5s ease;
+}
+
+.image-professions:hover {
+  transform: scale(1.04);
+}
+
+.redirect-button {
+  margin: 20px 0;
+  transition: transform 0.5s ease;
+}
+
+.redirect-button:hover {
+  transform: scale(1.05);
+}
+
+.content-main-paragraph {
+  font-size: 18px;
+}
+.content-row {
+  margin-top: 40px;
+}
+
+.content-subparagraph {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.65);
+}

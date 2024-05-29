@@ -1,22 +1,21 @@
 "use client";
+import "./admin-skills.page.css";
 
+import { useEffect, useState } from "react";
 import Button from "antd/es/button/button";
-import Title from "antd/es/typography/Title";
-import { Loading } from "../components/Loading";
 
-import { Skills } from "../components/Skills"
+import { Loading } from "../shared/ui/Loading";
+import { Mode } from "../shared/ui/Mode";
 import {
   SkillRequest,
   getAllSkills,
-  getSkillById,
   createSkill,
   deleteSkill,
   updateSkill,
-} from "../services/skills";
-import { useEffect, useState } from "react";
-import { CreateUpdateSkill } from "../components/CreateUpdateSkill";
-import { Mode } from "../components/Mode";
+} from "../shared/api/skills";
 
+import { Skills } from "./ui/Skills"
+import { CreateUpdateSkill } from "./ui/CreateUpdateSkill";
 
 export default function SkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -86,7 +85,7 @@ export default function SkillsPage() {
     <div>
       <Button
         type="primary"
-        style={{ marginTop: "30px" }}
+        className="ad-skills__button"
         size="large"
         onClick={openModal}
       >

@@ -1,5 +1,8 @@
-import { getAllProfessionsWithSlugISR } from "../../services/professions";
-import ProfessionSkillsClient  from "./ProfessionSkillsPage";
+import "./profession-table.page.css";
+
+import { getAllProfessionsWithSlugISR } from "../../shared/api/professions";
+
+import ProfessionSkillsClient from "./ui/ProfessionSkillsClient";
 
 export const revalidate = 600;
 export const dynamicParams = true;

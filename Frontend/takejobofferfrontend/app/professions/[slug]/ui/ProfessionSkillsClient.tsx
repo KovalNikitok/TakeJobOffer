@@ -1,10 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { getProfessionSkillsWithNames } from "../../services/professionSkills";
-import { ProfessionSkills } from "../../components/ProfessionSkills";
-import { getProfessionBySlug } from "@/app/services/professions";
-import { Loading } from "@/app/components/Loading";
+
+import { Loading } from "../../../shared/ui/Loading";
+import { getProfessionBySlug } from "../../../shared/api/professions";
+import { getProfessionSkillsWithNames } from "../../../shared/api/professionSkills";
+
+import { ProfessionSkills } from "./ProfessionSkills";
 
 interface ProfessionSkillsProps {
   slug:  string;

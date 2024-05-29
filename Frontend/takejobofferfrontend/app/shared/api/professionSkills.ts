@@ -1,4 +1,4 @@
-import { host } from "./host";
+import { baseApiUrl } from "./baseApiUrl";
 
 interface ProfessionSkillRequest {
     skillId: string;
@@ -7,7 +7,7 @@ interface ProfessionSkillRequest {
 
 export const getProfessionSkills = async (professionId: string) => {
     return await fetch(
-        `${host}/api/professions-skills/${professionId}`, {
+        `${baseApiUrl}/professions-skills/${professionId}`, {
             method: "GET",
             headers: {
                 "accept": "application/json"
@@ -23,7 +23,7 @@ export const getProfessionSkills = async (professionId: string) => {
 
 export const getProfessionSkillsWithNames = async (professionId: string, isOrdered: boolean = false) => {
     return await fetch(
-        `${host}/api/professions-skills/${professionId}/with-name?isOrdered=${isOrdered}`, {
+        `${baseApiUrl}/professions-skills/${professionId}/with-name?isOrdered=${isOrdered}`, {
             method: "GET",
             headers: {
                 "accept": "application/json"
@@ -39,7 +39,7 @@ export const getProfessionSkillsWithNames = async (professionId: string, isOrder
 
 export const getProfessionSkillsWithNamesISR = async (professionId: string, isrDuration: number) => {
     return await fetch(
-        `${host}/api/professions-skills/${professionId}/with-name`, {
+        `${baseApiUrl}/professions-skills/${professionId}/with-name`, {
             method: "GET",
             headers: {
                 "accept": "application/json"
@@ -56,7 +56,7 @@ export const getProfessionSkillsWithNamesISR = async (professionId: string, isrD
 
 export const getProfessionSkill = async (professionId: string, skillId: string) => {
     return await fetch(
-        `${host}/api/professions-skills/${professionId}`, {
+        `${baseApiUrl}/professions-skills/${professionId}`, {
             method: "GET",
             headers: {
                 "accept": "application/json"

@@ -1,11 +1,11 @@
-import { host } from "./host";
+import { baseApiUrl } from "./baseApiUrl";
 
 export interface SkillRequest {
   name: string;
 }
 
 export const getAllSkills = async () => {
-  return await fetch(`${host}/api/skills`, {
+  return await fetch(`${baseApiUrl}/skills`, {
     method: "GET",
     headers: {
       "accept": "application/json",
@@ -20,7 +20,7 @@ export const getAllSkills = async () => {
 };
 
 export const getSkillById = async (id:string) => {
-  return await fetch(`${host}/api/skills/${id}`, {
+  return await fetch(`${baseApiUrl}/skills/${id}`, {
     method: "GET",
     headers: {
         "accept": "application/json",
@@ -35,7 +35,7 @@ export const getSkillById = async (id:string) => {
 };
 
 export const createSkill = async (skillRequest: SkillRequest) => {
-    await fetch(`${host}/api/skills`, {
+    await fetch(`${baseApiUrl}/api/skills`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -49,7 +49,7 @@ export const createSkill = async (skillRequest: SkillRequest) => {
 };
 
 export const updateSkill = async (id: string, skillRequest: SkillRequest) => {
-    await fetch(`${host}/api/skills/${id}`, {
+    await fetch(`${baseApiUrl}/skills/${id}`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
@@ -64,7 +64,7 @@ export const updateSkill = async (id: string, skillRequest: SkillRequest) => {
 };
 
 export const deleteSkill = async (id: string) => {
-    await fetch(`${host}/api/skills/${id}`, {
+    await fetch(`${baseApiUrl}/skills/${id}`, {
         method: "DELETE",
     })
         .then(response => {

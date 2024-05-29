@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { AlignType } from 'rc-table/lib/interface';
-import { useEffect, useState } from 'react';
 
 interface Props {
   values: ProfessionSkillWithName[];
