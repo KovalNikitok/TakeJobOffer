@@ -359,15 +359,18 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-#Docker compose files
-*.env*
-
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/TakeJobOffer.DAL/Migrations
-/TakeJobOffer.DAL/Repositories/ProfessionsSkillsRepository.cs
-/TakeJobOffer.Domain/Abstractions/IProfessionsSkillsRepository.cs
-/TakeJobOffer.Domain/Models/ProfessionSkills.cs
-/Frontend/frontend projects and logo
-/Frontend/takejobofferfrontend/app/frog-pages
-/Frontend/takejobofferfrontend/app/components/frog-components
+/TakeJobOffer.DAL
+/TakeJobOffer.DAL/Configurations/Class1.cs
+/TakeJobOffer.DAL/Configurations/Class1.cs
+/TakeJobOffer.DAL/Configurations/ProfessionConfiguration.cs
+/TakeJobOffer.DAL/Configurations/ProfessionsSkillsConfiguration.cs
+/TakeJobOffer.DAL/Configurations/SkillConfiguration.cs
+/TakeJobOffer.DAL/Entities/ProfessionEntity.cs
+/TakeJobOffer.DAL/Entities/ProfessionsSkillsEntity.cs
+/TakeJobOffer.DAL/Entities/SkillEntity.cs
+/TakeJobOffer.DAL/TakeJobOfferDbContext.cs
+/TakeJobOffer.Domain/Abstractions/Error.cs
+/Frontend/takejobofferfrontend/.next
+/.env.production
