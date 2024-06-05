@@ -7,136 +7,160 @@ networks:
         driver: bridge
 
 services:
-  postgres:
-    container_name: postgres
-    image: postgres:16.3-alpine3.19
-    deploy:
-        resources:
-            limits:
-                cpus: '0.15'
-                memory: 64M
-    volumes:
-        - postgres-data:/var/lib/postgresql/data
-    restart: always
-    environment:
-        POSTGRES_DB: ${POSTGRES_DB}
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    networks:
-        - backend_network
-    healthcheck:
-        test: 'pg_isready -U ${POSTGRES_USER}'
-        interval: 5s
-        timeout: 3s
-        retries: 5
-  redis_cache:
-    container_name: redis_cache
-    image: redis:7.2.4-alpine
-    deploy:
-        resources:
-            limits:
-                cpus: '0.1'
-                memory: 96M
-    restart: always
-    environment:
-        REDIS_PORT: ${REDIS_CACHE_PORT}
-        REDIS_DATABASES: ${REDIS_CACHE_DATABASES}
-    command: redis-server --save 60 10
-    networks:
-        - backend_network
-  backend:
-    container_name: backend_takejoboffer
-    build:
-        context: .
-        dockerfile: /TakeJobOffer.API/API.Dockerfile
-    deploy:
-        resources:
-            limits:
-                cpus: '0.25'
-                memory: 256M
-    restart: always
-    environment:
-        ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
-        ASPNETCORE_HTTPS_PORTS: ${ASPNETCORE_HTTPS_PORTS}
-        ASPNETCORE_HTTP_PORTS: ${ASPNETCORE_HTTP_PORTS}
-        ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
-        ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
-    networks:
-        - frontend_network
-        - backend_network
-    volumes:
-        - ~/.aspnet/https:/home/app/.aspnet/https:ro
-    depends_on:
-        postgres:
-            condition: service_healthy
-            restart: true
-        redis_cache:
-            condition: service_started
-            restart: true
-    healthcheck:
-        test: curl --fail http://localhost:${ASPNETCORE_HTTP_PORTS}/health || exit 1
-        interval: 6s
-        timeout: 3s
-        retries: 5
-        start_period: 3s
-  frontend:
-    container_name: frontend_takejoboffer
-    build:
-        context: ./Frontend/takejobofferfrontend
-        dockerfile: Frontend.Dockerfile
-    restart: always
-    deploy:
-        resources:
-            limits:
-                cpus: '0.2'
-                memory: 128M
-    networks:
-        - frontend_network
-    depends_on:
-        backend:
-            condition: service_healthy
-            restart: true
-  nginx:
-    image: nginx:1.25.5-alpine
-    container_name: nginx
-    restart: always
-    deploy:
-        resources:
-            limits:
-                cpus: '0.1'
-                memory: 32M
-    ports:
-        - "80:80"
-        - "443:443"
-    volumes:
-        - ./ReverseProxy/static:/static
-        - ./ReverseProxy/nginx/Production:/etc/nginx/conf.d/
-        - www-html:/var/www/html/:ro
-        - ssl-crt:/etc/nginx/ssl/:ro
-    depends_on:
-        backend:
-            condition: service_healthy
-            restart: true
-        frontend:
-            condition: service_started
-            restart: true
-    networks:
-        - frontend_network
-  certbot:
-    image: certbot/certbot:latest
-    container_name: certbot
-    deploy:
-        resources:
-            limits:
-                cpus: '0.05'
-                memory: 16M
-    depends_on:
-        - nginx
-    volumes:
-        - www-html:/var/www/html/:rw
-        - ssl-crt:/etc/sslcert/:rw
-    command: certonly --webroot --webroot-path=/var/www/html --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email --staging -d takejoboffer.ru
+    postgres:
+          container_name: postgres
+          image: postgres:16.3-alpine3.19
+          deploy:
+              resources:
+                  limits:
+                      cpus: '0.05'
+                      memory: 48M
+          volumes:
+              - postgres-data:/var/lib/postgresql/data
+          restart: always
+          environment:
+              POSTGRES_DB: ${POSTGRES_DB}
+              POSTGRES_USER: ${POSTGRES_USER}
+              POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+          networks:
+              - backend_network
+          healthcheck:
+              test: 'pg_isready -U ${POSTGRES_USER}'
+              interval: 5s
+              timeout: 3s
+              retries: 5
+    redis_cache:
+          container_name: redis_cache
+          image: redis:7.2.4-alpine
+          deploy:
+              resources:
+                  limits:
+                      cpus: '0.05'
+                      memory: 64M
+          restart: always
+          environment:
+              REDIS_PORT: ${REDIS_CACHE_PORT}
+              REDIS_DATABASES: ${REDIS_CACHE_DATABASES}
+          command: redis-server --save 60 10
+          networks:
+              - backend_network
+    backend:
+          container_name: backend_takejoboffer
+          image: nikitakovalwork/takejoboffer_backend:latest
+          deploy:
+              resources:
+                  limits:
+                      cpus: '0.2'
+                      memory: 160M
+          restart: always
+          environment:
+              ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+              ASPNETCORE_HTTPS_PORTS: ${ASPNETCORE_HTTPS_PORTS}
+              ASPNETCORE_HTTP_PORTS: ${ASPNETCORE_HTTP_PORTS}
+              ConnectionStrings__TakeJobOfferDbContext: ${ASPNETCORE_ConnectionString_DB}
+              ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
+              ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
+          networks:
+              - frontend_network
+              - backend_network
+          volumes:
+              - ~/.aspnet/https:${BACKEND_VOL_PATH}:ro
+          depends_on:
+              postgres:
+                  condition: service_healthy
+                  restart: true
+              redis_cache:
+                  condition: service_started
+                  restart: true
+          healthcheck:
+              test: curl --fail http://localhost:${ASPNETCORE_HTTP_PORTS}/health || exit 1
+              interval: 5s
+              timeout: 3s
+              retries: 5
+              start_period: 500ms
+    frontend:
+          container_name: frontend_takejoboffer
+          image: nikitakovalwork/takejoboffer_frontend:latest
+          restart: always
+          deploy:
+              resources:
+                  limits:
+                      cpus: '0.15'
+                      memory: 96M
+          networks:
+              - frontend_network
+          depends_on:
+              backend:
+                  condition: service_healthy
+                  restart: true
+    nginx:
+          image: nginx:1.25.5-alpine
+          container_name: nginx
+          restart: always
+          deploy:
+              resources:
+                  limits:
+                      cpus: '0.05'
+                      memory: 16M 
+          ports:
+              - "80:80"
+              - "443:443"
+          volumes:
+              - ./ReverseProxy/static:/static
+              - ./ReverseProxy/nginx/Production:/etc/nginx/conf.d/
+              - ./ReverseProxy/nginx/Production/nginx.conf:/etc/nginx/nginx.conf
+              - ssl-acme:/var/www/certbot:Z
+              - ssl-cert:/etc/letsencrypt:Z
+          depends_on:
+              frontend:
+                  condition: service_started
+                  restart: true
+              init-dhparams:
+                  condition: service_completed_successfully
+                  required: true
+              certbot-oneshot:
+                  condition: service_completed_successfully
+                  required: true
+          command: '/bin/sh -c ''while :; do sleep 24h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+          networks:
+              - frontend_network
+    certbot:
+          image: certbot/certbot:latest
+          container_name: certbot
+          entrypoint: /bin/sh
+          deploy:
+              resources:
+                  limits:
+                      cpus: '0.025'
+                      memory: 8M
+          command: -c 'trap exit TERM; while :; do certbot renew; sleep 72h && wait $${!}; done;'
+          depends_on:
+              nginx:
+                  condition: service_started
+                  required: true
+          volumes:
+              - ssl-acme:/var/www/certbot:Z
+              - ssl-cert:/etc/letsencrypt:Z
+    init-dhparams:
+          container_name: init_dhparams
+          image: certbot/certbot:latest
+          restart: "no"
+          entrypoint: /bin/sh
+          command: -c 'test -f /etc/letsencrypt/ssl-dhparams.pem || openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 4096'
+          volumes:
+              - ssl-cert:/etc/letsencrypt:Z
+    certbot-oneshot:
+          container_name: certbot-oneshot
+          image: certbot/certbot:latest
+          restart: "no"
+          entrypoint: /bin/sh
+          command: -c 'test -d /etc/letsencrypt/live/${BASE_DOMAIN} || certbot certonly --standalone --register-unsafely-without-email -d "${BASE_DOMAIN},www.${BASE_DOMAIN}" --rsa-key-size 2048 --agree-tos --force-renewal'
+          ports:
+              - 80:80
+          volumes:
+              - ssl-cert:/etc/letsencrypt:Z
+
 volumes:
     postgres-data:
-    ssl-crt:
-    www-html:
+    ssl-cert: {}
+    ssl-acme: {}
