@@ -46,7 +46,10 @@ services:
               - backend_network
     backend:
           container_name: backend_takejoboffer
-          image: nikitakovalwork/takejoboffer_backend:latest
+          # image: nikitakovalwork/takejoboffer_backend:latest
+          build:
+              context: .
+              dockerfile: /TakeJobOffer.API/API.Dockerfile
           deploy:
               resources:
                   limits:
@@ -80,7 +83,10 @@ services:
               start_period: 500ms
     frontend:
           container_name: frontend_takejoboffer
-          image: nikitakovalwork/takejoboffer_frontend:latest
+          # image: nikitakovalwork/takejoboffer_frontend:latest
+          build:
+              context: ./Frontend/Web
+              dockerfile: Frontend.Dockerfile
           restart: always
           deploy:
               resources:
@@ -107,7 +113,7 @@ services:
               - "443:443"
           volumes:
               - ./ReverseProxy/static:/static
-              - ./ReverseProxy/nginx/Production:/etc/nginx/conf.d/
+              - ./ReverseProxy/nginx/Production/default.conf:/etc/nginx/conf.d/default.conf
               - ./ReverseProxy/nginx/Production/nginx.conf:/etc/nginx/nginx.conf
               - ssl-acme:/var/www/certbot:Z
               - ssl-cert:/etc/letsencrypt:Z
@@ -162,5 +168,5 @@ services:
 
 volumes:
     postgres-data:
-    ssl-cert: {}
-    ssl-acme: {}
+    ssl-cert:
+    ssl-acme:

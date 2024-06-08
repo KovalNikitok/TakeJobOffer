@@ -13,8 +13,8 @@ services:
     deploy:
         resources:
             limits:
-                cpus: '0.15'
-                memory: 64M
+                cpus: '0.05'
+                memory: 48M
     volumes:
         - postgres-data:/var/lib/postgresql/data
     restart: always
@@ -38,8 +38,8 @@ services:
     deploy:
         resources:
             limits:
-                cpus: '0.1'
-                memory: 96M
+                cpus: '0.05'
+                memory: 64M
     restart: always
     environment:
         REDIS_PORT: 6379
@@ -49,8 +49,6 @@ services:
         - "6379:6379"
     networks:
         - backend_network
-    volumes: 
-        - redis-data:/var/lib/data
   backend:
     container_name: backend_takejoboffer
     build:
@@ -59,8 +57,8 @@ services:
     deploy:
         resources:
             limits:
-                cpus: '0.25'
-                memory: 256M
+                cpus: '0.2'
+                memory: 160M
     restart: always
     ports:
         - "8080:8080"
@@ -70,7 +68,7 @@ services:
         ASPNETCORE_HTTPS_PORTS: 8081
         ASPNETCORE_HTTP_PORTS: 8080
         ASPNETCORE_Kestrel__Certificates__Default__Password: 123
-        ASPNETCORE_Kestrel__Certificates__Default__Path: /home/app/.aspnet/https/TakeJobOffer.API.pfx
+        ASPNETCORE_Kestrel__Certificates__Default__Path: /home/app/.aspnet/https/takejoboffer.ru.pfx
     volumes:
         - ~/.aspnet/https:/home/app/.aspnet/https:ro
     depends_on:
@@ -82,24 +80,24 @@ services:
             restart: true
     healthcheck:
         test: curl --fail http://localhost:8080/health || exit 1
-        interval: 6s
+        interval: 5s
         timeout: 3s
         retries: 5
-        start_period: 1s
+        start_period: 500ms
     networks:
         - frontend_network
         - backend_network
   frontend:
     container_name: frontend_takejoboffer
     build:
-        context: ./Frontend/takejobofferfrontend
+        context: ./Frontend/Web
         dockerfile: Frontend.Dockerfile
     restart: always
     deploy:
         resources:
             limits:
-                cpus: '0.2'
-                memory: 128M
+                cpus: '0.15'
+                memory: 96M
     ports:
         - "3000:3000"
     depends_on: 
@@ -115,16 +113,16 @@ services:
     deploy:
         resources:
             limits:
-                cpus: '0.1'
-                memory: 32M
+                cpus: '0.05'
+                memory: 16M
     ports:
         - "80:80"
         - "443:443"
     volumes:
         - ./ReverseProxy/static:/static
         - ./ReverseProxy/nginx/Development:/etc/nginx/conf.d/
-        - www-html:/var/www/html/:ro
-        - ssl-crt:/etc/nginx/ssl/:ro
+        - ssl-acme:/var/www/certbot:ro
+        - ssl-cert:/etc/letsencrypt:ro
     depends_on:
         backend:
             condition: service_healthy
@@ -137,6 +135,5 @@ services:
 
 volumes:
     postgres-data:
-    redis-data:
-    www-html:
-    ssl-crt:
+    ssl-acme:
+    ssl-cert:
