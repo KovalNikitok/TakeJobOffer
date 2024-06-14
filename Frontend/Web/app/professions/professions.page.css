@@ -1,9 +1,10 @@
 .cards__professions {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     width: 100%;
     padding-top: 30px;
-    gap: 30px 20px;
+    padding-bottom: 30px;
+    grid-gap: 30px 20px;
   }
 
 .card__scaling {
@@ -22,7 +23,13 @@
   flex-direction: row;
   justify-content: center;
   gap: 15px;
-  margin-top: 20px;
+  line-height: 20px !important;
   font-size: 16px;
 }
-
+.card__scaling > .card__title {
+  text-align: center;
+  font-size: 18px;
+}
+.card__scaling > p.card__descr {
+  text-align: center;
+}

@@ -33,14 +33,16 @@
 
 .card__name {
   margin-right: 20px;
-  max-width: 80%;
+  max-width: 100%;
   white-space: normal;
+  font-size: 17px;
 }
 
 .card__description {
-  margin-right: 20px;
-  max-width: 80%;
+  max-width: 100%;
   white-space: normal;
+  font-size: 13px;
+  text-align: right;
 }
 
 .ant__title {
@@ -99,7 +101,7 @@
 }
 
 .header__layout > .menu__layout .ant-menu-overflow-item {
-  padding: .0rem 1rem;
+  padding: .0rem 0.9rem;
 }
 
 .header__layout > .menu__layout  a, div.ant-menu-submenu a  {
@@ -129,10 +131,40 @@ div.footer__div-refs {
   position: relative;
   justify-content: center;
   display: grid;
-  grid-template-columns: repeat(4, 0.06fr);
+  grid-template-columns: repeat(4, 4rem);
 }
 
 div h5.footer__h5 {
   margin-top: 1%;
   user-select: none;
 }
+
+@media screen and (max-width:760px) {
+  .header__layout > .menu_layout_right {
+    display: none !important;
+  }
+
+  .header__layout > .menu__layout .ant-menu-overflow-item {
+    font-size: 0.86rem !important;
+    font-weight: 350 !important;
+    padding: .0rem 0.5rem !important;
+  }
+
+  .header__layout > .menu__layout  a, div.ant-menu-submenu a  {
+    color: #fff !important;
+    font-size: 0.86rem !important;
+  }
+
+  .content, .ant-layout-content {
+    position: relative;
+    background-color: #e9ebee;
+    padding: 0 20px;
+  }
+
+  div.footer__div-refs {
+    position: relative;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, 4rem);
+  }
+} 

@@ -65,3 +65,28 @@
     margin-bottom: 2%;
 }
 
+@media screen and (max-width:520px) {
+    .contacts__h2 {
+        text-align: center;
+        line-height: 25px !important;
+        font-weight: 300 !important;
+        font-size: 18px !important;
+        user-select: none;
+    }
+    .contacts__h3 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 20px !important;
+        font-weight: 400 !important;
+        color: #201E1E !important;
+        text-decoration: none !important;
+        line-height: 20px !important;
+    }
+
+    .contacts__link-sn {
+        font-size: 16px;
+        margin-right: 5px !important;
+        margin-left: 5px !important;
+    }
+}

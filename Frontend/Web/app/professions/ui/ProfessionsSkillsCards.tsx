@@ -13,11 +13,11 @@ export const ProfessionsSkillsCards = ({professions}: Props) => {
             {professions.map((profession: ProfessionWithSlug) => (
                 <Link key={profession.slug} href={`/professions/${profession.slug}`}>
                     <Card className="card__scaling" key={profession.id} title={
-                            <CardTitle name={profession.name} description={profession.description}/>
+                            <CardTitle name={profession.name} description=""/>
                         }
                         bordered={false}
                     >
-                        <p>{profession.description}</p>
+                        <p className="card__descr">{profession.description}</p>
                         <div className="card__notify">
                             Смотри требования
                         </div>
