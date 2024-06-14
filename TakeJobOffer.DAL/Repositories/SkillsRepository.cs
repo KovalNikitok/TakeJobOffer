@@ -27,6 +27,26 @@ namespace TakeJobOffer.DAL.Repositories
             return skills;
         }
 
+        public async Task<Skill?> GetSkillByName(string name)
+        {
+            var skillEntity = await _dbContext.Skills
+                .AsNoTracking()
+                .Where(i => i.Name == name)
+                .FirstOrDefaultAsync();
+
+            if(skillEntity == null) 
+                return null;
+
+            var skill = Skill.Create(
+                skillEntity.Id,
+                skillEntity.Name);
+
+            if (skill.IsSuccess)
+                return skill.Value;
+
+            return null;
+        }
+
         public async Task<Skill?> GetSkillById(Guid id)
         {
             var skillEntity = await _dbContext.Skills

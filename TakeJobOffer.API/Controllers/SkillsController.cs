@@ -58,6 +58,21 @@ namespace TakeJobOffer.API.Controllers
             return Ok(skillResponse);
         }
 
+        [HttpGet("{name:string}")]
+        public async Task<ActionResult<SkillResponse>> GetSkill(string name)
+        {
+            var skill = await _skillsService.GetSkillByName(name);
+
+            if (skill == null)
+            {
+                return NotFound();
+            }
+
+            var skillResponse = new SkillResponse(skill.Id, skill.Name);
+
+            return Ok(skillResponse);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Guid>> CreateSkill([FromBody] SkillRequest skillRequest)
         {

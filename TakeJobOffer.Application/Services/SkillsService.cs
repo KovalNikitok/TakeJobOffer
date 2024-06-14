@@ -22,6 +22,11 @@ namespace TakeJobOffer.Application.Services
             return await _skillsRepository.GetSkillById(id);
         }
 
+        public async Task<Skill?> GetSkillByName(string name)
+        {
+            return await _skillsRepository.GetSkillByName(name);
+        }
+
         public async Task<Guid> CreateSkill(Skill skill)
         {
             return await _skillsRepository.CreateSkill(skill);
