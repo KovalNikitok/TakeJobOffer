@@ -26,7 +26,7 @@ export default function ProfessionSkillsClient({ slug }: ProfessionSkillsProps) 
           setProfessionSkills(professionSkills);
           setLoading(false);
       }
-      
+
       getSkillsByProfessionSlug();
     }, []);
   
