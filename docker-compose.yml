@@ -46,7 +46,6 @@ services:
               - backend_network
     backend:
           container_name: backend_takejoboffer
-          # image: nikitakovalwork/takejoboffer_backend:latest
           build:
               context: .
               dockerfile: /TakeJobOffer.API/API.Dockerfile
@@ -83,7 +82,6 @@ services:
               start_period: 500ms
     frontend:
           container_name: frontend_takejoboffer
-          # image: nikitakovalwork/takejoboffer_frontend:latest
           build:
               context: ./Frontend/Web
               dockerfile: Frontend.Dockerfile
@@ -99,6 +97,33 @@ services:
               backend:
                   condition: service_healthy
                   restart: true
+    hh-analyzer:
+            container_name: hh-analyzer
+            build:
+                context: ./../hh-analyzer
+                dockerfile: HH-Analyzer.Dockerfile
+            restart: always
+            environment:
+              ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+              ASPNETCORE_HHApiSettings__ConnectionString: ${ASPNETCORE_HHApiSettings__ConnectionString}
+              ASPNETCORE_HHApiSettings__AccessToken: ${ASPNETCORE_HHApiSettings__AccessToken}
+              ASPNETCORE_HHApiSettings__Agent: ${ASPNETCORE_HHApiSettings__Agent}
+              ASPNETCORE_TakeJobOfferApiSettings__ConnectionString: ${ASPNETCORE_TakeJobOfferApiSettings__ConnectionString}
+            deploy:
+              resources:
+                  limits:
+                      cpus: '0.2'
+                      memory: 64M
+            networks:
+                - frontend_network
+                - backend_network
+            depends_on:
+                backend:
+                    condition: service_healthy
+                    restart: true
+                nginx:
+                    condition: service_started
+                    required: true
     nginx:
           image: nginx:1.25.5-alpine
           container_name: nginx
