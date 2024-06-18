@@ -105,10 +105,10 @@ services:
             restart: always
             environment:
               ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
-              ASPNETCORE_HHApiSettings__ConnectionString: ${ASPNETCORE_HHApiSettings__ConnectionString}
-              ASPNETCORE_HHApiSettings__AccessToken: ${ASPNETCORE_HHApiSettings__AccessToken}
-              ASPNETCORE_HHApiSettings__Agent: ${ASPNETCORE_HHApiSettings__Agent}
-              ASPNETCORE_TakeJobOfferApiSettings__ConnectionString: ${ASPNETCORE_TakeJobOfferApiSettings__ConnectionString}
+              HHApiSettings__ConnectionString: ${HHANALYZER_HHApiSettings__ConnectionString}
+              HHApiSettings__AccessToken: ${HHANALYZER_HHApiSettings__AccessToken}
+              HHApiSettings__Agent: ${HHANALYZER_HHApiSettings__Agent}
+              TakeJobOfferApiSettings__ConnectionString: ${HHANALYZER_TakeJobOfferApiSettings__ConnectionString}
             deploy:
               resources:
                   limits:
