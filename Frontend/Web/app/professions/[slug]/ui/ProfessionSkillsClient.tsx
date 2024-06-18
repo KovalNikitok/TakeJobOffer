@@ -14,16 +14,16 @@ interface ProfessionSkillsProps {
 
 export default function ProfessionSkillsClient({ slug }: ProfessionSkillsProps) {
     const [professionSkills, setProfessionSkills] = useState<ProfessionSkillWithName[]>([]);
-    const [profession, setProfession] = useState<Profession>();
+    const [profession, setProfession] = useState<Profession>({} as Profession);
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
       const getSkillsByProfessionSlug = async () => {
           const professionWithSlug = await getProfessionBySlug(slug);
-          const professionSkills = await getProfessionSkillsWithNames(professionWithSlug.id, true);
+          const professionSkillsFetched = await getProfessionSkillsWithNames(professionWithSlug.id, true);
           
           setProfession(professionWithSlug);
-          setProfessionSkills(professionSkills);
+          setProfessionSkills(professionSkillsFetched);
           setLoading(false);
       }
 
@@ -36,7 +36,7 @@ export default function ProfessionSkillsClient({ slug }: ProfessionSkillsProps) 
           loading ? (
             <Loading></Loading>
           ) : (
-            <ProfessionSkills values={professionSkills} />
+            <ProfessionSkills values={professionSkills} profession={profession}/>
           )
         }
       </div>

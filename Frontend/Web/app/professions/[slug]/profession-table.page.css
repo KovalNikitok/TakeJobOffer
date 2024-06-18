@@ -26,3 +26,17 @@
 .table-operations > button {
   margin-right: 8px !important;
 }
+
+.ps__table__div {
+  margin: 1%;
+}
+
+.ps__table__h2 {
+  padding-bottom: 2%;
+}
+
+.ps__table_p {
+  font-size: 14px;
+  font-weight: 500;
+  padding-bottom: 8%;
+}

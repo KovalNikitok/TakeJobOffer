@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { AlignType } from 'rc-table/lib/interface';
+import CurrentDate from './CurrentDate';
 
 interface Props {
   values: ProfessionSkillWithName[];
+  profession: Profession;
 }
 
 interface ProfessionSkillColumnProps {
@@ -11,9 +13,10 @@ interface ProfessionSkillColumnProps {
   mentionCount: number;
 }
 
-export const ProfessionSkillsTable = ({ values }: Props) => {
+export const ProfessionSkillsTable = ({ values, profession}: Props) => {
     const [professionSkills, setProfessionSkills] = useState(values);
     const [columnsData, setColunmsData] = useState<ProfessionSkillColumnProps[]>([]);
+    const [professionValue, setProfession] = useState<Profession>(profession);
 
     useEffect(() => {
       SetColumnsProps();
@@ -33,7 +36,7 @@ export const ProfessionSkillsTable = ({ values }: Props) => {
       {
         title: 'Навык',
         dataIndex: 'name',
-        width: 250,
+        width: 300,
       },
       {
         title: 'Упоминаний',
@@ -45,10 +48,14 @@ export const ProfessionSkillsTable = ({ values }: Props) => {
     ];
     
     return (
-      <Table 
-        columns={columns} 
-        dataSource={columnsData} 
-        pagination={{ pageSize: 10 }}
-      />
+      <div className="ps__table__div">
+        <h2 className="ps__table__h2">Требования по навыкам на позицию {profession.description}</h2>
+        <p className="ps__table_p">Анализ требований был произведён на момент {CurrentDate()}</p>
+        <Table 
+          columns={columns} 
+          dataSource={columnsData} 
+          pagination={{ pageSize: 10, showSizeChanger: false}}
+        />
+      </div>
     );
 }

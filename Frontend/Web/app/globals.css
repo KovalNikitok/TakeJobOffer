@@ -32,7 +32,7 @@
 }
 
 .card__name {
-  margin-right: 20px;
+  margin-right: 22px;
   max-width: 100%;
   white-space: normal;
   font-size: 20px;
@@ -85,6 +85,16 @@
   position: relative;
   height: 3rem !important;
   line-height: 3rem !important;
+}
+
+.menu__layout li span a{
+  color: #fff !important;
+  font-size: 1rem;
+  transition: color 0.2s ease !important;
+}
+
+.menu__layout li span a:hover{
+  color: #a0a5aa !important;
 }
 
 .header__layout {
@@ -149,6 +159,15 @@ div h5.footer__h5 {
     font-size: 0.86rem !important;
     font-weight: 350 !important;
     padding: .0rem 0.5rem !important;
+  }
+  .menu__layout li span a{
+    color: #fff !important;
+    font-size: 1rem;
+    transition: color 0.2s ease !important;
+  }
+  
+  .menu__layout li span a:hover{
+    color: #a0a5aa !important;
   }
 
   .header__layout > .menu__layout  a, div.ant-menu-submenu a  {
