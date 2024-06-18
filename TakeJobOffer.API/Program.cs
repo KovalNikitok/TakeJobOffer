@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
@@ -65,8 +64,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapHealthChecks("/health");
-
-// app.UseHttpsRedirection();
 
 app.UseCors();
 
