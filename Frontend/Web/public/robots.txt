@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin
+Disallow: /private
+Disallow: /scripts
+Disallow: /old
+Allow: /
+Sitemap: https://takejoboffer.ru/sitemap.xml

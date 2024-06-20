@@ -1,0 +1,21 @@
+{
+    "name": "TakeJobOffer",
+    "short_name": "TakeJobOffer",
+    "description": "TakeJobOffer — ваш лучший помощник в создании резюме и поиске работы. Наши инструменты и советы помогут вам выделиться среди соискателей и найти идеальную работу быстрее. Становтесь одним из наших пользователей уже сегодня!",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#343a40",
+    "background_color": "#343a40",
+    "start_url": "https://takejoboffer.ru",
+    "display": "standalone"
+}

@@ -19,18 +19,20 @@ export const ProfessionSkillsTable = ({ values, profession}: Props) => {
     const [professionValue, setProfession] = useState<Profession>(profession);
 
     useEffect(() => {
+      const SetColumnsProps = () => {
+        const columnsProps: ProfessionSkillColumnProps[] = [];
+        professionSkills.map((professionSkill) => {
+          let col: ProfessionSkillColumnProps = {name: professionSkill.name, mentionCount: professionSkill.mentionCount};
+          columnsProps.push(col);
+        });
+  
+        setColunmsData(columnsProps);
+      };
+
       SetColumnsProps();
-    }, []);
+    }, [professionSkills]);
 
-    const SetColumnsProps = () => {
-      const columnsProps: ProfessionSkillColumnProps[] = [];
-      professionSkills.map((professionSkill) => {
-        let col: ProfessionSkillColumnProps = {name: professionSkill.name, mentionCount: professionSkill.mentionCount};
-        columnsProps.push(col);
-      });
-
-      setColunmsData(columnsProps);
-    };
+    
 
     const columns = [
       {

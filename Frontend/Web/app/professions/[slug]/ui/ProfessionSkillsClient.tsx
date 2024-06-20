@@ -28,7 +28,7 @@ export default function ProfessionSkillsClient({ slug }: ProfessionSkillsProps) 
       }
 
       getSkillsByProfessionSlug();
-    }, []);
+    }, [slug]);
   
     return (
       <div>

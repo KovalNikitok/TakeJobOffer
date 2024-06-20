@@ -1,10 +1,13 @@
-import './home.page.css';
+import './home/home.page.css';
 
 import { Image, Button, Row, Col } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import Link from "antd/es/typography/Link";
 import Paragraph from 'antd/es/typography/Paragraph';
 import Title from 'antd/es/typography/Title';
+import { metadata } from './home/ui/HomeHeadComponent';
+
+export { metadata };
 
 export default function Home() {
   return (
@@ -28,7 +31,7 @@ export default function Home() {
             <Link href="/professions">
               <Image 
                 src="https://img.freepik.com/premium-photo/group-people-collaborating-working-together-around-laptop-table_956369-4884.jpg"
-                alt="Профессии"
+                alt="Требования для профессий по навыкам"
                 className="image-professions"
                 preview={false}
               >

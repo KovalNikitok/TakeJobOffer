@@ -3,6 +3,9 @@ import "./contacts.page.css";
 import Link from "antd/es/typography/Link";
 import { Content } from 'antd/es/layout/layout';
 import { List } from "antd";
+import { metadata } from "./ui/ContactsHeadComponent";
+
+export { metadata };
 
 export default function ProfessionsPage() {
     const linksHeight = 100;
