@@ -145,11 +145,11 @@ namespace TakeJobOffer.API.Controllers
             return Ok(updatedProfessionsId);
         }
 
-        [HttpDelete("{professionId:guid}")]
+        [HttpDelete("{professionId:guid}/{professionSkillId:guid}")]
         public async Task<ActionResult<Guid>> DeleteProfessionSkill(Guid professionId, 
-            [FromBody] ProfessionSkillRequest professionSkillResult)
+            Guid professionSkillId)
         {
-            var profId = await _professionSkillsService.DeleteSkillForProfessionById(professionId, professionSkillResult.SkillId);
+            var profId = await _professionSkillsService.DeleteSkillForProfessionById(professionId, professionSkillId);
 
             return Ok(profId);
         }
