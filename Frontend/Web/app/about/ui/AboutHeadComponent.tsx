@@ -9,5 +9,5 @@ export const metadata: Metadata = {
             url: 'https://takejoboffer.ru/about',
             type: 'article'
         },
-        keywords: ['О НАС', 'takejoboffer', 'О TAKEJOBOFFER']
+        keywords: ['О НАС', 'takejoboffer', 'TakeJobOffer', 'О TAKEJOBOFFER']
     };
