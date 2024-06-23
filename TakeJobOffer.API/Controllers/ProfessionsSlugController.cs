@@ -9,12 +9,15 @@ using TakeJobOffer.Domain.Models;
 namespace TakeJobOffer.API.Controllers
 {
     [Route("~/api/professions-slug")]
-    public class ProfessionsSlugController(IProfessionsSlugService professionsSlugService, IDistributedCache cache) : ApiController
+    public class ProfessionsSlugController(
+        IProfessionsSlugService professionsSlugService,
+        IDistributedCache cache) 
+        : ApiController
     {
         private readonly IProfessionsSlugService _professionsSlugService = professionsSlugService;
         private readonly IDistributedCache _cache = cache;
-
-        [HttpGet()]
+        
+        [HttpGet]
         public async Task<ActionResult<List<ProfessionSlugResponse?>?>> GetProfessionsSlug()
         {
             List<ProfessionSlugResponse?>? response;

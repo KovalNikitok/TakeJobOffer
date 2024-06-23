@@ -1,20 +1,16 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web;
 using TakeJobOffer.Application.Services;
 using TakeJobOffer.DAL;
 using TakeJobOffer.DAL.Repositories;
 using TakeJobOffer.DAL.Migrations;
 using TakeJobOffer.Domain.Abstractions;
-using Microsoft.AspNetCore.Routing.Constraints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
-
 builder.Services.AddHealthChecks();
-builder.Services.AddControllers();
+
+builder.Services.AddRouting();
+
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(opt =>
     {
@@ -22,11 +18,12 @@ builder.Services.AddCors(options =>
             opt.WithOrigins("nginx", "http://localhost:3000", "http://localhost:443", "null");
         else
             opt.WithOrigins("nginx", "www.takejoboffer.ru", "frontend:3000");
-        opt.WithMethods("GET", "POST", "PUT", "DELETE");
+        opt.AllowAnyMethod();
         opt.AllowAnyHeader();
         opt.AllowCredentials();
     }));
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -42,7 +39,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.InstanceName = "backend";
 });
 
-
 builder.Services.AddScoped<IProfessionsRepository, ProfessionsRepository>();
 builder.Services.AddScoped<ISkillsRepository, SkillsRepository>();
 builder.Services.AddScoped<IProfessionsSkillsRepository, ProfessionsSkillsRepository>();
@@ -54,7 +50,6 @@ builder.Services.AddScoped<IProfessionsSkillsService, ProfessionsSkillsService>(
 builder.Services.AddScoped<IProfessionsSlugService, ProfessionsSlugService>();
 
 
-
 var app = builder.Build();
 
 app.MigrateDatabase<TakeJobOfferDbContext, Program>();
@@ -64,12 +59,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.MapHealthChecks("/health");
 
-app.UseCors();
+app.UseRouting();
 
-app.UseAuthorization();
+app.UseCors();
 
 app.MapControllers();
 

@@ -9,11 +9,14 @@ using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
 {
-    public class SkillsController(ISkillsService skillsService, IDistributedCache cache) : ApiController
+    public class SkillsController(
+        ISkillsService skillsService,
+        IDistributedCache cache) 
+        : ApiController
     {
         private readonly ISkillsService _skillsService = skillsService;
         private readonly IDistributedCache _cache = cache;
-
+        
         [HttpGet]
         public async Task<ActionResult<List<SkillResponse>?>> GetSkills()
         {
@@ -43,6 +46,7 @@ namespace TakeJobOffer.API.Controllers
             return Ok(skillsResponse);
         }
 
+        
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<SkillResponse>> GetSkill(Guid id)
         {
@@ -58,7 +62,8 @@ namespace TakeJobOffer.API.Controllers
             return Ok(skillResponse);
         }
 
-        [HttpGet("{name:string}")]
+
+        [HttpGet("{name}")]
         public async Task<ActionResult<SkillResponse>> GetSkill(string name)
         {
             var skill = await _skillsService.GetSkillByName(name);
@@ -72,7 +77,6 @@ namespace TakeJobOffer.API.Controllers
 
             return Ok(skillResponse);
         }
-
         [HttpPost]
         public async Task<ActionResult<Guid>> CreateSkill([FromBody] SkillRequest skillRequest)
         {

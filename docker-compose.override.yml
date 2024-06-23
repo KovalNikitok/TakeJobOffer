@@ -28,10 +28,9 @@ services:
         - backend_network
     healthcheck:
         test: pg_isready -U $$POSTGRES_USER
-        interval: 5s
-        timeout: 3s
+        interval: 3s
+        timeout: 60s
         retries: 5
-        start_period: 3s
   redis_cache:
     container_name: redis_cache
     image: redis:7.2.4-alpine
@@ -81,9 +80,8 @@ services:
     healthcheck:
         test: curl --fail http://localhost:8080/health || exit 1
         interval: 5s
-        timeout: 3s
-        retries: 5
-        start_period: 500ms
+        timeout: 60s
+        retries: 10
     networks:
         - frontend_network
         - backend_network

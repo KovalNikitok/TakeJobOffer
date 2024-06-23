@@ -20,7 +20,8 @@ namespace TakeJobOffer.API.Controllers
         private readonly IDistributedCache _cache = cache;
 
         [HttpGet("{professionId:guid}")]
-        public async Task<ActionResult<List<ProfessionSkillResponse>?>> GetProfessionSkillsById(Guid professionId)
+        public async Task<ActionResult<List<ProfessionSkillResponse>?>> GetProfessionSkillsById(
+            Guid professionId)
         {
             List<ProfessionSkillResponse>? professionSkillsResponse;
 
@@ -29,7 +30,8 @@ namespace TakeJobOffer.API.Controllers
 
             if(!string.IsNullOrEmpty(professionsSkillsString))
             {
-                professionSkillsResponse = JsonSerializer.Deserialize<List<ProfessionSkillResponse>?>(professionsSkillsString);
+                professionSkillsResponse = JsonSerializer.Deserialize<List<ProfessionSkillResponse>?>(
+                    professionsSkillsString);
                 return Ok(professionSkillsResponse);
             }
 
@@ -51,7 +53,8 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpGet("{professionId:guid}/with-name")]
-        public async Task<ActionResult<List<ProfessionSkillWithNameResponse?>?>> GetProfessionSkillsWithNameById(Guid professionId,
+        public async Task<ActionResult<List<ProfessionSkillWithNameResponse?>?>> GetProfessionSkillsWithNameById(
+            Guid professionId,
             [FromQuery] bool isOrdered)
         {
             List<ProfessionSkillWithNameResponse?>? professionsSkillsResponse;
@@ -61,7 +64,8 @@ namespace TakeJobOffer.API.Controllers
 
             if (!string.IsNullOrEmpty(professionsSkillsString))
             {
-                professionsSkillsResponse = JsonSerializer.Deserialize<List<ProfessionSkillWithNameResponse?>?>(professionsSkillsString);
+                professionsSkillsResponse = JsonSerializer.Deserialize<List<ProfessionSkillWithNameResponse?>?>(
+                    professionsSkillsString);
             }
             else
             {
@@ -114,7 +118,8 @@ namespace TakeJobOffer.API.Controllers
             if (professionSkillResult.IsFailed)
                 return BadRequest(professionSkillResult.Errors);
 
-            var professionsId = await _professionSkillsService.CreateSkillForProfessionById(professionSkillResult.Value);
+            var professionsId = await _professionSkillsService.CreateSkillForProfessionById(
+                professionSkillResult.Value);
 
             return Ok(professionsId);
         }
@@ -145,14 +150,14 @@ namespace TakeJobOffer.API.Controllers
             return Ok(updatedProfessionsId);
         }
 
-        [HttpDelete("{professionId:guid}/{professionSkillId:guid}")]
+        [HttpDelete("{professionId:guid}/{psId:guid}")]
         public async Task<ActionResult<Guid>> DeleteProfessionSkill(
             Guid professionId,
-            Guid professionSkillId)
+            Guid psId)
         {
             var profId = await _professionSkillsService.DeleteSkillForProfessionById(
                 professionId,
-                professionSkillId);
+                psId);
 
             return Ok(profId);
         }

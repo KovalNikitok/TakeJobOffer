@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
-using System.Linq;
 using TakeJobOffer.API.Contracts;
-using TakeJobOffer.Application.Services;
 using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
 using TakeJobOffer.API.Configurations;
@@ -15,12 +13,13 @@ namespace TakeJobOffer.API.Controllers
         IProfessionsService professionsService,
         IProfessionsSlugService professionsSlugService,
         IDistributedCache cache)
-            : ApiController
+        : ApiController
     {
         private readonly IProfessionsService _professionsService = professionsService;
         private readonly IProfessionsSlugService _professionsSlugService = professionsSlugService;
         private readonly IDistributedCache _cache = cache;
 
+        
         [HttpGet]
         public async Task<ActionResult<List<ProfessionResponse>?>> GetProfessions()
         {
@@ -48,7 +47,7 @@ namespace TakeJobOffer.API.Controllers
 
             return Ok(professionsResponse);
         }
-
+        
         [HttpGet("with-slug")]
         public async Task<ActionResult<List<ProfessionWithSlugResponse>?>> GetProfessionsWithSlug()
         {
@@ -107,7 +106,7 @@ namespace TakeJobOffer.API.Controllers
 
             return Ok(professionResponse);
         }
-
+        
         [HttpGet("{id:guid}/with-slug")]
         public async Task<ActionResult<ProfessionResponse>?> GetProfessionByIdWithSlug(Guid id)
         {
@@ -234,6 +233,5 @@ namespace TakeJobOffer.API.Controllers
 
             return Ok(professionId);
         }
-
     }
 }
