@@ -6,11 +6,13 @@ using TakeJobOffer.DAL;
 using TakeJobOffer.DAL.Repositories;
 using TakeJobOffer.DAL.Migrations;
 using TakeJobOffer.Domain.Abstractions;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
 builder.Services.AddHealthChecks();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
@@ -70,6 +72,5 @@ app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 app.Run();
