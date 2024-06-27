@@ -1,5 +1,3 @@
-# TakeJobOffer
-
 <h1 align="center">
   <a href="https://takejoboffer.ru/">
     <img src="/Frontend/Web/public/favicon-32x32.png" alt="TakeJobOffer" width="32" height="32"/>
