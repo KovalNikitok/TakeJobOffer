@@ -1,8 +1,10 @@
 # TakeJobOffer
 
 <h1 align="center">
-  <img src="/Frontend/Web/public/favicon-32x32.png" alt="TakeJobOffer" width="32" height="32"/>
-  TakeJobOffer
+  <a href="https://takejoboffer.ru/">
+    <img src="/Frontend/Web/public/favicon-32x32.png" alt="TakeJobOffer" width="32" height="32"/>
+    TakeJobOffer
+  </a>
 </h1>
 
 [TakeJobOffer](https://takejoboffer.ru) — это веб-сайт, отображающий собранную аналитику по профессиям и навыкам, которые для них требуются. Наша цель - помочь соискателям работы с составлением резюме и его SEO-оптимизацией.
