@@ -21,7 +21,7 @@
 ## Требования
 - Docker
 - Docker Compose
-- Для сбора аналитики используется другой наш проект - [hh-analyzer] (https://github.com/KovalNikitok/hh-analyzer)
+- Для сбора аналитики используется другой наш проект - [hh-analyzer](https://github.com/KovalNikitok/hh-analyzer)
 
 ## Установка
 1. Клонируйте репозиторий:
