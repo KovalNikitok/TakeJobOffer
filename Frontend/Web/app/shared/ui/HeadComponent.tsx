@@ -33,18 +33,11 @@ export const metadata: Metadata = {
     ],
     manifest: '/manifest.webmanifest',
     keywords: ['работа', 'вакансии', 'поиск работы', 'профессия', 'профессии', 'поиск вакансий', 'резюме', 'работы', 'работу', 'работ', 'ищу работу', 'поиск', 'it работа', 'составление резюме'],
-    openGraph: {
-        siteName: 'TakeJobOffer',
-        images: [
-            {
-                url: 'https://img.freepik.com/premium-photo/group-people-collaborating-working-together-around-laptop-table_956369-4884.jpg',
-                width: 480,
-                height: 320,
-                alt: 'Требования для профессий по навыкам',
-            },
-        ],
-        locale: 'ru_RU',
-        type: 'website'
+    applicationName: 'TakeJobOffer',
+    appleWebApp: {
+        title: 'TakeJobOffer',
+        statusBarStyle: 'black-translucent',
+        startupImage: 'https://img.freepik.com/premium-photo/group-people-collaborating-working-together-around-laptop-table_956369-4884.jpg',
     }
 };
 
