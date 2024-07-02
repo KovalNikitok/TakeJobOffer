@@ -31,7 +31,7 @@ export default function Home() {
             <Link href="/professions">
               <Image 
                 src="https://img.freepik.com/premium-photo/group-people-collaborating-working-together-around-laptop-table_956369-4884.jpg"
-                alt="Требования для профессий по навыкам"
+                alt="TakeJobOffer - Требования для профессий по навыкам"
                 className="image-professions"
                 preview={false}
               >

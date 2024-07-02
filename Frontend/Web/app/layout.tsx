@@ -8,7 +8,6 @@ import { HeaderLayout } from "./shared/ui/HeaderLayout";
 import { FooterLayout } from "./shared/ui/FooterLayout";
 import { metadata, viewport } from "./shared/ui/HeadComponent";
 import Link from "antd/es/typography/Link";
-import Head from "next/head";
 
 const itemsLeft = [
   { key: "home", label: <Link href={"/"}>TakeJobOffer</Link> },

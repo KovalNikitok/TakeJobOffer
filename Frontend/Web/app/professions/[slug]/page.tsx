@@ -31,7 +31,10 @@ export async function generateMetadata ({ params }: { params: { slug: string } }
     openGraph: {
         title: `Требования по навыкам на позицию ${professionsWithSlug.description}`,
         description: `Узнайте требования по навыкам на позицию ${professionsWithSlug.description} и составьте продающее резюме!`,
-        url: `https://takejoboffer.ru/professions/${params.slug}`
+        url: `https://takejoboffer.ru/professions/${params.slug}`,
+        type: 'website',
+        locale: 'ru_RU',
+        siteName: 'TakeJobOffer',
     },
     keywords: ['TakeJobOffer', `${professionsWithSlug.name}`, `${professionsWithSlug.description}`,'работа', 'вакансии', 'поиск вакансий', 'резюме', 'работы', 'работу', 'работ', 'ищу работу', 'поиск', 'поиск работы', 'навыки для работы', 'навыки для резюме', 'навыки в резюме', 'it работа', 'составление резюме'],
   };
