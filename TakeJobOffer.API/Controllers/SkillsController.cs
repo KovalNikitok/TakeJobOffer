@@ -89,7 +89,7 @@ namespace TakeJobOffer.API.Controllers
 
             var skillId = await _skillsService.CreateSkill(skill.Value);
 
-            return CreatedAtAction("PostSkill", skillId);
+            return CreatedAtAction(nameof(CreateSkill), skillId);
         }
 
         [HttpPut("{id:guid}")]
