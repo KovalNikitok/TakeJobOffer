@@ -98,7 +98,7 @@ namespace TakeJobOffer.API.Controllers
 
             var id = await _professionsSlugService.CreateProfessionSlug(professionSlugResult.Value);
 
-            return Ok(id);
+            return CreatedAtAction("PostProfessionSlug", id);
         }
 
         [HttpPut("{id:guid}")]
@@ -107,7 +107,7 @@ namespace TakeJobOffer.API.Controllers
         {
             var responseId = await _professionsSlugService.UpdateProfessionSlug(id, professionSlugRequest.Slug);
 
-            return Ok(responseId);
+            return NoContent();
         }
 
         [HttpDelete("{id:guid}")]
@@ -115,7 +115,7 @@ namespace TakeJobOffer.API.Controllers
         {
             var responseId = await _professionsSlugService.DeleteProfessionSlug(id);
 
-            return Ok(responseId);
+            return NoContent();
         }
     }
 }
