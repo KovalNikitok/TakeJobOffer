@@ -98,7 +98,7 @@ namespace TakeJobOffer.API.Controllers
 
             var id = await _professionsSlugService.CreateProfessionSlug(professionSlugResult.Value);
 
-            return CreatedAtAction("PostProfessionSlug", id);
+            return CreatedAtAction(nameof(CreateProfessionSlug), id);
         }
 
         [HttpPut("{id:guid}")]

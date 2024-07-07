@@ -173,7 +173,7 @@ namespace TakeJobOffer.API.Controllers
 
             var professionId = await _professionsService.CreateProfession(professionResult.Value);
 
-            return CreatedAtAction("PostProfession", professionId);
+            return CreatedAtAction(nameof(PostProfession), professionId);
         }
 
         [HttpPost("with-slug")]
@@ -203,7 +203,7 @@ namespace TakeJobOffer.API.Controllers
             if (professionId == Guid.Empty)
                 return BadRequest("Profession already exist");
 
-            return CreatedAtAction("PostProfessionWithSlug", professionId);
+            return CreatedAtAction(nameof(PostProfessionWithSlug), professionId);
         }
 
         [HttpPut("{id:guid}")]

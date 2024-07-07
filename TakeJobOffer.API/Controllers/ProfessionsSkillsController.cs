@@ -121,7 +121,7 @@ namespace TakeJobOffer.API.Controllers
             var professionsId = await _professionSkillsService.CreateSkillForProfessionById(
                 professionSkillResult.Value);
 
-            return CreatedAtAction("PostProfessionSkill", professionsId);
+            return CreatedAtAction(nameof(PostProfessionSkill), professionsId);
         }
 
         [HttpPut("{professionId:guid}")]
