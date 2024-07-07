@@ -89,7 +89,7 @@ namespace TakeJobOffer.API.Controllers
 
             var skillId = await _skillsService.CreateSkill(skill.Value);
 
-            return Ok(skillId);
+            return CreatedAtAction("PostSkill", skillId);
         }
 
         [HttpPut("{id:guid}")]
@@ -97,7 +97,7 @@ namespace TakeJobOffer.API.Controllers
         {
             var skillId = await _skillsService.UpdateSkill(id, skillRequest.Name);
 
-            return Ok(skillId);
+            return NoContent();
         }
 
         [HttpDelete("{id:guid}")]
@@ -105,7 +105,7 @@ namespace TakeJobOffer.API.Controllers
         {
             var deletedSkillId = await _skillsService.DeleteSkill(id);
 
-            return Ok(deletedSkillId);
+            return NoContent();
         }
     }
 }

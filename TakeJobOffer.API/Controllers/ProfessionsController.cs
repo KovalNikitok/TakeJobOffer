@@ -173,7 +173,7 @@ namespace TakeJobOffer.API.Controllers
 
             var professionId = await _professionsService.CreateProfession(professionResult.Value);
 
-            return Ok(professionId);
+            return CreatedAtAction("PostProfession", professionId);
         }
 
         [HttpPost("with-slug")]
@@ -203,7 +203,7 @@ namespace TakeJobOffer.API.Controllers
             if (professionId == Guid.Empty)
                 return BadRequest("Profession already exist");
 
-            return Ok(professionId);
+            return CreatedAtAction("PostProfessionWithSlug", professionId);
         }
 
         [HttpPut("{id:guid}")]
@@ -211,7 +211,7 @@ namespace TakeJobOffer.API.Controllers
         {
             var professionId = await _professionsService.UpdateProfession(id, professionRequest.Name, professionRequest.Description);
 
-            return Ok(professionId);
+            return NoContent();
         }
 
         [HttpPut("{id:guid}/with-slug")]
@@ -223,7 +223,7 @@ namespace TakeJobOffer.API.Controllers
             if (professionSlug is not null && professionSlug.Slug != professionRequest.Slug)
                 await _professionsSlugService.UpdateProfessionSlug(professionSlug.Id, professionRequest.Slug);
 
-            return Ok(professionId);
+            return NoContent();
         }
 
         [HttpDelete("{id:guid}")]
@@ -231,7 +231,7 @@ namespace TakeJobOffer.API.Controllers
         {
             var professionId = await _professionsService.DeleteProfession(id);
 
-            return Ok(professionId);
+            return NoContent();
         }
     }
 }
