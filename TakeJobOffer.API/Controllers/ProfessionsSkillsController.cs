@@ -121,7 +121,7 @@ namespace TakeJobOffer.API.Controllers
             var professionsId = await _professionSkillsService.CreateSkillForProfessionById(
                 professionSkillResult.Value);
 
-            return Ok(professionsId);
+            return CreatedAtAction("PostProfessionSkill", professionsId);
         }
 
         [HttpPut("{professionId:guid}")]
@@ -147,7 +147,7 @@ namespace TakeJobOffer.API.Controllers
             if (updatedProfessionsId == null)
                 return NotFound();
 
-            return Ok(updatedProfessionsId);
+            return NoContent();
         }
 
         [HttpDelete("{professionId:guid}/{psId:guid}")]
@@ -159,7 +159,7 @@ namespace TakeJobOffer.API.Controllers
                 professionId,
                 psId);
 
-            return Ok(profId);
+            return NoContent();
         }
     }
 }
