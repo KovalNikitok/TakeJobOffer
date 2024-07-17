@@ -4,7 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using TakeJobOffer.API.Configurations;
 using TakeJobOffer.API.Contracts;
-using TakeJobOffer.Domain.Abstractions;
+using TakeJobOffer.Domain.Abstractions.Services;
 using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
@@ -20,7 +20,7 @@ namespace TakeJobOffer.API.Controllers
         private readonly IDistributedCache _cache = cache;
 
         [HttpGet("{professionId:guid}")]
-        public async Task<ActionResult<List<ProfessionSkillResponse>?>> GetProfessionSkillsById(
+        public async Task<ActionResult<List<ProfessionSkillResponse>?>> GetProfessionSkillsAsync(
             Guid professionId)
         {
             List<ProfessionSkillResponse>? professionSkillsResponse;
@@ -35,7 +35,7 @@ namespace TakeJobOffer.API.Controllers
                 return Ok(professionSkillsResponse);
             }
 
-            var professionsList = await _professionSkillsService.GetSkillsByProfessionId(professionId);
+            var professionsList = await _professionSkillsService.GetSkillsByProfessionIdAsync(professionId);
 
             if (professionsList == null || professionsList.Count == 0)
             {
@@ -53,7 +53,7 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpGet("{professionId:guid}/with-name")]
-        public async Task<ActionResult<List<ProfessionSkillWithNameResponse?>?>> GetProfessionSkillsWithNameById(
+        public async Task<ActionResult<List<ProfessionSkillWithNameResponse?>?>> GetProfessionSkillsWithNameAsync(
             Guid professionId,
             [FromQuery] bool isOrdered)
         {
@@ -69,7 +69,7 @@ namespace TakeJobOffer.API.Controllers
             }
             else
             {
-                var professionSkillsList = await _professionSkillsService.GetSkillsByProfessionId(professionId);
+                var professionSkillsList = await _professionSkillsService.GetSkillsByProfessionIdAsync(professionId);
 
                 if (professionSkillsList == null || professionSkillsList.Count == 0)
                 {
@@ -78,7 +78,7 @@ namespace TakeJobOffer.API.Controllers
 
                 IEnumerable<Guid> skillsIds = professionSkillsList.Select(ps => ps!.SkillId);
 
-                var skills = await _skillsService.GetSkillsByIds(skillsIds);
+                var skills = await _skillsService.GetSkillsAsync(skillsIds);
 
                 if (skills == null || skills.Count == 0)
                 {
@@ -106,7 +106,7 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpPost("{professionId:guid}")]
-        public async Task<ActionResult<Guid?>> PostProfessionSkill(Guid professionId, 
+        public async Task<ActionResult<Guid?>> PostProfessionSkillAsync(Guid professionId, 
             [FromBody] ProfessionSkillWithSkillMentionRequest professionSkillResponse)
         {
             Result<ProfessionSkill> professionSkillResult = ProfessionSkill.CreateProfessionSkill(
@@ -118,14 +118,14 @@ namespace TakeJobOffer.API.Controllers
             if (professionSkillResult.IsFailed)
                 return BadRequest(professionSkillResult.Errors);
 
-            var professionsId = await _professionSkillsService.CreateSkillForProfessionById(
+            var professionsId = await _professionSkillsService.CreateSkillForProfessionAsync(
                 professionSkillResult.Value);
 
-            return CreatedAtAction(nameof(PostProfessionSkill), professionsId);
+            return CreatedAtAction(nameof(PostProfessionSkillAsync), professionsId);
         }
 
         [HttpPut("{professionId:guid}")]
-        public async Task<ActionResult<Guid>> UpdateProfessionSkill(Guid professionId, 
+        public async Task<ActionResult<Guid>> UpdateProfessionSkillAsync(Guid professionId, 
             [FromBody] ProfessionSkillWithSkillMentionRequest professionSkillResponse)
         {
             Result<ProfessionSkill> professionSkillResult = ProfessionSkill.CreateProfessionSkill(
@@ -139,7 +139,7 @@ namespace TakeJobOffer.API.Controllers
 
             var professionSkill = professionSkillResult.Value;
 
-            Guid? updatedProfessionsId = await _professionSkillsService.UpdateSkillMentionCountForProfessionById(
+            Guid? updatedProfessionsId = await _professionSkillsService.UpdateSkillMentionCountForProfessionAsync(
                 professionSkill.ProfessionId,
                 professionSkill.SkillId,
                 professionSkill.SkillMentionCount);
@@ -151,11 +151,11 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpDelete("{professionId:guid}/{psId:guid}")]
-        public async Task<ActionResult<Guid>> DeleteProfessionSkill(
+        public async Task<ActionResult<Guid>> DeleteProfessionSkillAsync(
             Guid professionId,
             Guid psId)
         {
-            var profId = await _professionSkillsService.DeleteSkillForProfessionById(
+            var profId = await _professionSkillsService.DeleteSkillForProfessionAsync(
                 professionId,
                 psId);
 

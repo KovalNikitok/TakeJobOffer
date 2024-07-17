@@ -3,13 +3,13 @@ using TakeJobOffer.Application.Services;
 using TakeJobOffer.DAL;
 using TakeJobOffer.DAL.Repositories;
 using TakeJobOffer.DAL.Migrations;
-using TakeJobOffer.Domain.Abstractions;
+using TakeJobOffer.Domain.Abstractions.Repositories;
+using TakeJobOffer.Domain.Abstractions.Services;
+using TakeJobOffer.Domain.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
-
-builder.Services.AddRouting();
 
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(opt =>
@@ -23,6 +23,7 @@ builder.Services.AddCors(options =>
         opt.AllowCredentials();
     }));
 
+builder.Services.AddRouting();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -59,7 +60,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.MapHealthChecks("/health");
+
+app.UseExceptionMiddleware();
 
 app.UseRouting();
 

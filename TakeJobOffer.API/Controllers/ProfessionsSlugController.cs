@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using TakeJobOffer.API.Configurations;
 using TakeJobOffer.API.Contracts;
-using TakeJobOffer.Domain.Abstractions;
+using TakeJobOffer.Domain.Abstractions.Services;
 using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.API.Controllers
@@ -18,7 +18,7 @@ namespace TakeJobOffer.API.Controllers
         private readonly IDistributedCache _cache = cache;
         
         [HttpGet]
-        public async Task<ActionResult<List<ProfessionSlugResponse?>?>> GetProfessionsSlug()
+        public async Task<ActionResult<List<ProfessionSlugResponse?>?>> GetProfessionsSlugAsync()
         {
             List<ProfessionSlugResponse?>? response;
 
@@ -30,7 +30,7 @@ namespace TakeJobOffer.API.Controllers
                 return Ok(response);
             }
 
-            var professionSlug = await _professionsSlugService.GetProfessionSlugs();
+            var professionSlug = await _professionsSlugService.GetProfessionSlugsAsync();
 
             if (professionSlug == null || professionSlug.Count == 0)
                 return NotFound("Professions slug was not found");
@@ -53,9 +53,9 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<ProfessionSlugResponse>> GetProfessionSlugById(Guid id)
+        public async Task<ActionResult<ProfessionSlugResponse>> GetProfessionSlugAsync(Guid id)
         {
-            var professionSlug = await _professionsSlugService.GetProfessionSlugById(id);
+            var professionSlug = await _professionsSlugService.GetProfessionSlugAsync(id);
 
             if (professionSlug == null)
                 return NotFound("Profession slug was not found");
@@ -85,7 +85,7 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpPost("{professionId:guid}")]
-        public async Task<ActionResult<Guid>> CreateProfessionSlug(Guid professionId,
+        public async Task<ActionResult<Guid>> CreateProfessionSlugAsync(Guid professionId,
             [FromBody] ProfessionSlugRequest professionSlugRequest)
         {
             var professionSlugResult = ProfessionSlug.CreateProfessionSlug(
@@ -96,24 +96,24 @@ namespace TakeJobOffer.API.Controllers
             if (professionSlugResult.IsFailed)
                 return BadRequest(professionSlugResult.Errors);
 
-            var id = await _professionsSlugService.CreateProfessionSlug(professionSlugResult.Value);
+            var id = await _professionsSlugService.CreateProfessionSlugAsync(professionSlugResult.Value);
 
-            return CreatedAtAction(nameof(CreateProfessionSlug), id);
+            return CreatedAtAction(nameof(CreateProfessionSlugAsync), id);
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult<Guid>> UpdateProfessionSlug(Guid id,
+        public async Task<ActionResult<Guid>> UpdateProfessionSlugAsync(Guid id,
             [FromBody] ProfessionSlugRequest professionSlugRequest)
         {
-            var responseId = await _professionsSlugService.UpdateProfessionSlug(id, professionSlugRequest.Slug);
+            var responseId = await _professionsSlugService.UpdateProfessionSlugAsync(id, professionSlugRequest.Slug);
 
             return NoContent();
         }
 
         [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<Guid>> DeleteProfessionSlug(Guid id)
+        public async Task<ActionResult<Guid>> DeleteProfessionSlugAsync(Guid id)
         {
-            var responseId = await _professionsSlugService.DeleteProfessionSlug(id);
+            var responseId = await _professionsSlugService.DeleteProfessionSlugAsync(id);
 
             return NoContent();
         }

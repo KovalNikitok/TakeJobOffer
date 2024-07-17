@@ -374,3 +374,6 @@ FodyWeavers.xsd
 /TakeJobOffer.Domain/Abstractions/Error.cs
 /Frontend/takejobofferfrontend/.next
 /.env.production
+/TakeJobOffer.Application/Extensions
+/TakeJobOffer.Application/Middleware
+/TakeJobOffer.Domain/Exceptions
