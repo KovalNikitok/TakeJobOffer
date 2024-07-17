@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TakeJobOffer.DAL.Entities;
-using TakeJobOffer.Domain.Abstractions;
+using TakeJobOffer.Domain.Abstractions.Repositories;
 using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.DAL.Repositories
@@ -9,7 +9,7 @@ namespace TakeJobOffer.DAL.Repositories
     {
         private readonly TakeJobOfferDbContext _dbContext = dbContext;
 
-        public async Task<List<Skill?>> GetSkills()
+        public async Task<List<Skill?>> GetSkillsAsync()
         {
             var skillsEntities = await _dbContext.Skills
                 .AsNoTracking()
@@ -27,7 +27,7 @@ namespace TakeJobOffer.DAL.Repositories
             return skills;
         }
 
-        public async Task<Skill?> GetSkillByName(string name)
+        public async Task<Skill?> GetSkillAsync(string name)
         {
             var skillEntity = await _dbContext.Skills
                 .AsNoTracking()
@@ -47,7 +47,7 @@ namespace TakeJobOffer.DAL.Repositories
             return null;
         }
 
-        public async Task<Skill?> GetSkillById(Guid id)
+        public async Task<Skill?> GetSkillAsync(Guid id)
         {
             var skillEntity = await _dbContext.Skills
                 .AsNoTracking()
@@ -67,7 +67,7 @@ namespace TakeJobOffer.DAL.Repositories
             return null;
         }
 
-        public async Task<List<Skill?>?> GetSkillsByIds(IEnumerable<Guid> skillsIds)
+        public async Task<List<Skill?>?> GetSkillsAsync(IEnumerable<Guid> skillsIds)
         {          
 
             var skillsEntitiesList = await (from skillsEntities in _dbContext.Skills
@@ -93,7 +93,7 @@ namespace TakeJobOffer.DAL.Repositories
             return skillsList;
         }
 
-        public async Task<Guid> CreateSkill(Skill skill)
+        public async Task<Guid> CreateSkillAsync(Skill skill)
         {
             var skillEntity = new SkillEntity
             {
@@ -107,7 +107,7 @@ namespace TakeJobOffer.DAL.Repositories
             return skillEntity.Id;
         }
 
-        public async Task<Guid> UpdateSkill(Guid id, string name)
+        public async Task<Guid> UpdateSkillAsync(Guid id, string name)
         {
             var skill = await _dbContext.Skills
                 .Where(i => i.Id == id)
@@ -117,7 +117,7 @@ namespace TakeJobOffer.DAL.Repositories
             return id;
         }
 
-        public async Task<Guid> DeleteSkill(Guid id)
+        public async Task<Guid> DeleteSkillAsync(Guid id)
         {
             await _dbContext.Skills
                 .Where(i => i.Id == id)

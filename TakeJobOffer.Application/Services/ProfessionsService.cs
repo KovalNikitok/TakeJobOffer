@@ -1,4 +1,5 @@
-﻿using TakeJobOffer.Domain.Abstractions;
+﻿using TakeJobOffer.Domain.Abstractions.Repositories;
+using TakeJobOffer.Domain.Abstractions.Services;
 using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.Application.Services
@@ -7,38 +8,38 @@ namespace TakeJobOffer.Application.Services
     {
         private readonly IProfessionsRepository _professionsRepository = professionsRepository;
 
-        public async Task<List<Profession?>> GetAllProfessions()
+        public async Task<List<Profession?>> GetProfessionsAsync()
         {
-            return await _professionsRepository.GetProfessions();
+            return await _professionsRepository.GetProfessionsAsync();
         }
 
-        public async Task<Profession?> GetProfessionById(Guid id)
+        public async Task<Profession?> GetProfessionAsync(Guid id)
         {
-            return await _professionsRepository.GetProfessionById(id);
+            return await _professionsRepository.GetProfessionAsync(id);
         }
-        public async Task<Profession?> GetProfessionBySlug(string slug)
+        public async Task<Profession?> GetProfessionAsync(string slug)
         {
-            return await _professionsRepository.GetProfessionBySlug(slug);
-        }
-
-        public async Task<Guid> CreateProfession(Profession profession)
-        {
-            return await _professionsRepository.CreateProfession(profession);
+            return await _professionsRepository.GetProfessionAsync(slug);
         }
 
-        public async Task<Guid> CreateProfessionWithSlug(Profession profession, ProfessionSlug professionSlug)
+        public async Task<Guid> CreateProfessionAsync(Profession profession)
         {
-            return await _professionsRepository.CreateProfessionWithSlug(profession, professionSlug);
+            return await _professionsRepository.CreateProfessionAsync(profession);
         }
 
-        public async Task<Guid> UpdateProfession(Guid guid, string name, string? description)
+        public async Task<Guid> CreateProfessionWithSlugAsync(Profession profession, ProfessionSlug professionSlug)
         {
-            return await _professionsRepository.UpdateProfession(guid, name, description);
+            return await _professionsRepository.CreateProfessionWithSlugAsync(profession, professionSlug);
         }
 
-        public async Task<Guid> DeleteProfession(Guid guid)
+        public async Task<Guid> UpdateProfessionAsync(Guid guid, string name, string? description)
         {
-            return await _professionsRepository.DeleteProfession(guid);
+            return await _professionsRepository.UpdateProfessionAsync(guid, name, description);
+        }
+
+        public async Task<Guid> DeleteProfessionAsync(Guid guid)
+        {
+            return await _professionsRepository.DeleteProfessionAsync(guid);
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
 using TakeJobOffer.DAL.Entities;
-using FluentResults;
 using Microsoft.EntityFrameworkCore.Storage;
+using TakeJobOffer.Domain.Abstractions.Repositories;
 
 namespace TakeJobOffer.DAL.Repositories
 {
@@ -11,7 +10,7 @@ namespace TakeJobOffer.DAL.Repositories
     {
         private readonly TakeJobOfferDbContext _dbContext = dbContext;
 
-        public async Task<List<Profession?>> GetProfessions()
+        public async Task<List<Profession?>> GetProfessionsAsync()
         {
             var professionEntites = await _dbContext.Professions
                 .AsNoTracking()
@@ -30,7 +29,7 @@ namespace TakeJobOffer.DAL.Repositories
             return professions;
         }
 
-        public async Task<Profession?> GetProfessionById(Guid id)
+        public async Task<Profession?> GetProfessionAsync(Guid id)
         {
             var professionEntity = await _dbContext.Professions
                 .Where(p => p.Id == id)
@@ -46,7 +45,7 @@ namespace TakeJobOffer.DAL.Repositories
             return profession.Value;
         }
 
-        public async Task<Profession?> GetProfessionBySlug(string slug)
+        public async Task<Profession?> GetProfessionAsync(string slug)
         {
             var professionEntity = await _dbContext.ProfessionsSlug
                 .Where(ps => ps.Slug == slug)
@@ -63,7 +62,7 @@ namespace TakeJobOffer.DAL.Repositories
             return profession.Value;
         }
 
-        public async Task<Guid> CreateProfession(Profession profession)
+        public async Task<Guid> CreateProfessionAsync(Profession profession)
         {
             var professionEntity = new ProfessionEntity
             {
@@ -79,7 +78,7 @@ namespace TakeJobOffer.DAL.Repositories
             return professionEntity.Id;
         }
 
-        public async Task<Guid> CreateProfessionWithSlug(Profession profession, ProfessionSlug professionSlug)
+        public async Task<Guid> CreateProfessionWithSlugAsync(Profession profession, ProfessionSlug professionSlug)
         {
 
             await using IDbContextTransaction transactionCheck =
@@ -140,7 +139,7 @@ namespace TakeJobOffer.DAL.Repositories
             }
         }
 
-        public async Task<Guid> UpdateProfession(Guid id, string name, string? description)
+        public async Task<Guid> UpdateProfessionAsync(Guid id, string name, string? description)
         {
             await _dbContext.Professions
                 .Where(p => p.Id == id)
@@ -151,7 +150,7 @@ namespace TakeJobOffer.DAL.Repositories
             return id;
         }
 
-        public async Task<Guid> DeleteProfession(Guid id)
+        public async Task<Guid> DeleteProfessionAsync(Guid id)
         {
             await _dbContext.Professions
                 .Where(b => b.Id == id)
