@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using TakeJobOffer.API.Contracts;
-using TakeJobOffer.Domain.Abstractions;
 using TakeJobOffer.Domain.Models;
 using TakeJobOffer.API.Configurations;
+using TakeJobOffer.Domain.Abstractions.Services;
 
 namespace TakeJobOffer.API.Controllers
 {
@@ -21,7 +21,7 @@ namespace TakeJobOffer.API.Controllers
 
         
         [HttpGet]
-        public async Task<ActionResult<List<ProfessionResponse>?>> GetProfessions()
+        public async Task<ActionResult<List<ProfessionResponse>?>> GetProfessionsAsync()
         {
             List<ProfessionResponse>? professionsResponse;
             string cacheKey = "professions";
@@ -33,7 +33,7 @@ namespace TakeJobOffer.API.Controllers
                 return Ok(professionsResponse);
             }
 
-            var professions = await _professionsService.GetAllProfessions();
+            var professions = await _professionsService.GetProfessionsAsync();
 
             if (professions == null || professions.Count == 0)
             {
@@ -49,7 +49,7 @@ namespace TakeJobOffer.API.Controllers
         }
         
         [HttpGet("with-slug")]
-        public async Task<ActionResult<List<ProfessionWithSlugResponse>?>> GetProfessionsWithSlug()
+        public async Task<ActionResult<List<ProfessionWithSlugResponse>?>> GetProfessionsWithSlugAsync()
         {
             List<ProfessionWithSlugResponse>? professionResponse;
 
@@ -62,7 +62,7 @@ namespace TakeJobOffer.API.Controllers
                 return Ok(professionResponse);
             }
 
-            var professions = await _professionsService.GetAllProfessions();
+            var professions = await _professionsService.GetProfessionsAsync();
 
             if (professions == null || professions.Count == 0)
             {
@@ -70,7 +70,7 @@ namespace TakeJobOffer.API.Controllers
             }
 
             IEnumerable<Guid> ids = professions.Select(p => p!.Id);
-            var professionSlugs = await _professionsSlugService.GetProfessionSlugsByProfessionsIds(ids);
+            var professionSlugs = await _professionsSlugService.GetProfessionSlugsAsync(ids);
 
             if (professionSlugs is null || professionSlugs.Count == 0)
                 return NotFound("Slugs for professions was not found");
@@ -93,9 +93,9 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<ProfessionResponse>?> GetProfessionById(Guid id)
+        public async Task<ActionResult<ProfessionResponse>?> GetProfessionAsync(Guid id)
         {
-            var profession = await _professionsService.GetProfessionById(id);
+            var profession = await _professionsService.GetProfessionAsync(id);
 
             if (profession == null)
             {
@@ -108,9 +108,9 @@ namespace TakeJobOffer.API.Controllers
         }
         
         [HttpGet("{id:guid}/with-slug")]
-        public async Task<ActionResult<ProfessionResponse>?> GetProfessionByIdWithSlug(Guid id)
+        public async Task<ActionResult<ProfessionResponse>?> GetProfessionWithSlugAsync(Guid id)
         {
-            var profession = await _professionsService.GetProfessionById(id);
+            var profession = await _professionsService.GetProfessionAsync(id);
 
             if (profession == null)
                 return NotFound("Profession by that Id was not found");
@@ -130,7 +130,7 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpGet("{slug}")]
-        public async Task<ActionResult<ProfessionResponse>?> GetProfessionBySlug(string slug)
+        public async Task<ActionResult<ProfessionResponse>?> GetProfessionAsync(string slug)
         {
             ProfessionResponse? professionResponse;
 
@@ -143,7 +143,7 @@ namespace TakeJobOffer.API.Controllers
                 return Ok(professionResponse);
             }
 
-            var profession = await _professionsService.GetProfessionBySlug(slug);
+            var profession = await _professionsService.GetProfessionAsync(slug);
 
             if (profession == null)
             {
@@ -159,7 +159,7 @@ namespace TakeJobOffer.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> PostProfession([FromBody] ProfessionRequest professionRequest)
+        public async Task<ActionResult<Guid>> PostProfessionAsync([FromBody] ProfessionRequest professionRequest)
         {
             Result<Profession> professionResult = Profession.Create(
                 Guid.NewGuid(),
@@ -171,13 +171,13 @@ namespace TakeJobOffer.API.Controllers
                 return BadRequest(professionResult.Errors);
             }
 
-            var professionId = await _professionsService.CreateProfession(professionResult.Value);
+            var professionId = await _professionsService.CreateProfessionAsync(professionResult.Value);
 
-            return CreatedAtAction(nameof(PostProfession), professionId);
+            return CreatedAtAction(nameof(PostProfessionAsync), professionId);
         }
 
         [HttpPost("with-slug")]
-        public async Task<ActionResult<Guid>> PostProfessionWithSlug([FromBody] ProfessionWithSlugRequest professionRequest)
+        public async Task<ActionResult<Guid>> PostProfessionWithSlugAsync([FromBody] ProfessionWithSlugRequest professionRequest)
         {
             Result<Profession> professionResult = Profession.Create(
                 Guid.NewGuid(),
@@ -198,18 +198,18 @@ namespace TakeJobOffer.API.Controllers
 
             var professionSlug = professionSlugResult.Value;
 
-            var professionId = await _professionsService.CreateProfessionWithSlug(profession, professionSlug);
+            var professionId = await _professionsService.CreateProfessionWithSlugAsync(profession, professionSlug);
 
             if (professionId == Guid.Empty)
                 return BadRequest("Profession already exist");
 
-            return CreatedAtAction(nameof(PostProfessionWithSlug), professionId);
+            return CreatedAtAction(nameof(PostProfessionWithSlugAsync), professionId);
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult<Guid>> UpdateProfession(Guid id, [FromBody] ProfessionRequest professionRequest)
+        public async Task<ActionResult<Guid>> UpdateProfessionAsync(Guid id, [FromBody] ProfessionRequest professionRequest)
         {
-            var professionId = await _professionsService.UpdateProfession(id, professionRequest.Name, professionRequest.Description);
+            var professionId = await _professionsService.UpdateProfessionAsync(id, professionRequest.Name, professionRequest.Description);
 
             return NoContent();
         }
@@ -217,19 +217,19 @@ namespace TakeJobOffer.API.Controllers
         [HttpPut("{id:guid}/with-slug")]
         public async Task<ActionResult<Guid>> UpdateProfessionWithSlug(Guid id, [FromBody] ProfessionWithSlugRequest professionRequest)
         {
-            var professionId = await _professionsService.UpdateProfession(id, professionRequest.Name, professionRequest.Description);
+            var professionId = await _professionsService.UpdateProfessionAsync(id, professionRequest.Name, professionRequest.Description);
 
             var professionSlug = await _professionsSlugService.GetProfessionSlugByProfessionId(professionId);
             if (professionSlug is not null && professionSlug.Slug != professionRequest.Slug)
-                await _professionsSlugService.UpdateProfessionSlug(professionSlug.Id, professionRequest.Slug);
+                await _professionsSlugService.UpdateProfessionSlugAsync(professionSlug.Id, professionRequest.Slug);
 
             return NoContent();
         }
 
         [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<Guid>> DeleteProfession(Guid id)
+        public async Task<ActionResult<Guid>> DeleteProfessionAsync(Guid id)
         {
-            var professionId = await _professionsService.DeleteProfession(id);
+            var professionId = await _professionsService.DeleteProfessionAsync(id);
 
             return NoContent();
         }

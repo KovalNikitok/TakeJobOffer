@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TakeJobOffer.DAL.Entities;
 using TakeJobOffer.Domain.Models;
-using TakeJobOffer.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore.Storage;
+using TakeJobOffer.Domain.Abstractions.Repositories;
 
 namespace TakeJobOffer.DAL.Repositories
 {
@@ -10,7 +10,7 @@ namespace TakeJobOffer.DAL.Repositories
     {
         private readonly TakeJobOfferDbContext _dbContext = dbContext;
 
-        public async Task<List<ProfessionSkill?>?> GetProfessionSkillsById(Guid professionId)
+        public async Task<List<ProfessionSkill?>?> GetProfessionSkillsAsync(Guid professionId)
         {
             var professionsSkillsEntities = await _dbContext.Professions
                 .AsNoTracking()
@@ -40,7 +40,7 @@ namespace TakeJobOffer.DAL.Repositories
             return professionSkills;
         }
 
-        public async Task<Guid?> CreateProfessionSkillById(ProfessionSkill professionSkill)
+        public async Task<Guid?> CreateProfessionSkillAsync(ProfessionSkill professionSkill)
         {
             var professionSkillCheck = await _dbContext.ProfessionsSkills
                         .AsNoTracking()
@@ -95,7 +95,7 @@ namespace TakeJobOffer.DAL.Repositories
             }
         }
 
-        public async Task<Guid?> UpdateSkillMentionById(Guid professionId, Guid skillId, int skillMentionCount)
+        public async Task<Guid?> UpdateSkillMentionAsync(Guid professionId, Guid skillId, int skillMentionCount)
         {
             var updated = await _dbContext.ProfessionsSkills
                 .Where(ps => ps.ProfessionForeignKey == professionId && ps.SkillForeignKey == skillId)
@@ -107,7 +107,7 @@ namespace TakeJobOffer.DAL.Repositories
             return professionId;
         }
 
-        public async Task<Guid> DeleteProfessionSkillById(Guid professionId, Guid skillId)
+        public async Task<Guid> DeleteProfessionSkillAsync(Guid professionId, Guid skillId)
         {
             var deleted = await _dbContext.ProfessionsSkills
                 .Where(ps => ps.ProfessionForeignKey == professionId && ps.SkillForeignKey == skillId)

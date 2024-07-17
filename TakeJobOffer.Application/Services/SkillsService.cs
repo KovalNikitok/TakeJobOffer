@@ -1,4 +1,5 @@
-﻿using TakeJobOffer.Domain.Abstractions;
+﻿using TakeJobOffer.Domain.Abstractions.Repositories;
+using TakeJobOffer.Domain.Abstractions.Services;
 using TakeJobOffer.Domain.Models;
 
 namespace TakeJobOffer.Application.Services
@@ -7,41 +8,41 @@ namespace TakeJobOffer.Application.Services
     {
         private readonly ISkillsRepository _skillsRepository = skillsRepository;
 
-        public async Task<List<Skill?>> GetAllSkills()
+        public async Task<List<Skill?>> GetSkillsAsync()
         {
-            return await _skillsRepository.GetSkills();
+            return await _skillsRepository.GetSkillsAsync();
         }
 
-        public async Task<List<Skill?>?> GetSkillsByIds(IEnumerable<Guid> skillsIds)
+        public async Task<List<Skill?>?> GetSkillsAsync(IEnumerable<Guid> skillsIds)
         {
-            return await _skillsRepository.GetSkillsByIds(skillsIds);
+            return await _skillsRepository.GetSkillsAsync(skillsIds);
         }
 
-        public async Task<Skill?> GetSkillById(Guid id)
+        public async Task<Skill?> GetSkillAsync(Guid id)
         {
-            return await _skillsRepository.GetSkillById(id);
+            return await _skillsRepository.GetSkillAsync(id);
         }
 
-        public async Task<Skill?> GetSkillByName(string name)
+        public async Task<Skill?> GetSkillAsync(string name)
         {
-            return await _skillsRepository.GetSkillByName(name);
+            return await _skillsRepository.GetSkillAsync(name);
         }
 
-        public async Task<Guid> CreateSkill(Skill skill)
+        public async Task<Guid> CreateSkillAsync(Skill skill)
         {
-            return await _skillsRepository.CreateSkill(skill);
+            return await _skillsRepository.CreateSkillAsync(skill);
         }
 
-        public async Task<Guid> UpdateSkill(Guid id, string name)
+        public async Task<Guid> UpdateSkillAsync(Guid id, string name)
         {
-            return await _skillsRepository.UpdateSkill(
+            return await _skillsRepository.UpdateSkillAsync(
                 id: id,
                 name: name);
         }
 
-        public async Task<Guid> DeleteSkill(Guid id)
+        public async Task<Guid> DeleteSkillAsync(Guid id)
         {
-            return await _skillsRepository.DeleteSkill(id);
+            return await _skillsRepository.DeleteSkillAsync(id);
         }
     }
 }
