@@ -4,6 +4,7 @@ using TakeJobOffer.DAL;
 using TakeJobOffer.DAL.Repositories;
 using TakeJobOffer.DAL.Migrations;
 using TakeJobOffer.Domain.Abstractions;
+using TakeJobOffer.Domain.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.MapHealthChecks("/health");
+
+app.UseExceptionMiddleware();
 
 app.UseRouting();
 
